@@ -1,0 +1,8 @@
+test/real/
+node_modules/
+*.so
+build/
+dist/
+*.egg-info/
+__pycache__/
+.venv/
