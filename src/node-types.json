@@ -475,10 +475,6 @@
             "named": true
           },
           {
-            "type": "namespace_directive",
-            "named": true
-          },
-          {
             "type": "number",
             "named": true
           },
@@ -573,22 +569,6 @@
           "named": true
         }
       ]
-    }
-  },
-  {
-    "type": "namespace_directive",
-    "named": true,
-    "fields": {
-      "namespace": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "dotted_name",
-            "named": true
-          }
-        ]
-      }
     }
   },
   {
@@ -833,10 +813,6 @@
           "named": true
         },
         {
-          "type": "namespace_directive",
-          "named": true
-        },
-        {
           "type": "number",
           "named": true
         },
@@ -902,10 +878,6 @@
   },
   {
     "type": "[",
-    "named": false
-  },
-  {
-    "type": "\\d",
     "named": false
   },
   {
