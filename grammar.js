@@ -22,7 +22,7 @@ module.exports = grammar({
     $._error_sentinel,       // never emitted; forces external-scanner fallback
   ],
 
-  extras: $ => [/[ \t\n\r]/, $.comment],   // spaces/newlines ignored in skeleton; Task 2 makes _eos significant
+  extras: $ => [/[ \t]/, $.comment],   // W1-scanner: removed \n\r from extras; _eos now handles newlines
 
   // GLR conflicts are added here by Task 10 as real ambiguities surface.
   conflicts: $ => [],

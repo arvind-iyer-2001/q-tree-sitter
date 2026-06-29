@@ -1,0 +1,126 @@
+==================
+trailing comment
+==================
+a:1  / this is a comment
+---
+(source_file
+  (assignment
+    left: (identifier)
+    right: (number))
+  (comment))
+
+==================
+line comment
+==================
+/ this whole line is a comment
+a:2
+---
+(source_file
+  (comment)
+  (assignment
+    left: (identifier)
+    right: (number)))
+
+==================
+system command load
+==================
+\l init.q
+---
+(source_file
+  (system_command))
+
+==================
+system command namespace
+==================
+\d .ns
+---
+(source_file
+  (namespace_directive
+    namespace: (dotted_name)))
+
+==================
+subtraction with spaces
+==================
+y:1 - 2
+---
+(source_file
+  (assignment
+    left: (identifier)
+    right: (binary_expression
+      left: (number)
+      operator: (operator)
+      right: (number))))
+
+==================
+block comment
+==================
+/
+this is a block comment
+more block comment
+\
+a:1
+---
+(source_file
+  (comment)
+  (assignment
+    left: (identifier)
+    right: (number)))
+
+==================
+multiple statements with eos
+==================
+a:1
+b:2
+---
+(source_file
+  (assignment
+    left: (identifier)
+    right: (number))
+  (assignment
+    left: (identifier)
+    right: (number)))
+
+==================
+trailing comment then next statement
+==================
+a:1  / first
+b:2
+---
+(source_file
+  (assignment
+    left: (identifier)
+    right: (number))
+  (comment)
+  (assignment
+    left: (identifier)
+    right: (number)))
+
+==================
+system command timer
+==================
+\t a+b
+---
+(source_file
+  (system_command))
+
+==================
+system command port
+==================
+\p 5000
+---
+(source_file
+  (system_command))
+
+==================
+line comment before code
+==================
+/ initialize variables
+a:1
+/ done
+---
+(source_file
+  (comment)
+  (assignment
+    left: (identifier)
+    right: (number))
+  (comment))
