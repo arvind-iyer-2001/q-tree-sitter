@@ -40,6 +40,10 @@
             "named": true
           },
           {
+            "type": "builtin",
+            "named": true
+          },
+          {
             "type": "call",
             "named": true
           },
@@ -77,6 +81,10 @@
           },
           {
             "type": "symbol",
+            "named": true
+          },
+          {
+            "type": "symbol_vector",
             "named": true
           }
         ]
@@ -96,6 +104,10 @@
             "named": true
           },
           {
+            "type": "builtin",
+            "named": true
+          },
+          {
             "type": "call",
             "named": true
           },
@@ -133,6 +145,10 @@
           },
           {
             "type": "symbol",
+            "named": true
+          },
+          {
+            "type": "symbol_vector",
             "named": true
           }
         ]
@@ -156,6 +172,10 @@
             "named": true
           },
           {
+            "type": "builtin",
+            "named": true
+          },
+          {
             "type": "call",
             "named": true
           },
@@ -193,6 +213,10 @@
           },
           {
             "type": "symbol",
+            "named": true
+          },
+          {
+            "type": "symbol_vector",
             "named": true
           }
         ]
@@ -216,6 +240,10 @@
             "named": true
           },
           {
+            "type": "builtin",
+            "named": true
+          },
+          {
             "type": "call",
             "named": true
           },
@@ -254,6 +282,10 @@
           {
             "type": "symbol",
             "named": true
+          },
+          {
+            "type": "symbol_vector",
+            "named": true
           }
         ]
       },
@@ -261,6 +293,10 @@
         "multiple": false,
         "required": true,
         "types": [
+          {
+            "type": "builtin",
+            "named": true
+          },
           {
             "type": "dotted_name",
             "named": true
@@ -283,6 +319,10 @@
       "types": [
         {
           "type": "binary_expression",
+          "named": true
+        },
+        {
+          "type": "builtin",
           "named": true
         },
         {
@@ -324,6 +364,10 @@
         {
           "type": "symbol",
           "named": true
+        },
+        {
+          "type": "symbol_vector",
+          "named": true
         }
       ]
     }
@@ -346,6 +390,10 @@
           },
           {
             "type": "binary_expression",
+            "named": true
+          },
+          {
+            "type": "builtin",
             "named": true
           },
           {
@@ -393,6 +441,10 @@
             "named": true
           },
           {
+            "type": "symbol_vector",
+            "named": true
+          },
+          {
             "type": "system_command",
             "named": true
           }
@@ -420,6 +472,10 @@
       "types": [
         {
           "type": "binary_expression",
+          "named": true
+        },
+        {
+          "type": "builtin",
           "named": true
         },
         {
@@ -460,6 +516,10 @@
         },
         {
           "type": "symbol",
+          "named": true
+        },
+        {
+          "type": "symbol_vector",
           "named": true
         }
       ]
@@ -525,6 +585,10 @@
           "named": true
         },
         {
+          "type": "builtin",
+          "named": true
+        },
+        {
           "type": "call",
           "named": true
         },
@@ -563,6 +627,10 @@
         {
           "type": "symbol",
           "named": true
+        },
+        {
+          "type": "symbol_vector",
+          "named": true
         }
       ]
     }
@@ -582,6 +650,10 @@
         },
         {
           "type": "binary_expression",
+          "named": true
+        },
+        {
+          "type": "builtin",
           "named": true
         },
         {
@@ -626,6 +698,10 @@
         },
         {
           "type": "symbol",
+          "named": true
+        },
+        {
+          "type": "symbol_vector",
           "named": true
         },
         {
@@ -677,6 +753,10 @@
     "named": false
   },
   {
+    "type": "builtin",
+    "named": true
+  },
+  {
     "type": "comment",
     "named": true
   },
@@ -702,6 +782,10 @@
   },
   {
     "type": "symbol",
+    "named": true
+  },
+  {
+    "type": "symbol_vector",
     "named": true
   },
   {
