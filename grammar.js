@@ -25,7 +25,10 @@ module.exports = grammar({
   extras: $ => [/[ \t\n\r]/, $.comment],   // spaces/newlines ignored in skeleton; Task 2 makes _eos significant
 
   // GLR conflicts are added here by Task 10 as real ambiguities surface.
-  conflicts: $ => [],
+  // W1-control: assignment vs _literal_ref+return_stmt when `identifier :` is seen
+  conflicts: $ => [
+    [$.assignment, $._literal_ref],
+  ],
 
   word: $ => $.identifier,
 
@@ -39,6 +42,10 @@ module.exports = grammar({
         $.assignment,
         $.system_command,
         $.namespace_directive,
+        // W1-control: control words, return, signal are statement-level constructs
+        $.control,
+        $.return_stmt,
+        $.signal_stmt,
         $._expression,
       ),
     },

@@ -1,0 +1,117 @@
+==================
+cond ternary
+==================
+r:$[x>0;`pos;`neg]
+---
+
+(source_file
+  (assignment
+    (identifier)
+    (cond
+      (binary_expression
+        (identifier)
+        (operator)
+        (number))
+      (symbol)
+      (symbol))))
+
+==================
+if with return
+==================
+if[x>0;:x]
+---
+
+(source_file
+  (control
+    (binary_expression
+      (identifier)
+      (operator)
+      (number))
+    (return_stmt
+      (identifier))))
+
+==================
+while loop
+==================
+while[i<10;i:i+1]
+---
+
+(source_file
+  (control
+    (binary_expression
+      (identifier)
+      (operator)
+      (number))
+    (assignment
+      (identifier)
+      (binary_expression
+        (identifier)
+        (operator)
+        (number)))))
+
+==================
+do loop
+==================
+do[5;x:x+1]
+---
+
+(source_file
+  (control
+    (number)
+    (assignment
+      (identifier)
+      (binary_expression
+        (identifier)
+        (operator)
+        (number)))))
+
+==================
+cond nested
+==================
+$[a;$[b;1;2];3]
+---
+
+(source_file
+  (cond
+    (identifier)
+    (cond
+      (identifier)
+      (number)
+      (number))
+    (number)))
+
+==================
+return statement
+==================
+:42
+---
+
+(source_file
+  (return_stmt
+    (number)))
+
+==================
+signal statement
+==================
+'`error
+---
+
+(source_file
+  (signal_stmt
+    (symbol)))
+
+==================
+vector conditional not control
+==================
+?[x;1;2]
+---
+
+(source_file
+  (ERROR
+    (operator))
+  (identifier)
+  (ERROR)
+  (number)
+  (ERROR)
+  (number)
+  (ERROR))
