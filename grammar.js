@@ -22,7 +22,13 @@ module.exports = grammar({
     $._error_sentinel,       // never emitted; forces external-scanner fallback
   ],
 
-  extras: $ => [/[ \t]/, $.comment],   // W1-scanner: removed \n\r from extras; _eos now handles newlines
+  // Horizontal whitespace + comments are always ignorable. Newlines are ALSO
+  // ignorable as extras, BUT the external scanner is consulted first: at depth 0
+  // it emits $._eos (statement terminator) before the newline can be eaten as an
+  // extra. Inside (), [], {} the grammar makes $._eos invalid, so in-bracket
+  // newlines fall through to extras and are ignored — enabling multi-line lists,
+  // tables and lambdas.
+  extras: $ => [/[ \t\r\n]/, $.comment],
 
   // GLR conflicts: UNION of all wave-1 module conflict declarations (T10).
   // T10-converge: tree-sitter flags all 6 as "unnecessary" (they don't change
@@ -59,8 +65,16 @@ module.exports = grammar({
     {
       // T10: tolerate blank lines / leading & trailing _eos (the corpus harness
       // feeds inputs with a leading newline). A bare _eos with no statement is a
-      // separator, not an ERROR.
-      source_file: $ => repeat(choice($._statement, $._eos)),
+      // separator, not an ERROR. `;` is also a top-level statement separator
+      // (q allows `a:1;b:2` on one line and trailing `x:1;`).
+      source_file: $ => repeat(choice($._statement, $._eos, ';')),
+
+      // Shared `$` token. q overloads `$` heavily (cast, cond `$[...]`, enum,
+      // pad, vector-conditional) but resolves the overload at EVAL time by
+      // argument type/valence — never at parse time. So the grammar uses ONE
+      // `$` token for every role; cond and the binary operator both reference
+      // it, which avoids a two-token lexer collision (`a$b` previously failed).
+      _dollar: $ => token('$'),
 
       // _statement and _expression are the shared backbone. _expression is
       // OWNED by expression.js (Task 6). namespace_directive is FOLDED into

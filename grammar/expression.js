@@ -68,10 +68,14 @@ function sep(rule, s) {
   return optional(seq(rule, repeat(seq(s, optional(rule)))));
 }
 
+// NOTE: `$` is intentionally NOT in this set — it has its own shared $._dollar
+// token (grammar.js) so cond `$[...]` and the binary `$` operator use ONE token
+// type. Overload resolution (cast/enum/pad/cond) is q's eval-time concern, not
+// the parser's.
 const OPERATOR = token(choice(
   '<=', '>=', '<>',
   '+', '-', '*', '%', '&', '|', '^', '=', '<', '>', '~', '!',
-  '#', '_', '$', '?', '@', '.', ',',
+  '#', '_', '?', '@', '.', ',',
 ));
 
 const PREC = {
@@ -103,7 +107,7 @@ module.exports = {
   // projection (`3+`).
   binary: $ => prec.right(PREC.binary, seq(
     field('left', $._application),
-    field('operator', alias(OPERATOR, $.operator)),
+    field('operator', choice(alias(OPERATOR, $.operator), alias($._dollar, $.operator))),
     optional(field('right', $._expression)),
   )),
 
@@ -164,7 +168,10 @@ module.exports = {
     $.builtin, $.dotted_name, $.identifier,
   ),
 
-  parenthesized: $ => seq('(', $._expression, ')'),
+  // `()` is the empty general list; `(e)` is a parenthesized expression. The
+  // expression is optional so empty `()` parses (very common as an empty column
+  // value, e.g. `([]a:();b:())`).
+  parenthesized: $ => seq('(', optional($._expression), ')'),
 
   // `(e1;e2;...)` — at least one `;`. Slots may be empty (elision => null atom).
   list: $ => seq(

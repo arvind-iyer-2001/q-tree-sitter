@@ -4,8 +4,10 @@
 function sep1(rule, s) { return seq(rule, repeat(seq(s, rule))); }
 
 module.exports = {
-  // $[c;t;f] — Cond.  prec(2) ensures this wins over `$` operator + `[` bracket.
-  cond: $ => prec(2, seq('$', '[', sep1($._expression, ';'), ']')),
+  // $[c;t;f] — Cond. Uses the shared $._dollar token (grammar.js) so plain `a$b`
+  // (binary `$`) and `$[...]` share one token type. prec(2) keeps cond preferred
+  // when `$` is immediately followed by `[`.
+  cond: $ => prec(2, seq($._dollar, '[', sep1($._expression, ';'), ']')),
 
   // if/do/while control words — NOT functions; `word` in grammar.js ensures
   // these keyword strings take priority over the identifier rule.

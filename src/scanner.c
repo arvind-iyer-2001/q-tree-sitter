@@ -244,12 +244,20 @@ bool tree_sitter_q_external_scanner_scan(void *payload, TSLexer *l, const bool *
   /* ---------------------------------------------------------------
    * LIST_WS: space(s) between numeric tokens in a vector.
    * The grammar's vector rule marks positions where LIST_WS is valid.
-   * We emit it when we see whitespace followed by a digit.
-   * NOTE: this must come after COMMENT check since both might be valid.
+   * We emit it when we see whitespace followed by the start of the next
+   * element: a digit, or a `-` that begins a negative number (`-5 -4 -3`).
+   * In the `-` case we clear prev_was_value so the following NEG_NUMBER can
+   * fire (NEG_NUMBER is gated on !prev_was_value, which the previous element
+   * left set to true). NOTE: must come after COMMENT since both may be valid.
    * --------------------------------------------------------------- */
   if (valid[LIST_WS]) {
     bool saw = skip_horiz(l);
     if (saw && l->lookahead >= '0' && l->lookahead <= '9') {
+      l->result_symbol = LIST_WS;
+      return true;
+    }
+    if (saw && l->lookahead == '-' && valid[NEG_NUMBER]) {
+      s->prev_was_value = false;
       l->result_symbol = LIST_WS;
       return true;
     }
