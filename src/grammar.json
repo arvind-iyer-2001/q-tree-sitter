@@ -906,7 +906,7 @@
     },
     "assignment": {
       "type": "PREC_RIGHT",
-      "value": 0,
+      "value": 1,
       "content": {
         "type": "SEQ",
         "members": [
@@ -923,6 +923,15 @@
                 {
                   "type": "SYMBOL",
                   "name": "dotted_name"
+                },
+                {
+                  "type": "ALIAS",
+                  "content": {
+                    "type": "SYMBOL",
+                    "name": "call"
+                  },
+                  "named": true,
+                  "value": "index"
                 }
               ]
             }
@@ -948,8 +957,17 @@
             "type": "FIELD",
             "name": "right",
             "content": {
-              "type": "SYMBOL",
-              "name": "_expression"
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "assignment"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "_expression"
+                }
+              ]
             }
           }
         ]
@@ -985,8 +1003,29 @@
             "type": "CHOICE",
             "members": [
               {
-                "type": "SYMBOL",
-                "name": "_lambda_body"
+                "type": "SEQ",
+                "members": [
+                  {
+                    "type": "SYMBOL",
+                    "name": "_statement"
+                  },
+                  {
+                    "type": "REPEAT",
+                    "content": {
+                      "type": "SEQ",
+                      "members": [
+                        {
+                          "type": "STRING",
+                          "value": ";"
+                        },
+                        {
+                          "type": "SYMBOL",
+                          "name": "_statement"
+                        }
+                      ]
+                    }
+                  }
+                ]
               },
               {
                 "type": "BLANK"
@@ -997,31 +1036,6 @@
         {
           "type": "STRING",
           "value": "}"
-        }
-      ]
-    },
-    "_lambda_body": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "SYMBOL",
-          "name": "_statement"
-        },
-        {
-          "type": "REPEAT",
-          "content": {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "STRING",
-                "value": ";"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "_statement"
-              }
-            ]
-          }
         }
       ]
     },

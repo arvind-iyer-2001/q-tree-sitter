@@ -1,13 +1,22 @@
 function sep1(rule, s) { return seq(rule, repeat(seq(s, rule))); }
 
 module.exports = {
-  assignment: $ => prec.right(seq(
-    field('left', choice($.identifier, $.dotted_name)),
+  // assignment: right-associative.
+  // left can be: identifier, dotted_name, or index (x[i] for amend-assign)
+  assignment: $ => prec.right(1, seq(
+    field('left', choice($.identifier, $.dotted_name, alias($.call, $.index))),
     field('operator', choice('::', ':')),
-    field('right', $._expression))),
-  lambda: $ => seq('{', optional(field('parameters', $.parameters)),
-                   field('body', optional($._lambda_body)), '}'),
-  _lambda_body: $ => sep1($._statement, ';'),
+    field('right', choice($.assignment, $._expression)),
+  )),
+
+  lambda: $ => seq(
+    '{',
+    optional(field('parameters', $.parameters)),
+    field('body', optional(sep1($._statement, ';'))),
+    '}',
+  ),
+
   parameters: $ => seq('[', optional(sep1(field('param', $.param), ';')), ']'),
+
   param: $ => $.identifier,
 };
