@@ -7,7 +7,7 @@ f:{x+y}
   (assignment
     left: (identifier)
     right: (lambda
-      body: (binary_expression
+      body: (binary
         left: (identifier)
         operator: (operator)
         right: (identifier)))))

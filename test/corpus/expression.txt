@@ -1,0 +1,247 @@
+==================
+right-to-left, no precedence
+==================
+r:2*3+4
+---
+(source_file
+  (assignment
+    left: (identifier)
+    right: (binary
+      left: (number)
+      operator: (operator)
+      right: (binary
+        left: (number)
+        operator: (operator)
+        right: (number)))))
+
+==================
+bracket application and projection
+==================
+a:f[1;2]
+b:f[a;;c]
+---
+(source_file
+  (assignment
+    left: (identifier)
+    right: (call
+      function: (identifier)
+      arguments: (arguments (number) (number))))
+  (assignment
+    left: (identifier)
+    right: (call
+      function: (identifier)
+      arguments: (arguments (identifier) (identifier)))))
+
+==================
+adverb over
+==================
+s:+/[1;2]
+---
+(source_file
+  (assignment
+    left: (identifier)
+    right: (adverb_apply
+      function: (operator)
+      arguments: (arguments (number) (number)))))
+
+==================
+parenthesized list
+==================
+l:(1;2;3)
+---
+(source_file
+  (assignment
+    left: (identifier)
+    right: (list
+      (number)
+      (number)
+      (number))))
+
+==================
+parenthesized subexpression
+==================
+p:(1+2)
+---
+(source_file
+  (assignment
+    left: (identifier)
+    right: (parenthesized
+      (binary
+        left: (number)
+        operator: (operator)
+        right: (number)))))
+
+==================
+deep right-to-left chain
+==================
+d:1+2*3-4
+---
+(source_file
+  (assignment
+    left: (identifier)
+    right: (binary
+      left: (number)
+      operator: (operator)
+      right: (binary
+        left: (number)
+        operator: (operator)
+        right: (binary
+          left: (number)
+          operator: (operator)
+          right: (number))))))
+
+==================
+prefix application by juxtaposition
+==================
+c:count x
+---
+(source_file
+  (assignment
+    left: (identifier)
+    right: (call
+      function: (identifier)
+      arguments: (identifier))))
+
+==================
+each adverb
+==================
+e:f'[1;2;3]
+---
+(source_file
+  (assignment
+    left: (identifier)
+    right: (adverb_apply
+      function: (identifier)
+      arguments: (arguments (number) (number) (number)))))
+
+==================
+scan adverb
+==================
+sc:+\[1;2;3]
+---
+(source_file
+  (assignment
+    left: (identifier)
+    right: (adverb_apply
+      function: (operator)
+      arguments: (arguments (number) (number) (number)))))
+
+==================
+each-right adverb
+==================
+er:f/:[1;2]
+---
+(source_file
+  (assignment
+    left: (identifier)
+    right: (adverb_apply
+      function: (identifier)
+      arguments: (arguments (number) (number)))))
+
+==================
+each-left adverb
+==================
+el:f\:[1;2]
+---
+(source_file
+  (assignment
+    left: (identifier)
+    right: (adverb_apply
+      function: (identifier)
+      arguments: (arguments (number) (number)))))
+
+==================
+each-prior adverb
+==================
+ep:f':[1;2]
+---
+(source_file
+  (assignment
+    left: (identifier)
+    right: (adverb_apply
+      function: (identifier)
+      arguments: (arguments (number) (number)))))
+
+==================
+apply deep dot
+==================
+ad:.[f;(1;2)]
+---
+(source_file
+  (assignment
+    left: (identifier)
+    right: (call
+      function: (operator)
+      arguments: (arguments (identifier) (list (number) (number))))))
+
+==================
+amend at
+==================
+am:@[x;0;f]
+---
+(source_file
+  (assignment
+    left: (identifier)
+    right: (call
+      function: (operator)
+      arguments: (arguments (identifier) (number) (identifier)))))
+
+==================
+projection elided middle
+==================
+pj:f[a;;c]
+---
+(source_file
+  (assignment
+    left: (identifier)
+    right: (call
+      function: (identifier)
+      arguments: (arguments (identifier) (identifier)))))
+
+==================
+indexing a matrix
+==================
+ix:m[0;0]
+---
+(source_file
+  (assignment
+    left: (identifier)
+    right: (call
+      function: (identifier)
+      arguments: (arguments (number) (number)))))
+
+==================
+operator left projection
+==================
+op:3+
+---
+(source_file
+  (assignment
+    left: (identifier)
+    right: (binary
+      left: (number)
+      operator: (operator))))
+
+==================
+empty bracket call
+==================
+ec:f[]
+---
+(source_file
+  (assignment
+    left: (identifier)
+    right: (call
+      function: (identifier)
+      arguments: (arguments))))
+
+==================
+table literal simple
+==================
+t:([]a:1;b:2)
+---
+(source_file
+  (assignment
+    left: (identifier)
+    right: (table_literal
+      (assignment left: (identifier) right: (number))
+      (assignment left: (identifier) right: (number)))))
