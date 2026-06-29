@@ -868,7 +868,7 @@
   "extras": [
     {
       "type": "PATTERN",
-      "value": "[ \\t\\n\\r]"
+      "value": "[ \\t]"
     },
     {
       "type": "SYMBOL",
