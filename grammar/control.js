@@ -18,6 +18,7 @@ module.exports = {
   // `:expr` — explicit return inside a lambda (statement-initial colon).
   return_stmt: $ => prec.left(seq(':', $._expression)),
 
-  // `'expr` — signal / throw.
-  signal_stmt: $ => prec.left(seq("'", $._expression)),
+  // `'expr` — signal / throw. Uses the shared $._quote token (grammar.js) so it
+  // shares one token type with the each/quote adverb glyph `f'`.
+  signal_stmt: $ => prec.left(seq($._quote, $._expression)),
 };

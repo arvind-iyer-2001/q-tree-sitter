@@ -30,6 +30,13 @@
         "value": "$"
       }
     },
+    "_quote": {
+      "type": "TOKEN",
+      "content": {
+        "type": "STRING",
+        "value": "'"
+      }
+    },
     "_statement": {
       "type": "CHOICE",
       "members": [
@@ -2164,6 +2171,10 @@
         {
           "type": "SYMBOL",
           "name": "_adverb_glyph"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_quote"
         }
       ]
     },
@@ -2183,10 +2194,6 @@
           {
             "type": "STRING",
             "value": "/:"
-          },
-          {
-            "type": "STRING",
-            "value": "'"
           },
           {
             "type": "STRING",
@@ -2993,8 +3000,8 @@
         "type": "SEQ",
         "members": [
           {
-            "type": "STRING",
-            "value": "'"
+            "type": "SYMBOL",
+            "name": "_quote"
           },
           {
             "type": "SYMBOL",

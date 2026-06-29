@@ -8,7 +8,7 @@ r:$[x>0;`pos;`neg]
   (assignment
     (identifier)
     (cond
-      (binary_expression
+      (binary
         (identifier)
         (operator)
         (number))
@@ -23,7 +23,7 @@ if[x>0;:x]
 
 (source_file
   (control
-    (binary_expression
+    (binary
       (identifier)
       (operator)
       (number))
@@ -38,13 +38,13 @@ while[i<10;i:i+1]
 
 (source_file
   (control
-    (binary_expression
+    (binary
       (identifier)
       (operator)
       (number))
     (assignment
       (identifier)
-      (binary_expression
+      (binary
         (identifier)
         (operator)
         (number)))))
@@ -60,7 +60,7 @@ do[5;x:x+1]
     (number)
     (assignment
       (identifier)
-      (binary_expression
+      (binary
         (identifier)
         (operator)
         (number)))))
@@ -107,11 +107,9 @@ vector conditional not control
 ---
 
 (source_file
-  (ERROR
-    (operator))
-  (identifier)
-  (ERROR)
-  (number)
-  (ERROR)
-  (number)
-  (ERROR))
+  (call
+    (operator)
+    (arguments
+      (identifier)
+      (number)
+      (number))))

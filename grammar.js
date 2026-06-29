@@ -76,6 +76,12 @@ module.exports = grammar({
       // it, which avoids a two-token lexer collision (`a$b` previously failed).
       _dollar: $ => token('$'),
 
+      // Shared `'` token. `'` is the signal/throw prefix (`'err`) AND the
+      // each/quote adverb glyph (`f'`). Like `$`, one token type lets the parser
+      // disambiguate structurally (prefix-of-statement vs postfix-on-value)
+      // instead of two competing `'` tokens that collide in the lexer.
+      _quote: $ => token("'"),
+
       // _statement and _expression are the shared backbone. _expression is
       // OWNED by expression.js (Task 6). namespace_directive is FOLDED into
       // system_command (W1-commands). qsql statements + control/return/signal

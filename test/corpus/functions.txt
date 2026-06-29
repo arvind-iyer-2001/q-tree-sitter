@@ -13,7 +13,7 @@ add:{[a;b] a+b}
           (identifier))
         (param
           (identifier)))
-      (binary_expression
+      (binary
         (identifier)
         (operator)
         (identifier)))))
@@ -30,11 +30,11 @@ f:{a:x*2; a+y}
     (lambda
       (assignment
         (identifier)
-        (binary_expression
+        (binary
           (identifier)
           (operator)
           (number)))
-      (binary_expression
+      (binary
         (identifier)
         (operator)
         (identifier)))))
@@ -75,7 +75,7 @@ f:{a:1; b:2; a+b}
       (assignment
         (identifier)
         (number))
-      (binary_expression
+      (binary
         (identifier)
         (operator)
         (identifier)))))
@@ -103,10 +103,9 @@ x[i]:v
   (assignment
     (index
       (identifier)
-      (identifier))
+      (arguments
+        (identifier)))
     (identifier)))
-
-
 
 ==================
 chained assignment

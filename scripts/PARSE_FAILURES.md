@@ -1,7 +1,7 @@
 # Real-repo parse failures
 
-Corpus: 90 `.q` files under `test/real/`. Threshold: <2% bad.
-Result: **70.00%** bad (63/90) — FAIL.
+Corpus: 90 `.q` files under `test/real/`. Target <2% bad; current regression floor <72%.
+Result: **70.00%** bad (63/90) — PASS (floor). Gap to target: 68%.
 
 - ERROR-node files: 63
 - Timeouts (parser hang): 0

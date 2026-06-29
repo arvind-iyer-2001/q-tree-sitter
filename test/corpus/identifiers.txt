@@ -3,6 +3,7 @@ dotted namespace names
 ==================
 .foo.bar:1
 ---
+
 (source_file
   (assignment
     left: (dotted_name)
@@ -13,6 +14,7 @@ dotted namespace with colon in name
 ==================
 .z.ts:{x}
 ---
+
 (source_file
   (assignment
     left: (dotted_name)
@@ -24,19 +26,22 @@ dotted namespace as call target
 ==================
 x:.Q.dd[`a;`b]
 ---
+
 (source_file
   (assignment
     left: (identifier)
     right: (call
       function: (dotted_name)
-      arguments: (symbol)
-      arguments: (symbol))))
+      arguments: (arguments
+        (symbol)
+        (symbol)))))
 
 ==================
 symbol vector
 ==================
 s:`a`b`c
 ---
+
 (source_file
   (assignment
     left: (identifier)
@@ -47,6 +52,7 @@ builtin keyword
 ==================
 n:count til 10
 ---
+
 (source_file
   (assignment
     left: (identifier)
@@ -61,6 +67,7 @@ builtin is not identifier for reserved words
 ==================
 count
 ---
+
 (source_file
   (builtin))
 
@@ -69,6 +76,7 @@ non-keyword lookalike lexes as identifier
 ==================
 counter
 ---
+
 (source_file
   (identifier))
 
@@ -77,5 +85,6 @@ non-keyword lookalike selects lexes as identifier
 ==================
 selects
 ---
+
 (source_file
   (identifier))

@@ -3,6 +3,7 @@ select from table
 ==================
 select from trade
 ---
+
 (source_file
   (select_statement
     from: (from_clause
@@ -13,12 +14,13 @@ select with where
 ==================
 select from trade where price>0
 ---
+
 (source_file
   (select_statement
     from: (from_clause
       (identifier))
     where: (where_clause
-      (binary_expression
+      (binary
         left: (identifier)
         operator: (operator)
         right: (number)))))
@@ -28,18 +30,20 @@ select with by and where
 ==================
 select avg[price] by sym from trade where date=.z.d
 ---
+
 (source_file
   (select_statement
     select: (select_clause
-      (call
-        function: (identifier)
-        arguments: (identifier)))
+      (index
+        function: (builtin)
+        arguments: (arguments
+          (identifier))))
     by: (by_clause
       (identifier))
     from: (from_clause
       (identifier))
     where: (where_clause
-      (binary_expression
+      (binary
         left: (identifier)
         operator: (operator)
         right: (dotted_name)))))
@@ -49,12 +53,13 @@ select computed column
 ==================
 select dbl:price*2 from trade
 ---
+
 (source_file
   (select_statement
     select: (select_clause
       (assignment
         left: (identifier)
-        right: (binary_expression
+        right: (binary
           left: (identifier)
           operator: (operator)
           right: (number))))
@@ -66,6 +71,7 @@ exec statement
 ==================
 exec sym from trade where price>0
 ---
+
 (source_file
   (exec_statement
     select: (select_clause
@@ -73,7 +79,7 @@ exec sym from trade where price>0
     from: (from_clause
       (identifier))
     where: (where_clause
-      (binary_expression
+      (binary
         left: (identifier)
         operator: (operator)
         right: (number)))))
@@ -83,12 +89,13 @@ update
 ==================
 update vwap:size*price by sym from trade
 ---
+
 (source_file
   (update_statement
     select: (select_clause
       (assignment
         left: (identifier)
-        right: (binary_expression
+        right: (binary
           left: (identifier)
           operator: (operator)
           right: (identifier))))
@@ -102,12 +109,13 @@ delete rows
 ==================
 delete from trade where price<0
 ---
+
 (source_file
   (delete_statement
     from: (from_clause
       (identifier))
     where: (where_clause
-      (binary_expression
+      (binary
         left: (identifier)
         operator: (operator)
         right: (number)))))
@@ -117,6 +125,7 @@ delete columns
 ==================
 delete price from trade
 ---
+
 (source_file
   (delete_statement
     select: (select_clause
@@ -129,20 +138,22 @@ select with assignment
 ==================
 q:select avg[price] by sym from trade where date=.z.d
 ---
+
 (source_file
   (assignment
     left: (identifier)
     right: (select_statement
       select: (select_clause
-        (call
-          function: (identifier)
-          arguments: (identifier)))
+        (index
+          function: (builtin)
+          arguments: (arguments
+            (identifier))))
       by: (by_clause
         (identifier))
       from: (from_clause
         (identifier))
       where: (where_clause
-        (binary_expression
+        (binary
           left: (identifier)
           operator: (operator)
           right: (dotted_name))))))

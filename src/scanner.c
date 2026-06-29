@@ -71,7 +71,7 @@ bool tree_sitter_q_external_scanner_scan(void *payload, TSLexer *l, const bool *
     /* The internal lexer may have already consumed spaces (as extras),
      * so we might be positioned directly at `/`. But we also call
      * skip_horiz ourselves to handle any remaining spaces not yet consumed. */
-    skip_horiz(l);
+    bool saw_ws = skip_horiz(l);
     uint32_t col = l->get_column(l);
 
     if (l->lookahead == '/') {
@@ -134,9 +134,11 @@ bool tree_sitter_q_external_scanner_scan(void *payload, TSLexer *l, const bool *
           l->result_symbol = COMMENT;
           return true;
         }
-      } else {
-        /* col > 0: trailing comment — there was a space before this `/`
-         * (consumed by the internal lexer via extras). */
+      } else if (saw_ws || !valid[ADVERB_TOK]) {
+        /* col > 0 trailing comment. A `/` here is a comment ONLY if a space
+         * preceded it (saw_ws) — `x:1 /note` — or if no adverb is grammatically
+         * expected. With NO preceding space in adverb position (`+/`, `f/`) the
+         * `/` is the over-iterator, not a comment, so fall through. */
         adv(l);
         while (l->lookahead != '\n' && l->lookahead != '\r' && l->lookahead != 0) {
           adv(l);
@@ -147,6 +149,7 @@ bool tree_sitter_q_external_scanner_scan(void *payload, TSLexer *l, const bool *
         l->result_symbol = COMMENT;
         return true;
       }
+      /* else: `/` is an adverb glyph in adverb position — fall through. */
     }
     /* Not a `/` — not a comment */
     /* Fall through to other tokens if valid */

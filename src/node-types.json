@@ -3,6 +3,16 @@
     "type": "adverb_apply",
     "named": true,
     "fields": {
+      "adverb": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "'",
+            "named": false
+          }
+        ]
+      },
       "arguments": {
         "multiple": false,
         "required": false,

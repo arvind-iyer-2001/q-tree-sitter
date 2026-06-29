@@ -157,8 +157,11 @@ module.exports = {
 
   // External scanner (Task 2) supplies the whitespace-sensitive token; the
   // in-grammar glyph is the fallback so adverbs parse before the scanner lands.
-  _adverb: $ => choice($._adverb_tok, $._adverb_glyph),
-  _adverb_glyph: $ => token(choice("':", '\\:', '/:', "'", '\\', '/')),
+  // `'` (the single-quote each adverb) comes from the shared $._quote token so
+  // it does not collide with signal_stmt's `'`. The 2-char glyphs and `\`,`/`
+  // stay here. Longest-match keeps `':`/`/:`/`\:` whole; bare `'` -> $._quote.
+  _adverb: $ => choice($._adverb_tok, $._adverb_glyph, $._quote),
+  _adverb_glyph: $ => token(choice("':", '\\:', '/:', '\\', '/')),
 
   _primary: $ => choice(
     $.lambda, $.parenthesized, $.list, $.table_literal,
