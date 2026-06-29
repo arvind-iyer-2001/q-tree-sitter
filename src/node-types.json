@@ -40,11 +40,7 @@
             "named": true
           },
           {
-            "type": "boolean",
-            "named": true
-          },
-          {
-            "type": "byte",
+            "type": "builtin",
             "named": true
           },
           {
@@ -52,19 +48,7 @@
             "named": true
           },
           {
-            "type": "char",
-            "named": true
-          },
-          {
             "type": "cond",
-            "named": true
-          },
-          {
-            "type": "date",
-            "named": true
-          },
-          {
-            "type": "datetime",
             "named": true
           },
           {
@@ -76,27 +60,11 @@
             "named": true
           },
           {
-            "type": "infinity",
-            "named": true
-          },
-          {
             "type": "lambda",
             "named": true
           },
           {
             "type": "list",
-            "named": true
-          },
-          {
-            "type": "minute",
-            "named": true
-          },
-          {
-            "type": "month",
-            "named": true
-          },
-          {
-            "type": "null",
             "named": true
           },
           {
@@ -108,10 +76,6 @@
             "named": true
           },
           {
-            "type": "second",
-            "named": true
-          },
-          {
             "type": "string",
             "named": true
           },
@@ -120,19 +84,7 @@
             "named": true
           },
           {
-            "type": "time",
-            "named": true
-          },
-          {
-            "type": "timespan",
-            "named": true
-          },
-          {
-            "type": "timestamp",
-            "named": true
-          },
-          {
-            "type": "vector",
+            "type": "symbol_vector",
             "named": true
           }
         ]
@@ -152,11 +104,7 @@
             "named": true
           },
           {
-            "type": "boolean",
-            "named": true
-          },
-          {
-            "type": "byte",
+            "type": "builtin",
             "named": true
           },
           {
@@ -164,19 +112,7 @@
             "named": true
           },
           {
-            "type": "char",
-            "named": true
-          },
-          {
             "type": "cond",
-            "named": true
-          },
-          {
-            "type": "date",
-            "named": true
-          },
-          {
-            "type": "datetime",
             "named": true
           },
           {
@@ -188,27 +124,11 @@
             "named": true
           },
           {
-            "type": "infinity",
-            "named": true
-          },
-          {
             "type": "lambda",
             "named": true
           },
           {
             "type": "list",
-            "named": true
-          },
-          {
-            "type": "minute",
-            "named": true
-          },
-          {
-            "type": "month",
-            "named": true
-          },
-          {
-            "type": "null",
             "named": true
           },
           {
@@ -220,10 +140,6 @@
             "named": true
           },
           {
-            "type": "second",
-            "named": true
-          },
-          {
             "type": "string",
             "named": true
           },
@@ -232,19 +148,7 @@
             "named": true
           },
           {
-            "type": "time",
-            "named": true
-          },
-          {
-            "type": "timespan",
-            "named": true
-          },
-          {
-            "type": "timestamp",
-            "named": true
-          },
-          {
-            "type": "vector",
+            "type": "symbol_vector",
             "named": true
           }
         ]
@@ -268,11 +172,7 @@
             "named": true
           },
           {
-            "type": "boolean",
-            "named": true
-          },
-          {
-            "type": "byte",
+            "type": "builtin",
             "named": true
           },
           {
@@ -280,19 +180,7 @@
             "named": true
           },
           {
-            "type": "char",
-            "named": true
-          },
-          {
             "type": "cond",
-            "named": true
-          },
-          {
-            "type": "date",
-            "named": true
-          },
-          {
-            "type": "datetime",
             "named": true
           },
           {
@@ -304,27 +192,11 @@
             "named": true
           },
           {
-            "type": "infinity",
-            "named": true
-          },
-          {
             "type": "lambda",
             "named": true
           },
           {
             "type": "list",
-            "named": true
-          },
-          {
-            "type": "minute",
-            "named": true
-          },
-          {
-            "type": "month",
-            "named": true
-          },
-          {
-            "type": "null",
             "named": true
           },
           {
@@ -336,10 +208,6 @@
             "named": true
           },
           {
-            "type": "second",
-            "named": true
-          },
-          {
             "type": "string",
             "named": true
           },
@@ -348,19 +216,7 @@
             "named": true
           },
           {
-            "type": "time",
-            "named": true
-          },
-          {
-            "type": "timespan",
-            "named": true
-          },
-          {
-            "type": "timestamp",
-            "named": true
-          },
-          {
-            "type": "vector",
+            "type": "symbol_vector",
             "named": true
           }
         ]
@@ -384,11 +240,7 @@
             "named": true
           },
           {
-            "type": "boolean",
-            "named": true
-          },
-          {
-            "type": "byte",
+            "type": "builtin",
             "named": true
           },
           {
@@ -396,19 +248,7 @@
             "named": true
           },
           {
-            "type": "char",
-            "named": true
-          },
-          {
             "type": "cond",
-            "named": true
-          },
-          {
-            "type": "date",
-            "named": true
-          },
-          {
-            "type": "datetime",
             "named": true
           },
           {
@@ -420,27 +260,11 @@
             "named": true
           },
           {
-            "type": "infinity",
-            "named": true
-          },
-          {
             "type": "lambda",
             "named": true
           },
           {
             "type": "list",
-            "named": true
-          },
-          {
-            "type": "minute",
-            "named": true
-          },
-          {
-            "type": "month",
-            "named": true
-          },
-          {
-            "type": "null",
             "named": true
           },
           {
@@ -452,10 +276,6 @@
             "named": true
           },
           {
-            "type": "second",
-            "named": true
-          },
-          {
             "type": "string",
             "named": true
           },
@@ -464,19 +284,7 @@
             "named": true
           },
           {
-            "type": "time",
-            "named": true
-          },
-          {
-            "type": "timespan",
-            "named": true
-          },
-          {
-            "type": "timestamp",
-            "named": true
-          },
-          {
-            "type": "vector",
+            "type": "symbol_vector",
             "named": true
           }
         ]
@@ -485,6 +293,10 @@
         "multiple": false,
         "required": true,
         "types": [
+          {
+            "type": "builtin",
+            "named": true
+          },
           {
             "type": "dotted_name",
             "named": true
@@ -510,11 +322,7 @@
           "named": true
         },
         {
-          "type": "boolean",
-          "named": true
-        },
-        {
-          "type": "byte",
+          "type": "builtin",
           "named": true
         },
         {
@@ -522,19 +330,7 @@
           "named": true
         },
         {
-          "type": "char",
-          "named": true
-        },
-        {
           "type": "cond",
-          "named": true
-        },
-        {
-          "type": "date",
-          "named": true
-        },
-        {
-          "type": "datetime",
           "named": true
         },
         {
@@ -546,27 +342,11 @@
           "named": true
         },
         {
-          "type": "infinity",
-          "named": true
-        },
-        {
           "type": "lambda",
           "named": true
         },
         {
           "type": "list",
-          "named": true
-        },
-        {
-          "type": "minute",
-          "named": true
-        },
-        {
-          "type": "month",
-          "named": true
-        },
-        {
-          "type": "null",
           "named": true
         },
         {
@@ -578,10 +358,6 @@
           "named": true
         },
         {
-          "type": "second",
-          "named": true
-        },
-        {
           "type": "string",
           "named": true
         },
@@ -590,19 +366,7 @@
           "named": true
         },
         {
-          "type": "time",
-          "named": true
-        },
-        {
-          "type": "timespan",
-          "named": true
-        },
-        {
-          "type": "timestamp",
-          "named": true
-        },
-        {
-          "type": "vector",
+          "type": "symbol_vector",
           "named": true
         }
       ]
@@ -629,11 +393,7 @@
             "named": true
           },
           {
-            "type": "boolean",
-            "named": true
-          },
-          {
-            "type": "byte",
+            "type": "builtin",
             "named": true
           },
           {
@@ -641,19 +401,7 @@
             "named": true
           },
           {
-            "type": "char",
-            "named": true
-          },
-          {
             "type": "cond",
-            "named": true
-          },
-          {
-            "type": "date",
-            "named": true
-          },
-          {
-            "type": "datetime",
             "named": true
           },
           {
@@ -665,10 +413,6 @@
             "named": true
           },
           {
-            "type": "infinity",
-            "named": true
-          },
-          {
             "type": "lambda",
             "named": true
           },
@@ -677,19 +421,7 @@
             "named": true
           },
           {
-            "type": "minute",
-            "named": true
-          },
-          {
-            "type": "month",
-            "named": true
-          },
-          {
             "type": "namespace_directive",
-            "named": true
-          },
-          {
-            "type": "null",
             "named": true
           },
           {
@@ -701,10 +433,6 @@
             "named": true
           },
           {
-            "type": "second",
-            "named": true
-          },
-          {
             "type": "string",
             "named": true
           },
@@ -713,23 +441,11 @@
             "named": true
           },
           {
+            "type": "symbol_vector",
+            "named": true
+          },
+          {
             "type": "system_command",
-            "named": true
-          },
-          {
-            "type": "time",
-            "named": true
-          },
-          {
-            "type": "timespan",
-            "named": true
-          },
-          {
-            "type": "timestamp",
-            "named": true
-          },
-          {
-            "type": "vector",
             "named": true
           }
         ]
@@ -759,11 +475,7 @@
           "named": true
         },
         {
-          "type": "boolean",
-          "named": true
-        },
-        {
-          "type": "byte",
+          "type": "builtin",
           "named": true
         },
         {
@@ -771,19 +483,7 @@
           "named": true
         },
         {
-          "type": "char",
-          "named": true
-        },
-        {
           "type": "cond",
-          "named": true
-        },
-        {
-          "type": "date",
-          "named": true
-        },
-        {
-          "type": "datetime",
           "named": true
         },
         {
@@ -795,27 +495,11 @@
           "named": true
         },
         {
-          "type": "infinity",
-          "named": true
-        },
-        {
           "type": "lambda",
           "named": true
         },
         {
           "type": "list",
-          "named": true
-        },
-        {
-          "type": "minute",
-          "named": true
-        },
-        {
-          "type": "month",
-          "named": true
-        },
-        {
-          "type": "null",
           "named": true
         },
         {
@@ -827,10 +511,6 @@
           "named": true
         },
         {
-          "type": "second",
-          "named": true
-        },
-        {
           "type": "string",
           "named": true
         },
@@ -839,19 +519,7 @@
           "named": true
         },
         {
-          "type": "time",
-          "named": true
-        },
-        {
-          "type": "timespan",
-          "named": true
-        },
-        {
-          "type": "timestamp",
-          "named": true
-        },
-        {
-          "type": "vector",
+          "type": "symbol_vector",
           "named": true
         }
       ]
@@ -872,11 +540,6 @@
         ]
       }
     }
-  },
-  {
-    "type": "number",
-    "named": true,
-    "fields": {}
   },
   {
     "type": "param",
@@ -922,11 +585,7 @@
           "named": true
         },
         {
-          "type": "boolean",
-          "named": true
-        },
-        {
-          "type": "byte",
+          "type": "builtin",
           "named": true
         },
         {
@@ -934,19 +593,7 @@
           "named": true
         },
         {
-          "type": "char",
-          "named": true
-        },
-        {
           "type": "cond",
-          "named": true
-        },
-        {
-          "type": "date",
-          "named": true
-        },
-        {
-          "type": "datetime",
           "named": true
         },
         {
@@ -958,27 +605,11 @@
           "named": true
         },
         {
-          "type": "infinity",
-          "named": true
-        },
-        {
           "type": "lambda",
           "named": true
         },
         {
           "type": "list",
-          "named": true
-        },
-        {
-          "type": "minute",
-          "named": true
-        },
-        {
-          "type": "month",
-          "named": true
-        },
-        {
-          "type": "null",
           "named": true
         },
         {
@@ -990,10 +621,6 @@
           "named": true
         },
         {
-          "type": "second",
-          "named": true
-        },
-        {
           "type": "string",
           "named": true
         },
@@ -1002,19 +629,7 @@
           "named": true
         },
         {
-          "type": "time",
-          "named": true
-        },
-        {
-          "type": "timespan",
-          "named": true
-        },
-        {
-          "type": "timestamp",
-          "named": true
-        },
-        {
-          "type": "vector",
+          "type": "symbol_vector",
           "named": true
         }
       ]
@@ -1038,11 +653,7 @@
           "named": true
         },
         {
-          "type": "boolean",
-          "named": true
-        },
-        {
-          "type": "byte",
+          "type": "builtin",
           "named": true
         },
         {
@@ -1050,19 +661,7 @@
           "named": true
         },
         {
-          "type": "char",
-          "named": true
-        },
-        {
           "type": "cond",
-          "named": true
-        },
-        {
-          "type": "date",
-          "named": true
-        },
-        {
-          "type": "datetime",
           "named": true
         },
         {
@@ -1074,10 +673,6 @@
           "named": true
         },
         {
-          "type": "infinity",
-          "named": true
-        },
-        {
           "type": "lambda",
           "named": true
         },
@@ -1086,19 +681,7 @@
           "named": true
         },
         {
-          "type": "minute",
-          "named": true
-        },
-        {
-          "type": "month",
-          "named": true
-        },
-        {
           "type": "namespace_directive",
-          "named": true
-        },
-        {
-          "type": "null",
           "named": true
         },
         {
@@ -1110,10 +693,6 @@
           "named": true
         },
         {
-          "type": "second",
-          "named": true
-        },
-        {
           "type": "string",
           "named": true
         },
@@ -1122,23 +701,11 @@
           "named": true
         },
         {
+          "type": "symbol_vector",
+          "named": true
+        },
+        {
           "type": "system_command",
-          "named": true
-        },
-        {
-          "type": "time",
-          "named": true
-        },
-        {
-          "type": "timespan",
-          "named": true
-        },
-        {
-          "type": "timestamp",
-          "named": true
-        },
-        {
-          "type": "vector",
           "named": true
         }
       ]
@@ -1148,21 +715,6 @@
     "type": "system_command",
     "named": true,
     "fields": {}
-  },
-  {
-    "type": "vector",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "number",
-          "named": true
-        }
-      ]
-    }
   },
   {
     "type": "$",
@@ -1201,27 +753,11 @@
     "named": false
   },
   {
-    "type": "boolean",
-    "named": true
-  },
-  {
-    "type": "byte",
-    "named": true
-  },
-  {
-    "type": "char",
+    "type": "builtin",
     "named": true
   },
   {
     "type": "comment",
-    "named": true
-  },
-  {
-    "type": "date",
-    "named": true
-  },
-  {
-    "type": "datetime",
     "named": true
   },
   {
@@ -1233,27 +769,11 @@
     "named": true
   },
   {
-    "type": "infinity",
-    "named": true
-  },
-  {
-    "type": "minute",
-    "named": true
-  },
-  {
-    "type": "month",
-    "named": true
-  },
-  {
-    "type": "null",
+    "type": "number",
     "named": true
   },
   {
     "type": "operator",
-    "named": true
-  },
-  {
-    "type": "second",
     "named": true
   },
   {
@@ -1265,15 +785,7 @@
     "named": true
   },
   {
-    "type": "time",
-    "named": true
-  },
-  {
-    "type": "timespan",
-    "named": true
-  },
-  {
-    "type": "timestamp",
+    "type": "symbol_vector",
     "named": true
   },
   {
