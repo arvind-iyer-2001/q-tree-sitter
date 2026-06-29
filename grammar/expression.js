@@ -175,13 +175,13 @@ module.exports = {
   ),
 
   // `([keycols] col:vals; ...)` — `[]` may be empty (simple table). Columns are
-  // `name:vals` assignments (or bare value expressions). `assignment` is owned by
-  // functions/T5 but reused here for column defs.
+  // `name:vals` assignments (or bare value expressions). T10: `assignment` is now
+  // part of `_expression`, so columns are just `_expression` (no separate
+  // _table_column choice — that caused an _expression/_table_column conflict).
   table_literal: $ => seq(
     '(',
-    '[', alias(sep($._table_column, ';'), $.key_columns), ']',
-    sep($._table_column, ';'),
+    '[', alias(sep($._expression, ';'), $.key_columns), ']',
+    sep($._expression, ';'),
     ')',
   ),
-  _table_column: $ => choice($.assignment, $._expression),
 };

@@ -27,9 +27,6 @@ module.exports = {
   // Inline token matching a whole backslash-command line (stub for T2 scanner).
   // Matches \ optionally followed by any non-newline characters including args.
   // When T2's scanner emits $._system_command_tok, that external token will
-  // override this inline rule (external tokens take priority in tree-sitter).
-  _sys_cmd_line: $ => token(/\\[^\n]*/),
-
   // system_command: the single node type for ALL backslash commands.
   // Field 'command' gives the full raw text: leading \ + command letter(s) + args.
   // \l init.q   => (system_command)  — load file
@@ -45,5 +42,9 @@ module.exports = {
   // \b          => (system_command)  — list views
   // \v          => (system_command)  — list variables
   // \P 7        => (system_command)  — display precision
-  system_command: $ => field('command', $._sys_cmd_line),
+  // T10: wired to the real external scanner token $._system_command_tok
+  // (w1-scanner). The scanner emits the whole `\...` line at column 0 and
+  // defers `\d` to nobody (it includes it), so all backslash commands -> this
+  // one node. The inline _sys_cmd_line stub was removed (dead once scanner real).
+  system_command: $ => $._system_command_tok,
 };

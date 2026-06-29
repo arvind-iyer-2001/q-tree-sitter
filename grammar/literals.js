@@ -157,10 +157,9 @@ module.exports = {
   )),
 
   // -------------------------------------------------------------------------
-  // vector: space-separated numbers.
-  // Final form uses $._list_ws from external scanner (Task 2) for whitespace-sensitive
-  // list parsing. Until Task 2 is merged, whitespace is in 'extras' so implicit
-  // separation works. When Task 2 wires _list_ws, replace the inner seq accordingly.
+  // vector: space-separated numbers. T10: wired to the external scanner's
+  // $._list_ws token (w1-scanner) — significant whitespace separating numbers
+  // in vector context — so `1 2 3` is one vector, not juxtaposed atoms.
   // -------------------------------------------------------------------------
-  vector: $ => prec.left(2, seq($.number, repeat1($.number))),
+  vector: $ => prec.left(2, seq($.number, repeat1(seq($._list_ws, $.number)))),
 };

@@ -153,29 +153,18 @@ bool tree_sitter_q_external_scanner_scan(void *payload, TSLexer *l, const bool *
 
   /* ---------------------------------------------------------------
    * SYSTEM_COMMAND_TOK: `\` at column 0 followed by command content.
-   * The grammar has a special literal rule for `\d` (namespace_directive),
-   * so we MUST NOT emit SYSTEM_COMMAND_TOK when we see `\d` — the
-   * internal lexer's `\\d` literal will match it instead.
-   * We also skip `\\` (script-quit) and solitary `\` (debug toggle) to
-   * let the comment handler or internal rules deal with those.
+   * T10: namespace_directive was FOLDED into system_command, so ALL
+   * backslash commands at col 0 — including `\d .ns`, `\\` (quit) and a
+   * solitary `\` (debug/namespace toggle) — are emitted as one opaque
+   * SYSTEM_COMMAND_TOK. The downstream extractor (T12) inspects the text.
    * --------------------------------------------------------------- */
   if (valid[SYSTEM_COMMAND_TOK]) {
     skip_horiz(l);
     uint32_t col = l->get_column(l);
     if (col == 0 && l->lookahead == '\\') {
-      /* Peek at the next character to decide if we should handle this */
       adv(l); /* consume '\' */
-      /* Skip `\d` (namespace directive) — let the internal literal match it */
-      if (l->lookahead == 'd') {
-        /* Don't consume: let namespace_directive rule handle `\d` */
-        return false;
-      }
-      /* Skip solitary `\` or `\\` — not a regular system command */
-      if (l->lookahead == '\n' || l->lookahead == '\r' ||
-          l->lookahead == 0    || l->lookahead == '\\') {
-        return false;
-      }
-      /* consume rest of line (command letter + args) */
+      /* consume rest of the line (command letter(s) + args), if any.
+       * A solitary `\` or `\\` ends here with nothing further. */
       while (l->lookahead != '\n' && l->lookahead != '\r' && l->lookahead != 0) {
         adv(l);
       }

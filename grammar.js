@@ -25,6 +25,11 @@ module.exports = grammar({
   extras: $ => [/[ \t]/, $.comment],   // W1-scanner: removed \n\r from extras; _eos now handles newlines
 
   // GLR conflicts: UNION of all wave-1 module conflict declarations (T10).
+  // T10-converge: tree-sitter flags all 6 as "unnecessary" (they don't change
+  // the recognised language), but all 6 are KEPT because removing them causes
+  // GLR ambiguity explosion at parse time (confirmed: tree-sitter parse hung
+  // at 99% CPU on the mixed-snippet test after removal). The conflicts act as
+  // GLR disambiguation hints that bound parse-forest branching.
   conflicts: $ => [
     // W1-expression: single symbol (primary) vs symbol_vector (repeat1 symbol)
     [$.symbol_vector, $._primary],
@@ -52,7 +57,10 @@ module.exports = grammar({
 
   rules: Object.assign(
     {
-      source_file: $ => repeat(seq($._statement, optional($._eos))),
+      // T10: tolerate blank lines / leading & trailing _eos (the corpus harness
+      // feeds inputs with a leading newline). A bare _eos with no statement is a
+      // separator, not an ERROR.
+      source_file: $ => repeat(choice($._statement, $._eos)),
 
       // _statement and _expression are the shared backbone. _expression is
       // OWNED by expression.js (Task 6). namespace_directive is FOLDED into
