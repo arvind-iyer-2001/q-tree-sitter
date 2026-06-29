@@ -1,0 +1,14 @@
+{
+  "grammars": [
+    {
+      "name": "q",
+      "scope": "source.q",
+      "file-types": ["q"],
+      "path": "."
+    }
+  ],
+  "metadata": {
+    "version": "0.1.0",
+    "description": "Tree-sitter grammar for the KDB+/q language"
+  }
+}

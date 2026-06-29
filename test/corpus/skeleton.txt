@@ -1,0 +1,13 @@
+==================
+skeleton: assignment to lambda
+==================
+f:{x+y}
+---
+(source_file
+  (assignment
+    left: (identifier)
+    right: (lambda
+      body: (binary_expression
+        left: (identifier)
+        operator: (operator)
+        right: (identifier)))))
