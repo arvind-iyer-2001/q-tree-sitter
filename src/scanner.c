@@ -17,6 +17,7 @@ enum TokenType {
 typedef struct {
   unsigned depth;           /* bracket nesting depth: (, [, { */
   bool prev_was_value;      /* last meaningful token was a value/name/) /] */
+  bool eof_eos_emitted;     /* zero-width EOF terminator already emitted once */
 } Scanner;
 
 void *tree_sitter_q_external_scanner_create(void) {
@@ -228,7 +229,13 @@ bool tree_sitter_q_external_scanner_scan(void *payload, TSLexer *l, const bool *
       l->result_symbol = EOS;
       return true;
     }
-    if (l->lookahead == 0 && s->depth == 0) {
+    /* EOF terminator: emit a single zero-width EOS to close a trailing
+     * unterminated statement. It must NOT advance (nothing to consume at
+     * EOF), so guard with a serialized flag — otherwise repeat(choice(...))
+     * re-requests it forever, producing infinite zero-width nodes and an
+     * unbounded parse tree (OOM). */
+    if (l->lookahead == 0 && s->depth == 0 && !s->eof_eos_emitted) {
+      s->eof_eos_emitted = true;
       l->result_symbol = EOS;
       return true;
     }
