@@ -36,6 +36,10 @@
         "required": true,
         "types": [
           {
+            "type": "assignment",
+            "named": true
+          },
+          {
             "type": "binary_expression",
             "named": true
           },
@@ -48,7 +52,15 @@
             "named": true
           },
           {
+            "type": "delete_statement",
+            "named": true
+          },
+          {
             "type": "dotted_name",
+            "named": true
+          },
+          {
+            "type": "exec_statement",
             "named": true
           },
           {
@@ -72,11 +84,19 @@
             "named": true
           },
           {
+            "type": "select_statement",
+            "named": true
+          },
+          {
             "type": "string",
             "named": true
           },
           {
             "type": "symbol",
+            "named": true
+          },
+          {
+            "type": "update_statement",
             "named": true
           }
         ]
@@ -92,6 +112,10 @@
         "required": true,
         "types": [
           {
+            "type": "assignment",
+            "named": true
+          },
+          {
             "type": "binary_expression",
             "named": true
           },
@@ -104,7 +128,15 @@
             "named": true
           },
           {
+            "type": "delete_statement",
+            "named": true
+          },
+          {
             "type": "dotted_name",
+            "named": true
+          },
+          {
+            "type": "exec_statement",
             "named": true
           },
           {
@@ -128,11 +160,19 @@
             "named": true
           },
           {
+            "type": "select_statement",
+            "named": true
+          },
+          {
             "type": "string",
             "named": true
           },
           {
             "type": "symbol",
+            "named": true
+          },
+          {
+            "type": "update_statement",
             "named": true
           }
         ]
@@ -152,6 +192,10 @@
         "required": true,
         "types": [
           {
+            "type": "assignment",
+            "named": true
+          },
+          {
             "type": "binary_expression",
             "named": true
           },
@@ -164,7 +208,15 @@
             "named": true
           },
           {
+            "type": "delete_statement",
+            "named": true
+          },
+          {
             "type": "dotted_name",
+            "named": true
+          },
+          {
+            "type": "exec_statement",
             "named": true
           },
           {
@@ -188,15 +240,98 @@
             "named": true
           },
           {
+            "type": "select_statement",
+            "named": true
+          },
+          {
             "type": "string",
             "named": true
           },
           {
             "type": "symbol",
             "named": true
+          },
+          {
+            "type": "update_statement",
+            "named": true
           }
         ]
       }
+    }
+  },
+  {
+    "type": "by_clause",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "assignment",
+          "named": true
+        },
+        {
+          "type": "binary_expression",
+          "named": true
+        },
+        {
+          "type": "call",
+          "named": true
+        },
+        {
+          "type": "cond",
+          "named": true
+        },
+        {
+          "type": "delete_statement",
+          "named": true
+        },
+        {
+          "type": "dotted_name",
+          "named": true
+        },
+        {
+          "type": "exec_statement",
+          "named": true
+        },
+        {
+          "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "lambda",
+          "named": true
+        },
+        {
+          "type": "list",
+          "named": true
+        },
+        {
+          "type": "number",
+          "named": true
+        },
+        {
+          "type": "parenthesized",
+          "named": true
+        },
+        {
+          "type": "select_statement",
+          "named": true
+        },
+        {
+          "type": "string",
+          "named": true
+        },
+        {
+          "type": "symbol",
+          "named": true
+        },
+        {
+          "type": "update_statement",
+          "named": true
+        }
+      ]
     }
   },
   {
@@ -212,6 +347,10 @@
             "named": false
           },
           {
+            "type": "assignment",
+            "named": true
+          },
+          {
             "type": "binary_expression",
             "named": true
           },
@@ -224,7 +363,15 @@
             "named": true
           },
           {
+            "type": "delete_statement",
+            "named": true
+          },
+          {
             "type": "dotted_name",
+            "named": true
+          },
+          {
+            "type": "exec_statement",
             "named": true
           },
           {
@@ -248,11 +395,19 @@
             "named": true
           },
           {
+            "type": "select_statement",
+            "named": true
+          },
+          {
             "type": "string",
             "named": true
           },
           {
             "type": "symbol",
+            "named": true
+          },
+          {
+            "type": "update_statement",
             "named": true
           }
         ]
@@ -282,6 +437,10 @@
       "required": true,
       "types": [
         {
+          "type": "assignment",
+          "named": true
+        },
+        {
           "type": "binary_expression",
           "named": true
         },
@@ -294,7 +453,15 @@
           "named": true
         },
         {
+          "type": "delete_statement",
+          "named": true
+        },
+        {
           "type": "dotted_name",
+          "named": true
+        },
+        {
+          "type": "exec_statement",
           "named": true
         },
         {
@@ -318,11 +485,176 @@
           "named": true
         },
         {
+          "type": "select_statement",
+          "named": true
+        },
+        {
           "type": "string",
           "named": true
         },
         {
           "type": "symbol",
+          "named": true
+        },
+        {
+          "type": "update_statement",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "delete_statement",
+    "named": true,
+    "fields": {
+      "from": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "from_clause",
+            "named": true
+          }
+        ]
+      },
+      "select": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "select_clause",
+            "named": true
+          }
+        ]
+      },
+      "where": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "where_clause",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "exec_statement",
+    "named": true,
+    "fields": {
+      "by": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "by_clause",
+            "named": true
+          }
+        ]
+      },
+      "from": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "from_clause",
+            "named": true
+          }
+        ]
+      },
+      "select": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "select_clause",
+            "named": true
+          }
+        ]
+      },
+      "where": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "where_clause",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "from_clause",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "assignment",
+          "named": true
+        },
+        {
+          "type": "binary_expression",
+          "named": true
+        },
+        {
+          "type": "call",
+          "named": true
+        },
+        {
+          "type": "cond",
+          "named": true
+        },
+        {
+          "type": "delete_statement",
+          "named": true
+        },
+        {
+          "type": "dotted_name",
+          "named": true
+        },
+        {
+          "type": "exec_statement",
+          "named": true
+        },
+        {
+          "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "lambda",
+          "named": true
+        },
+        {
+          "type": "list",
+          "named": true
+        },
+        {
+          "type": "number",
+          "named": true
+        },
+        {
+          "type": "parenthesized",
+          "named": true
+        },
+        {
+          "type": "select_statement",
+          "named": true
+        },
+        {
+          "type": "string",
+          "named": true
+        },
+        {
+          "type": "symbol",
+          "named": true
+        },
+        {
+          "type": "update_statement",
           "named": true
         }
       ]
@@ -357,7 +689,15 @@
             "named": true
           },
           {
+            "type": "delete_statement",
+            "named": true
+          },
+          {
             "type": "dotted_name",
+            "named": true
+          },
+          {
+            "type": "exec_statement",
             "named": true
           },
           {
@@ -385,6 +725,10 @@
             "named": true
           },
           {
+            "type": "select_statement",
+            "named": true
+          },
+          {
             "type": "string",
             "named": true
           },
@@ -394,6 +738,10 @@
           },
           {
             "type": "system_command",
+            "named": true
+          },
+          {
+            "type": "update_statement",
             "named": true
           }
         ]
@@ -419,6 +767,10 @@
       "required": true,
       "types": [
         {
+          "type": "assignment",
+          "named": true
+        },
+        {
           "type": "binary_expression",
           "named": true
         },
@@ -431,7 +783,15 @@
           "named": true
         },
         {
+          "type": "delete_statement",
+          "named": true
+        },
+        {
           "type": "dotted_name",
+          "named": true
+        },
+        {
+          "type": "exec_statement",
           "named": true
         },
         {
@@ -455,11 +815,19 @@
           "named": true
         },
         {
+          "type": "select_statement",
+          "named": true
+        },
+        {
           "type": "string",
           "named": true
         },
         {
           "type": "symbol",
+          "named": true
+        },
+        {
+          "type": "update_statement",
           "named": true
         }
       ]
@@ -521,6 +889,10 @@
       "required": true,
       "types": [
         {
+          "type": "assignment",
+          "named": true
+        },
+        {
           "type": "binary_expression",
           "named": true
         },
@@ -533,7 +905,15 @@
           "named": true
         },
         {
+          "type": "delete_statement",
+          "named": true
+        },
+        {
           "type": "dotted_name",
+          "named": true
+        },
+        {
+          "type": "exec_statement",
           "named": true
         },
         {
@@ -557,14 +937,143 @@
           "named": true
         },
         {
+          "type": "select_statement",
+          "named": true
+        },
+        {
           "type": "string",
           "named": true
         },
         {
           "type": "symbol",
           "named": true
+        },
+        {
+          "type": "update_statement",
+          "named": true
         }
       ]
+    }
+  },
+  {
+    "type": "select_clause",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "assignment",
+          "named": true
+        },
+        {
+          "type": "binary_expression",
+          "named": true
+        },
+        {
+          "type": "call",
+          "named": true
+        },
+        {
+          "type": "cond",
+          "named": true
+        },
+        {
+          "type": "delete_statement",
+          "named": true
+        },
+        {
+          "type": "dotted_name",
+          "named": true
+        },
+        {
+          "type": "exec_statement",
+          "named": true
+        },
+        {
+          "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "lambda",
+          "named": true
+        },
+        {
+          "type": "list",
+          "named": true
+        },
+        {
+          "type": "number",
+          "named": true
+        },
+        {
+          "type": "parenthesized",
+          "named": true
+        },
+        {
+          "type": "select_statement",
+          "named": true
+        },
+        {
+          "type": "string",
+          "named": true
+        },
+        {
+          "type": "symbol",
+          "named": true
+        },
+        {
+          "type": "update_statement",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "select_statement",
+    "named": true,
+    "fields": {
+      "by": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "by_clause",
+            "named": true
+          }
+        ]
+      },
+      "from": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "from_clause",
+            "named": true
+          }
+        ]
+      },
+      "select": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "select_clause",
+            "named": true
+          }
+        ]
+      },
+      "where": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "where_clause",
+            "named": true
+          }
+        ]
+      }
     }
   },
   {
@@ -593,7 +1102,15 @@
           "named": true
         },
         {
+          "type": "delete_statement",
+          "named": true
+        },
+        {
           "type": "dotted_name",
+          "named": true
+        },
+        {
+          "type": "exec_statement",
           "named": true
         },
         {
@@ -621,6 +1138,10 @@
           "named": true
         },
         {
+          "type": "select_statement",
+          "named": true
+        },
+        {
           "type": "string",
           "named": true
         },
@@ -630,6 +1151,10 @@
         },
         {
           "type": "system_command",
+          "named": true
+        },
+        {
+          "type": "update_statement",
           "named": true
         }
       ]
@@ -641,6 +1166,127 @@
     "fields": {}
   },
   {
+    "type": "update_statement",
+    "named": true,
+    "fields": {
+      "by": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "by_clause",
+            "named": true
+          }
+        ]
+      },
+      "from": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "from_clause",
+            "named": true
+          }
+        ]
+      },
+      "select": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "select_clause",
+            "named": true
+          }
+        ]
+      },
+      "where": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "where_clause",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "where_clause",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "assignment",
+          "named": true
+        },
+        {
+          "type": "binary_expression",
+          "named": true
+        },
+        {
+          "type": "call",
+          "named": true
+        },
+        {
+          "type": "cond",
+          "named": true
+        },
+        {
+          "type": "delete_statement",
+          "named": true
+        },
+        {
+          "type": "dotted_name",
+          "named": true
+        },
+        {
+          "type": "exec_statement",
+          "named": true
+        },
+        {
+          "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "lambda",
+          "named": true
+        },
+        {
+          "type": "list",
+          "named": true
+        },
+        {
+          "type": "number",
+          "named": true
+        },
+        {
+          "type": "parenthesized",
+          "named": true
+        },
+        {
+          "type": "select_statement",
+          "named": true
+        },
+        {
+          "type": "string",
+          "named": true
+        },
+        {
+          "type": "symbol",
+          "named": true
+        },
+        {
+          "type": "update_statement",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "$",
     "named": false
   },
@@ -650,6 +1296,10 @@
   },
   {
     "type": ")",
+    "named": false
+  },
+  {
+    "type": ",",
     "named": false
   },
   {
@@ -677,12 +1327,28 @@
     "named": false
   },
   {
+    "type": "by",
+    "named": false
+  },
+  {
     "type": "comment",
     "named": true
   },
   {
+    "type": "delete",
+    "named": false
+  },
+  {
     "type": "dotted_name",
     "named": true
+  },
+  {
+    "type": "exec",
+    "named": false
+  },
+  {
+    "type": "from",
+    "named": false
   },
   {
     "type": "identifier",
@@ -697,12 +1363,24 @@
     "named": true
   },
   {
+    "type": "select",
+    "named": false
+  },
+  {
     "type": "string",
     "named": true
   },
   {
     "type": "symbol",
     "named": true
+  },
+  {
+    "type": "update",
+    "named": false
+  },
+  {
+    "type": "where",
+    "named": false
   },
   {
     "type": "{",
