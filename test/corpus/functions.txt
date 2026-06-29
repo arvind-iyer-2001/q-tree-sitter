@@ -1,0 +1,124 @@
+==================
+lambda with explicit params
+==================
+add:{[a;b] a+b}
+---
+
+(source_file
+  (assignment
+    (identifier)
+    (lambda
+      (parameters
+        (param
+          (identifier))
+        (param
+          (identifier)))
+      (binary_expression
+        (identifier)
+        (operator)
+        (identifier)))))
+
+==================
+lambda implicit args + multi statement
+==================
+f:{a:x*2; a+y}
+---
+
+(source_file
+  (assignment
+    (identifier)
+    (lambda
+      (assignment
+        (identifier)
+        (binary_expression
+          (identifier)
+          (operator)
+          (number)))
+      (binary_expression
+        (identifier)
+        (operator)
+        (identifier)))))
+
+==================
+global assignment ::
+==================
+.cfg.port::5000
+---
+
+(source_file
+  (assignment
+    (dotted_name)
+    (number)))
+
+==================
+empty lambda
+==================
+{}
+---
+
+(source_file
+  (lambda))
+
+==================
+lambda no-param multi-statement
+==================
+f:{a:1; b:2; a+b}
+---
+
+(source_file
+  (assignment
+    (identifier)
+    (lambda
+      (assignment
+        (identifier)
+        (number))
+      (assignment
+        (identifier)
+        (number))
+      (binary_expression
+        (identifier)
+        (operator)
+        (identifier)))))
+
+==================
+nested lambda
+==================
+f:{{x}}
+---
+
+(source_file
+  (assignment
+    (identifier)
+    (lambda
+      (lambda
+        (identifier)))))
+
+==================
+amend-assign indexed left
+==================
+x[i]:v
+---
+
+(source_file
+  (assignment
+    (index
+      (identifier)
+      (identifier))
+    (identifier)))
+
+
+
+==================
+chained assignment
+==================
+a:b:c:0
+---
+
+(source_file
+  (assignment
+    (identifier)
+    (assignment
+      (identifier)
+      (assignment
+        (identifier)
+        (number)))))

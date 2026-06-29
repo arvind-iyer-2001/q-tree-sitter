@@ -14,6 +14,10 @@
           {
             "type": "identifier",
             "named": true
+          },
+          {
+            "type": "index",
+            "named": true
           }
         ]
       },
@@ -35,6 +39,10 @@
         "multiple": false,
         "required": true,
         "types": [
+          {
+            "type": "assignment",
+            "named": true
+          },
           {
             "type": "binary_expression",
             "named": true
@@ -326,6 +334,80 @@
           "named": true
         }
       ]
+    }
+  },
+  {
+    "type": "index",
+    "named": true,
+    "fields": {
+      "arguments": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": ";",
+            "named": false
+          },
+          {
+            "type": "binary_expression",
+            "named": true
+          },
+          {
+            "type": "call",
+            "named": true
+          },
+          {
+            "type": "cond",
+            "named": true
+          },
+          {
+            "type": "dotted_name",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "lambda",
+            "named": true
+          },
+          {
+            "type": "list",
+            "named": true
+          },
+          {
+            "type": "number",
+            "named": true
+          },
+          {
+            "type": "parenthesized",
+            "named": true
+          },
+          {
+            "type": "string",
+            "named": true
+          },
+          {
+            "type": "symbol",
+            "named": true
+          }
+        ]
+      },
+      "function": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "dotted_name",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          }
+        ]
+      }
     }
   },
   {
