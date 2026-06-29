@@ -1,0 +1,390 @@
+==================
+typed number atoms - integer suffixes
+==================
+
+a:42
+b:42j
+c:42i
+d:42h
+
+---
+
+(source_file
+  (assignment left: (identifier) right: (number))
+  (assignment left: (identifier) right: (number))
+  (assignment left: (identifier) right: (number))
+  (assignment left: (identifier) right: (number)))
+
+==================
+typed number atoms - float and real
+==================
+
+a:3.14
+b:3.14f
+c:3.14e
+d:0f
+e:0e
+
+---
+
+(source_file
+  (assignment left: (identifier) right: (number))
+  (assignment left: (identifier) right: (number))
+  (assignment left: (identifier) right: (number))
+  (assignment left: (identifier) right: (number))
+  (assignment left: (identifier) right: (number)))
+
+==================
+typed number atoms - exponential notation
+==================
+
+a:1.2e20
+b:1.234568e+08
+
+---
+
+(source_file
+  (assignment left: (identifier) right: (number))
+  (assignment left: (identifier) right: (number)))
+
+==================
+boolean atom
+==================
+
+a:0b
+b:1b
+
+---
+
+(source_file
+  (assignment left: (identifier) right: (boolean))
+  (assignment left: (identifier) right: (boolean)))
+
+==================
+boolean vector
+==================
+
+a:0101b
+b:01110001b
+
+---
+
+(source_file
+  (assignment left: (identifier) right: (boolean))
+  (assignment left: (identifier) right: (boolean)))
+
+==================
+byte atom
+==================
+
+a:0x00
+b:0xff
+c:0x1a
+
+---
+
+(source_file
+  (assignment left: (identifier) right: (byte))
+  (assignment left: (identifier) right: (byte))
+  (assignment left: (identifier) right: (byte)))
+
+==================
+byte vector
+==================
+
+a:0x010203
+b:0x616263
+
+---
+
+(source_file
+  (assignment left: (identifier) right: (byte))
+  (assignment left: (identifier) right: (byte)))
+
+==================
+string literal
+==================
+
+a:"hello"
+b:""
+c:"abc def"
+
+---
+
+(source_file
+  (assignment left: (identifier) right: (string))
+  (assignment left: (identifier) right: (string))
+  (assignment left: (identifier) right: (string)))
+
+==================
+string with escape sequences
+==================
+
+a:"hello\nworld"
+b:"say \"hi\""
+c:"tab\there"
+
+---
+
+(source_file
+  (assignment left: (identifier) right: (string))
+  (assignment left: (identifier) right: (string))
+  (assignment left: (identifier) right: (string)))
+
+==================
+symbol atom
+==================
+
+a:`ibm
+b:`
+c:`a.b_2
+
+---
+
+(source_file
+  (assignment left: (identifier) right: (symbol))
+  (assignment left: (identifier) right: (symbol))
+  (assignment left: (identifier) right: (symbol)))
+
+==================
+file handle symbol
+==================
+
+a:`:path/to/file
+b:`:/abs/path
+c:`:host:port
+
+---
+
+(source_file
+  (assignment left: (identifier) right: (symbol))
+  (assignment left: (identifier) right: (symbol))
+  (assignment left: (identifier) right: (symbol)))
+
+==================
+null literals
+==================
+
+a:0N
+b:0Nh
+c:0Ni
+d:0Nj
+e:0Ne
+f:0n
+g:0Ng
+h:0Np
+i:0Nm
+j:0Nd
+k:0Nz
+l:0Nn
+m:0Nu
+n:0Nv
+o:0Nt
+p:0Nf
+
+---
+
+(source_file
+  (assignment left: (identifier) right: (null))
+  (assignment left: (identifier) right: (null))
+  (assignment left: (identifier) right: (null))
+  (assignment left: (identifier) right: (null))
+  (assignment left: (identifier) right: (null))
+  (assignment left: (identifier) right: (null))
+  (assignment left: (identifier) right: (null))
+  (assignment left: (identifier) right: (null))
+  (assignment left: (identifier) right: (null))
+  (assignment left: (identifier) right: (null))
+  (assignment left: (identifier) right: (null))
+  (assignment left: (identifier) right: (null))
+  (assignment left: (identifier) right: (null))
+  (assignment left: (identifier) right: (null))
+  (assignment left: (identifier) right: (null))
+  (assignment left: (identifier) right: (null)))
+
+==================
+infinity literals
+==================
+
+a:0W
+b:0Wh
+c:0Wi
+d:0Wj
+e:0We
+f:0w
+g:0Wf
+h:0Wp
+i:0Wm
+j:0Wd
+k:0wz
+l:0Wn
+m:0Wu
+n:0Wv
+o:0Wt
+
+---
+
+(source_file
+  (assignment left: (identifier) right: (infinity))
+  (assignment left: (identifier) right: (infinity))
+  (assignment left: (identifier) right: (infinity))
+  (assignment left: (identifier) right: (infinity))
+  (assignment left: (identifier) right: (infinity))
+  (assignment left: (identifier) right: (infinity))
+  (assignment left: (identifier) right: (infinity))
+  (assignment left: (identifier) right: (infinity))
+  (assignment left: (identifier) right: (infinity))
+  (assignment left: (identifier) right: (infinity))
+  (assignment left: (identifier) right: (infinity))
+  (assignment left: (identifier) right: (infinity))
+  (assignment left: (identifier) right: (infinity))
+  (assignment left: (identifier) right: (infinity))
+  (assignment left: (identifier) right: (infinity)))
+
+==================
+negative infinity literals
+==================
+
+a:-0Wh
+b:-0Wi
+c:-0W
+d:-0w
+e:-0We
+
+---
+
+(source_file
+  (assignment left: (identifier) right: (infinity))
+  (assignment left: (identifier) right: (infinity))
+  (assignment left: (identifier) right: (infinity))
+  (assignment left: (identifier) right: (infinity))
+  (assignment left: (identifier) right: (infinity)))
+
+==================
+temporal literals - date
+==================
+
+a:2000.01.01
+b:2012.09.15
+c:2017.01.18
+
+---
+
+(source_file
+  (assignment left: (identifier) right: (date))
+  (assignment left: (identifier) right: (date))
+  (assignment left: (identifier) right: (date)))
+
+==================
+temporal literals - month
+==================
+
+a:2000.01m
+b:2003.07m
+c:2017.01m
+
+---
+
+(source_file
+  (assignment left: (identifier) right: (month))
+  (assignment left: (identifier) right: (month))
+  (assignment left: (identifier) right: (month)))
+
+==================
+temporal literals - timestamp
+==================
+
+a:2000.01.01D00:00:00.000000042
+b:2024.10.07D20:00:00.000603286
+
+---
+
+(source_file
+  (assignment left: (identifier) right: (timestamp))
+  (assignment left: (identifier) right: (timestamp)))
+
+==================
+temporal literals - datetime
+==================
+
+a:2000.02.12T00:00:00.000
+b:2000.01.01T12:30:00.000
+
+---
+
+(source_file
+  (assignment left: (identifier) right: (datetime))
+  (assignment left: (identifier) right: (datetime)))
+
+==================
+temporal literals - timespan
+==================
+
+a:00:00:00.000000000
+b:0D12:00:00.000000000
+c:1D00:00:00.000000000
+
+---
+
+(source_file
+  (assignment left: (identifier) right: (timespan))
+  (assignment left: (identifier) right: (timespan))
+  (assignment left: (identifier) right: (timespan)))
+
+==================
+temporal literals - time
+==================
+
+a:09:04:59.000
+b:00:00:00.000
+c:20:00:00.001
+
+---
+
+(source_file
+  (assignment left: (identifier) right: (time))
+  (assignment left: (identifier) right: (time))
+  (assignment left: (identifier) right: (time)))
+
+==================
+temporal literals - second
+==================
+
+a:00:00:00
+b:09:29:15
+c:12:00:00
+
+---
+
+(source_file
+  (assignment left: (identifier) right: (second))
+  (assignment left: (identifier) right: (second))
+  (assignment left: (identifier) right: (second)))
+
+==================
+temporal literals - minute
+==================
+
+a:00:00
+b:09:29
+c:12:00
+
+---
+
+(source_file
+  (assignment left: (identifier) right: (minute))
+  (assignment left: (identifier) right: (minute))
+  (assignment left: (identifier) right: (minute)))
+
+==================
+numeric vector - NOTE: full vector parsing requires _list_ws from Task 2 scanner
+==================
+
+2 3
+
+---
+
+(source_file
+  (vector
+    (number)
+    (number)))
