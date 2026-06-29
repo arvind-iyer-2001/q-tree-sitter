@@ -38,7 +38,8 @@ module.exports = grammar({
       _statement: $ => choice(
         $.assignment,
         $.system_command,
-        $.namespace_directive,
+        // W1-commands: namespace_directive folded into system_command (see grammar/commands.js).
+        // T10: remove this comment and keep only system_command here.
         $._expression,
       ),
     },

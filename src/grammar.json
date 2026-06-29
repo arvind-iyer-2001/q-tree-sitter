@@ -40,10 +40,6 @@
         },
         {
           "type": "SYMBOL",
-          "name": "namespace_directive"
-        },
-        {
-          "type": "SYMBOL",
           "name": "_expression"
         }
       ]
@@ -822,46 +818,19 @@
         }
       ]
     },
-    "system_command": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "FIELD",
-          "name": "command",
-          "content": {
-            "type": "SYMBOL",
-            "name": "_system_command_tok"
-          }
-        }
-      ]
-    },
-    "namespace_directive": {
-      "type": "PREC_RIGHT",
-      "value": 0,
+    "_sys_cmd_line": {
+      "type": "TOKEN",
       "content": {
-        "type": "SEQ",
-        "members": [
-          {
-            "type": "STRING",
-            "value": "\\d"
-          },
-          {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "FIELD",
-                "name": "namespace",
-                "content": {
-                  "type": "SYMBOL",
-                  "name": "dotted_name"
-                }
-              },
-              {
-                "type": "BLANK"
-              }
-            ]
-          }
-        ]
+        "type": "PATTERN",
+        "value": "\\\\[^\\n]*"
+      }
+    },
+    "system_command": {
+      "type": "FIELD",
+      "name": "command",
+      "content": {
+        "type": "SYMBOL",
+        "name": "_sys_cmd_line"
       }
     }
   },

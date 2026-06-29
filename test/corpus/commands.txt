@@ -1,0 +1,97 @@
+==================
+load and namespace
+==================
+\l init.q
+\d .util
+\ts count til 1000
+---
+(source_file
+ (system_command)
+ (system_command)
+ (system_command))
+
+==================
+console and port commands
+==================
+\c 25 80
+\p 5001
+\P 7
+---
+(source_file
+ (system_command)
+ (system_command)
+ (system_command))
+
+==================
+memory and timer commands
+==================
+\w
+\t 100
+\ts expr
+---
+(source_file
+ (system_command)
+ (system_command)
+ (system_command))
+
+==================
+quit and expunge commands
+==================
+\\
+\x .z.ph
+---
+(source_file
+ (system_command)
+ (system_command))
+
+==================
+table and variable inspection commands
+==================
+\a
+\b
+\v
+---
+(source_file
+ (system_command)
+ (system_command)
+ (system_command))
+
+==================
+namespace switch
+==================
+\d .util
+---
+(source_file
+ (system_command))
+
+==================
+load file command
+==================
+\l init.q
+---
+(source_file
+ (system_command))
+
+==================
+standalone backslash toggle
+==================
+\
+---
+(source_file
+ (system_command))
+
+==================
+time expression command
+==================
+\t count til 1000000
+---
+(source_file
+ (system_command))
+
+==================
+time and space command
+==================
+\ts count til 1000000
+---
+(source_file
+ (system_command))
