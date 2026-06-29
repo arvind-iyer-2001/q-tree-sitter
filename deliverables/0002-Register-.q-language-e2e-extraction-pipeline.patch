@@ -1,0 +1,272 @@
+From 550b8ff9fb5eda4de265ffe00fc7b385f821d785 Mon Sep 17 00:00:00 2001
+From: Arvind Iyer <arvind.iyer.2001@gmail.com>
+Date: Mon, 29 Jun 2026 15:39:50 +0530
+Subject: [PATCH 2/2] Register .q language + e2e extraction pipeline
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+T14: register the KDB+/q extractor across graphify's wiring:
+- extract.py: import extract_q, add .q -> extract_q in _DISPATCH
+- extractors/__init__.py: LANGUAGE_EXTRACTORS['q'] = extract_q
+- detect.py: add .q to CODE_EXTENSIONS (watch.py derives from it)
+- pyproject.toml: [project.optional-dependencies] q = ['tree-sitter-q']
+
+T15: end-to-end test through the real dispatch (_get_extractor) on a golden
+.q file — asserts functions, a call edge, namespace-qualified names, an
+import edge, and a table 'uses' edge, and passes validate_extraction.
+
+extractor fix: walk the whole lambda for calls/qsql instead of
+child_by_field_name('body') — a multi-statement body tags every statement
+with the body field and child_by_field_name returned only the first, missing
+calls/qsql in later statements (e.g. select inside {a:1; select from t}).
+
+All 12 q extractor tests pass.
+---
+ graphify/detect.py              |  2 +-
+ graphify/extract.py             |  2 ++
+ graphify/extractors/__init__.py |  2 ++
+ graphify/extractors/q.py        | 51 ++++++++++++++++++++--------
+ pyproject.toml                  |  3 ++
+ tests/test_q_extractor.py       | 59 +++++++++++++++++++++++++++++++++
+ 6 files changed, 104 insertions(+), 15 deletions(-)
+
+diff --git a/graphify/detect.py b/graphify/detect.py
+index 92b773f..26ca616 100644
+--- a/graphify/detect.py
++++ b/graphify/detect.py
+@@ -27,7 +27,7 @@ class FileType(str, Enum):
+ 
+ _MANIFEST_PATH = str(out_path("manifest.json"))
+ 
+-CODE_EXTENSIONS = {'.py', '.ts', '.tsx', '.js', '.jsx', '.mjs', '.ejs', '.ets', '.go', '.rs', '.java', '.groovy', '.gradle', '.cpp', '.cc', '.cxx', '.c', '.h', '.hpp', '.cu', '.cuh', '.metal', '.rb', '.swift', '.kt', '.kts', '.cs', '.scala', '.php', '.lua', '.luau', '.toc', '.zig', '.ps1', '.psm1', '.psd1', '.ex', '.exs', '.m', '.mm', '.jl', '.vue', '.svelte', '.astro', '.dart', '.v', '.sv', '.svh', '.sql', '.r', '.f', '.F', '.f90', '.F90', '.f95', '.F95', '.f03', '.F03', '.f08', '.F08', '.pas', '.pp', '.dpr', '.dpk', '.lpr', '.inc', '.dfm', '.lfm', '.lpk', '.sh', '.bash', '.json', '.tf', '.tfvars', '.hcl', '.dm', '.dme', '.dmi', '.dmm', '.dmf', '.sln', '.slnx', '.csproj', '.fsproj', '.vbproj', '.xaml', '.razor', '.cshtml', '.cls', '.trigger'}
++CODE_EXTENSIONS = {'.py', '.ts', '.tsx', '.js', '.jsx', '.mjs', '.ejs', '.ets', '.go', '.rs', '.java', '.groovy', '.gradle', '.cpp', '.cc', '.cxx', '.c', '.h', '.hpp', '.cu', '.cuh', '.metal', '.rb', '.swift', '.kt', '.kts', '.cs', '.scala', '.php', '.lua', '.luau', '.toc', '.zig', '.ps1', '.psm1', '.psd1', '.ex', '.exs', '.m', '.mm', '.jl', '.vue', '.svelte', '.astro', '.dart', '.v', '.sv', '.svh', '.sql', '.r', '.f', '.F', '.f90', '.F90', '.f95', '.F95', '.f03', '.F03', '.f08', '.F08', '.pas', '.pp', '.dpr', '.dpk', '.lpr', '.inc', '.dfm', '.lfm', '.lpk', '.sh', '.bash', '.json', '.tf', '.tfvars', '.hcl', '.dm', '.dme', '.dmi', '.dmm', '.dmf', '.sln', '.slnx', '.csproj', '.fsproj', '.vbproj', '.xaml', '.razor', '.cshtml', '.cls', '.trigger', '.q'}
+ DOC_EXTENSIONS = {'.md', '.mdx', '.qmd', '.txt', '.rst', '.html', '.yaml', '.yml'}
+ PAPER_EXTENSIONS = {'.pdf'}
+ IMAGE_EXTENSIONS = {'.png', '.jpg', '.jpeg', '.gif', '.webp', '.svg'}
+diff --git a/graphify/extract.py b/graphify/extract.py
+index 61f8afb..49d8733 100644
+--- a/graphify/extract.py
++++ b/graphify/extract.py
+@@ -25,6 +25,7 @@ from graphify.extractors.base import (  # noqa: F401
+ from graphify.extractors.blade import extract_blade  # noqa: F401
+ from graphify.extractors.csharp import _resolve_csharp_type_references
+ from graphify.extractors.elixir import extract_elixir  # noqa: F401
++from graphify.extractors.q import extract_q  # noqa: F401
+ from graphify.extractors.razor import extract_razor  # noqa: F401
+ from graphify.extractors.zig import extract_zig  # noqa: F401
+ 
+@@ -12874,6 +12875,7 @@ def extract_terraform(path: Path) -> dict:
+ 
+ 
+ _DISPATCH: dict[str, Any] = {
++    ".q": extract_q,
+     ".py": extract_python,
+     ".js": extract_js,
+     ".jsx": extract_js,
+diff --git a/graphify/extractors/__init__.py b/graphify/extractors/__init__.py
+index b2593b8..526e9f3 100644
+--- a/graphify/extractors/__init__.py
++++ b/graphify/extractors/__init__.py
+@@ -12,12 +12,14 @@ from typing import Callable
+ 
+ from graphify.extractors.blade import extract_blade
+ from graphify.extractors.elixir import extract_elixir
++from graphify.extractors.q import extract_q
+ from graphify.extractors.razor import extract_razor
+ from graphify.extractors.zig import extract_zig
+ 
+ LANGUAGE_EXTRACTORS: dict[str, Callable[[Path], dict]] = {
+     "blade": extract_blade,
+     "elixir": extract_elixir,
++    "q": extract_q,
+     "razor": extract_razor,
+     "zig": extract_zig,
+ }
+diff --git a/graphify/extractors/q.py b/graphify/extractors/q.py
+index 49a3cb8..ea856a1 100644
+--- a/graphify/extractors/q.py
++++ b/graphify/extractors/q.py
+@@ -43,10 +43,13 @@ def extract_q(path: Path) -> dict:
+     edges: list[dict] = []
+     seen_ids: set[str] = set()
+     ns_stack: list[str] = [""]  # namespace stack from \d directives
++    # Maps qualified label -> node id for fast callee resolution
++    label_to_nid: dict[str, str] = {}
+ 
+     def add_node(nid: str, label: str, line: int) -> None:
+         if nid not in seen_ids:
+             seen_ids.add(nid)
++            label_to_nid[label] = nid
+             nodes.append({
+                 "id": nid,
+                 "label": label,
+@@ -66,6 +69,23 @@ def extract_q(path: Path) -> dict:
+             "source_location": f"L{line}",
+         })
+ 
++    def ensure_external_node(label: str, line: int) -> str:
++        """Return (possibly creating) a stub node for a cross-file symbol."""
++        if label in label_to_nid:
++            return label_to_nid[label]
++        nid = _make_id(label)
++        if nid not in seen_ids:
++            seen_ids.add(nid)
++            label_to_nid[label] = nid
++            nodes.append({
++                "id": nid,
++                "label": label,
++                "file_type": "code",
++                "source_file": str_path,
++                "source_location": f"L{line}",
++            })
++        return nid
++
+     # File-level node
+     file_nid = _make_id(str(path))
+     add_node(file_nid, Path(path).name, 1)
+@@ -87,8 +107,10 @@ def extract_q(path: Path) -> dict:
+             if fn is not None:
+                 callee_text = _read_text(fn, src)
+                 callee_qualified = qualify(callee_text)
+-                add_edge(caller_nid, callee_qualified, "calls",
+-                         node.start_point[0] + 1, "INFERRED")
++                line = node.start_point[0] + 1
++                # Resolve to a real node id (stub node created for cross-file callees)
++                callee_nid = ensure_external_node(callee_qualified, line)
++                add_edge(caller_nid, callee_nid, "calls", line, "INFERRED")
+         for child in node.children:
+             walk_calls(child, caller_nid)
+ 
+@@ -99,9 +121,10 @@ def extract_q(path: Path) -> dict:
+             frm = node.child_by_field_name("from")
+             if frm is not None:
+                 table_text = _read_text(frm, src).split()[-1]
+-                table_nid = qualify(table_text)
+-                add_edge(owner_nid, table_nid, "uses",
+-                         node.start_point[0] + 1, "INFERRED")
++                table_qualified = qualify(table_text)
++                line = node.start_point[0] + 1
++                table_nid = ensure_external_node(table_qualified, line)
++                add_edge(owner_nid, table_nid, "uses", line, "INFERRED")
+         for child in node.children:
+             scan_qsql(child, owner_nid)
+ 
+@@ -118,10 +141,12 @@ def extract_q(path: Path) -> dict:
+         if right.type == "lambda":
+             add_node(nid, name, line)
+             add_edge(file_nid, nid, "contains", line)
+-            body = right.child_by_field_name("body")
+-            if body is not None:
+-                walk_calls(body, nid)
+-                scan_qsql(body, nid)
++            # Walk the whole lambda, not child_by_field_name("body"): a multi-
++            # statement body (`{a:1; select from t}`) tags every statement with
++            # the `body` field, and child_by_field_name returns only the first,
++            # which would miss calls/qsql in later statements.
++            walk_calls(right, nid)
++            scan_qsql(right, nid)
+         else:
+             add_node(nid, name, line)
+             add_edge(file_nid, nid, "contains", line)
+@@ -170,13 +195,11 @@ def extract_q(path: Path) -> dict:
+ 
+     walk(root)
+ 
+-    # Filter edges: only keep edges where both endpoints are known nodes OR
+-    # the target is an external name (imports, calls to external symbols).
+-    # For calls/uses edges we allow unknown targets (INFERRED cross-file refs).
++    # All edge endpoints are known node ids (stub nodes created for cross-file
++    # callees and table references), so a simple both-endpoints check suffices.
+     clean_edges = [
+         e for e in edges
+-        if e["source"] in seen_ids
+-        and (e["target"] in seen_ids or e["relation"] in ("calls", "uses", "imports"))
++        if e["source"] in seen_ids and e["target"] in seen_ids
+     ]
+ 
+     return {"nodes": nodes, "edges": clean_edges}
+diff --git a/pyproject.toml b/pyproject.toml
+index 35e7815..b4bb5b5 100644
+--- a/pyproject.toml
++++ b/pyproject.toml
+@@ -70,6 +70,9 @@ gemini = ["openai", "tiktoken"]
+ openai = ["openai", "tiktoken"]
+ chinese = ["jieba"]
+ sql = ["tree-sitter-sql"]
++# KDB+/q grammar wheel (this project). Not on PyPI yet — build the wheel from the
++# q-tree-sitter repo and install it; `graphify[q]` then declares the dependency.
++q = ["tree-sitter-q"]
+ # tree-sitter-dm (BYOND DreamMaker) ships only a Windows wheel, so on Linux/Mac it
+ # must compile from source (needs a C toolchain + python3-dev). Keeping it optional
+ # avoids breaking the default `uv tool install graphifyy` for everyone (#1104).
+diff --git a/tests/test_q_extractor.py b/tests/test_q_extractor.py
+index b47d843..d45b5e2 100644
+--- a/tests/test_q_extractor.py
++++ b/tests/test_q_extractor.py
+@@ -155,3 +155,62 @@ def test_returns_nodes_and_edges_keys(tmp_path: Path) -> None:
+     out = extract_q(f)
+     assert "nodes" in out
+     assert "edges" in out
++
++
++# ---------------------------------------------------------------------------
++# T14/T15 — registration + end-to-end pipeline
++# ---------------------------------------------------------------------------
++
++GOLDEN_Q = (
++    "\\d .app\n"
++    "\\l util.q\n"
++    "trades:([]sym:`a`b;price:1 2)\n"
++    "add:{[a;b]a+b}\n"
++    "main:{r:add[1;2]; select from trades}\n"
++    "\\d .\n"
++)
++
++
++def test_dispatch_routes_q_to_extractor(tmp_path: Path) -> None:
++    """A .q path must resolve to extract_q through graphify's real dispatch."""
++    from graphify.extract import _get_extractor
++    f = tmp_path / "m.q"
++    f.write_text("a:{1+1}\n")
++    extractor = _get_extractor(f)
++    assert extractor is not None, ".q did not resolve to an extractor"
++    assert extractor.__name__ == "extract_q"
++
++
++def test_q_in_code_extensions_and_registry() -> None:
++    """.q is registered for detection, watching, and the extractor registry."""
++    from graphify.detect import CODE_EXTENSIONS
++    from graphify.extractors import LANGUAGE_EXTRACTORS
++    assert ".q" in CODE_EXTENSIONS
++    assert LANGUAGE_EXTRACTORS.get("q").__name__ == "extract_q"
++
++
++def test_e2e_golden_through_dispatch(tmp_path: Path) -> None:
++    """End-to-end: a golden .q file, routed through dispatch, yields the full
++    set of node/edge kinds graphify expects from q — functions, a call, a
++    namespace-qualified name, an import, and a table use — and validates."""
++    from graphify.extract import _get_extractor
++    from graphify.validate import validate_extraction
++
++    f = tmp_path / "golden.q"
++    f.write_text(GOLDEN_Q)
++
++    out = _get_extractor(f)(f)
++    assert validate_extraction(out) == [], "golden .q failed schema validation"
++
++    names = _names(out)
++    # functions (namespace-qualified via \d .app)
++    assert ".app.add" in names, names
++    assert ".app.main" in names, names
++    # import edge to util (\l util.q)
++    assert "util" in {dst for _, dst in _imports(out)}, _imports(out)
++    # call edge main -> add
++    assert any(s.endswith("main") and d.endswith("add") for s, d in _calls(out)), _calls(out)
++    # table use: trades referenced via select; trades must appear as a node
++    assert "trades" in names or ".app.trades" in names, names
++    uses = [e for e in out["edges"] if e["relation"] == "uses"]
++    assert uses, "expected a 'uses' edge from select ... from trades"
+-- 
+2.50.1 (Apple Git-155)
+

@@ -1,0 +1,367 @@
+From 4e58abaf5d492d8a7fe0dd12eb056dffc5d23dfe Mon Sep 17 00:00:00 2001
+From: Arvind Iyer <arvind.iyer.2001@gmail.com>
+Date: Mon, 29 Jun 2026 14:33:51 +0530
+Subject: [PATCH 1/2] Add bespoke q extractor (functions, calls, namespaces,
+ imports, table uses)
+
+---
+ graphify/extractors/q.py  | 182 ++++++++++++++++++++++++++++++++++++++
+ tests/test_q_extractor.py | 157 ++++++++++++++++++++++++++++++++
+ 2 files changed, 339 insertions(+)
+ create mode 100644 graphify/extractors/q.py
+ create mode 100644 tests/test_q_extractor.py
+
+diff --git a/graphify/extractors/q.py b/graphify/extractors/q.py
+new file mode 100644
+index 0000000..49a3cb8
+--- /dev/null
++++ b/graphify/extractors/q.py
+@@ -0,0 +1,182 @@
++"""Graphify extractor for KDB+/q (bespoke: functions are assignments to lambdas)."""
++from __future__ import annotations
++
++import importlib
++import re
++from pathlib import Path
++from typing import Any
++
++from graphify.extractors.base import _file_stem, _make_id, _read_text
++
++
++def _parser():
++    mod = importlib.import_module("tree_sitter_q")
++    from tree_sitter import Language, Parser
++    return Parser(Language(mod.language()))
++
++
++def extract_q(path: Path) -> dict:
++    """Extract functions, variables, calls, imports, and table uses from a .q file.
++
++    Returns a dict matching the Graphify extraction schema:
++        {"nodes": [...], "edges": [...]}
++
++    Node fields: id, label, file_type, source_file, source_location
++    Edge fields: source, target, relation, confidence, source_file
++    """
++    try:
++        parser = _parser()
++    except ImportError:
++        return {"nodes": [], "edges": [], "error": "tree_sitter_q not installed"}
++
++    try:
++        src = Path(path).read_bytes()
++        tree = parser.parse(src)
++        root = tree.root_node
++    except Exception as e:
++        return {"nodes": [], "edges": [], "error": str(e)}
++
++    str_path = str(path)
++    stem = _file_stem(Path(path))
++
++    nodes: list[dict] = []
++    edges: list[dict] = []
++    seen_ids: set[str] = set()
++    ns_stack: list[str] = [""]  # namespace stack from \d directives
++
++    def add_node(nid: str, label: str, line: int) -> None:
++        if nid not in seen_ids:
++            seen_ids.add(nid)
++            nodes.append({
++                "id": nid,
++                "label": label,
++                "file_type": "code",
++                "source_file": str_path,
++                "source_location": f"L{line}",
++            })
++
++    def add_edge(src_id: str, tgt_id: str, relation: str, line: int,
++                 confidence: str = "EXTRACTED") -> None:
++        edges.append({
++            "source": src_id,
++            "target": tgt_id,
++            "relation": relation,
++            "confidence": confidence,
++            "source_file": str_path,
++            "source_location": f"L{line}",
++        })
++
++    # File-level node
++    file_nid = _make_id(str(path))
++    add_node(file_nid, Path(path).name, 1)
++
++    def current_ns() -> str:
++        return ns_stack[-1]
++
++    def qualify(name: str) -> str:
++        """Resolve a bare name against the current namespace, or pass through dotted names."""
++        if name.startswith("."):
++            return name
++        ns = current_ns()
++        return f"{ns}.{name}" if ns else name
++
++    def walk_calls(node: Any, caller_nid: str) -> None:
++        """Recursively find call/index nodes within a subtree and emit calls edges."""
++        if node.type in ("call", "index"):
++            fn = node.child_by_field_name("function")
++            if fn is not None:
++                callee_text = _read_text(fn, src)
++                callee_qualified = qualify(callee_text)
++                add_edge(caller_nid, callee_qualified, "calls",
++                         node.start_point[0] + 1, "INFERRED")
++        for child in node.children:
++            walk_calls(child, caller_nid)
++
++    def scan_qsql(node: Any, owner_nid: str) -> None:
++        """Find q-SQL statements and emit uses edges for referenced tables."""
++        if node.type in ("select_statement", "exec_statement",
++                         "update_statement", "delete_statement"):
++            frm = node.child_by_field_name("from")
++            if frm is not None:
++                table_text = _read_text(frm, src).split()[-1]
++                table_nid = qualify(table_text)
++                add_edge(owner_nid, table_nid, "uses",
++                         node.start_point[0] + 1, "INFERRED")
++        for child in node.children:
++            scan_qsql(child, owner_nid)
++
++    def handle_assignment(node: Any) -> None:
++        left = node.child_by_field_name("left")
++        right = node.child_by_field_name("right")
++        if left is None or right is None:
++            return
++        raw_name = _read_text(left, src)
++        name = qualify(raw_name)
++        line = node.start_point[0] + 1
++        nid = _make_id(str(path), name)
++
++        if right.type == "lambda":
++            add_node(nid, name, line)
++            add_edge(file_nid, nid, "contains", line)
++            body = right.child_by_field_name("body")
++            if body is not None:
++                walk_calls(body, nid)
++                scan_qsql(body, nid)
++        else:
++            add_node(nid, name, line)
++            add_edge(file_nid, nid, "contains", line)
++            scan_qsql(right, nid)
++
++    def handle_system_command(node: Any) -> None:
++        """Handle \\d (namespace) and \\l (load) system commands."""
++        text = _read_text(node, src).strip()
++        line = node.start_point[0] + 1
++
++        if text.startswith("\\d"):
++            parts = text.split()
++            new_ns = parts[1] if len(parts) > 1 else "."
++            ns_stack[-1] = "" if new_ns == "." else new_ns
++        elif text.startswith("\\l"):
++            rest = text[2:].strip()
++            if rest:
++                tgt_stem = Path(rest).stem
++                tgt_nid = _make_id(tgt_stem)
++                add_node(tgt_nid, tgt_stem, line)
++                add_edge(file_nid, tgt_nid, "imports", line)
++
++    def handle_system_call(node: Any) -> None:
++        """Handle system"l file.q" calls (load via system function call)."""
++        t = _read_text(node, src)
++        m = re.search(r'system\s*"l\s+([^"]+)"', t)
++        if m:
++            tgt_stem = Path(m.group(1).strip()).stem
++            tgt_nid = _make_id(tgt_stem)
++            add_node(tgt_nid, tgt_stem, node.start_point[0] + 1)
++            add_edge(file_nid, tgt_nid, "imports", node.start_point[0] + 1)
++
++    def walk(node: Any) -> None:
++        if node.type == "assignment":
++            handle_assignment(node)
++            # Don't recurse into assignment children — handle_assignment already
++            # recurses into lambda body via walk_calls/scan_qsql.
++            return
++        elif node.type in ("system_command", "namespace_directive"):
++            handle_system_command(node)
++        elif node.type == "call":
++            # Check if this is a top-level system"l ..." call (import)
++            handle_system_call(node)
++        for child in node.children:
++            walk(child)
++
++    walk(root)
++
++    # Filter edges: only keep edges where both endpoints are known nodes OR
++    # the target is an external name (imports, calls to external symbols).
++    # For calls/uses edges we allow unknown targets (INFERRED cross-file refs).
++    clean_edges = [
++        e for e in edges
++        if e["source"] in seen_ids
++        and (e["target"] in seen_ids or e["relation"] in ("calls", "uses", "imports"))
++    ]
++
++    return {"nodes": nodes, "edges": clean_edges}
+diff --git a/tests/test_q_extractor.py b/tests/test_q_extractor.py
+new file mode 100644
+index 0000000..b47d843
+--- /dev/null
++++ b/tests/test_q_extractor.py
+@@ -0,0 +1,157 @@
++"""Tests for the bespoke KDB+/q graphify extractor."""
++from pathlib import Path
++import pytest
++
++pytest.importorskip("tree_sitter_q", reason="tree_sitter_q wheel not installed")
++
++from graphify.extractors.q import extract_q  # noqa: E402
++
++
++# ---------------------------------------------------------------------------
++# Schema helpers
++# ---------------------------------------------------------------------------
++
++def _names(out: dict) -> set[str]:
++    """Return the set of node labels."""
++    return {n["label"] for n in out["nodes"]}
++
++
++def _calls(out: dict) -> list[tuple[str, str]]:
++    """Return (src-label, dst-label) pairs for calls edges, using source/target IDs."""
++    id_to_label = {n["id"]: n["label"] for n in out["nodes"]}
++    result = []
++    for e in out["edges"]:
++        if e["relation"] == "calls":
++            src_label = id_to_label.get(e["source"], e["source"])
++            # dst may be an unknown external node (just a string id)
++            dst_label = id_to_label.get(e["target"], e["target"])
++            result.append((src_label, dst_label))
++    return result
++
++
++def _imports(out: dict) -> list[tuple[str, str]]:
++    """Return (src-id, dst-id or dst-label) pairs for imports edges."""
++    id_to_label = {n["id"]: n["label"] for n in out["nodes"]}
++    result = []
++    for e in out["edges"]:
++        if e["relation"] == "imports":
++            src_label = id_to_label.get(e["source"], e["source"])
++            dst_label = id_to_label.get(e["target"], e["target"])
++            result.append((src_label, dst_label))
++    return result
++
++
++# ---------------------------------------------------------------------------
++# Core tests (matching the brief's intent, adapted to real schema)
++# ---------------------------------------------------------------------------
++
++def test_function_and_namespace(tmp_path: Path) -> None:
++    f = tmp_path / "m.q"
++    f.write_text("\\d .app\nadd:{[a;b]a+b}\nmain:{add[1;2]}\n\\d .\n")
++    out = extract_q(f)
++
++    names = _names(out)
++    assert ".app.add" in names, f"Expected .app.add in {names}"
++    assert ".app.main" in names, f"Expected .app.main in {names}"
++
++    # .app.add should be a code node (all symbols get file_type="code")
++    add_nodes = [n for n in out["nodes"] if n["label"] == ".app.add"]
++    assert add_nodes, "No node labelled .app.add"
++    assert add_nodes[0]["file_type"] == "code"
++
++    # calls edge: .app.main -> something ending in "add"
++    calls = _calls(out)
++    assert any(
++        src.endswith("main") and dst.endswith("add")
++        for src, dst in calls
++    ), f"Expected main->add call edge, got: {calls}"
++
++
++def test_load_import(tmp_path: Path) -> None:
++    f = tmp_path / "m.q"
++    f.write_text('system"l util.q"\n\\l init.q\n')
++    out = extract_q(f)
++
++    imports = [e for e in out["edges"] if e["relation"] == "imports"]
++    assert len(imports) == 2, f"Expected 2 import edges, got {len(imports)}: {imports}"
++
++    imported_labels = {
++        n["label"] for n in out["nodes"]
++        if any(e["target"] == n["id"] and e["relation"] == "imports" for e in out["edges"])
++    }
++    assert "util" in imported_labels, f"Expected 'util' imported, got {imported_labels}"
++    assert "init" in imported_labels, f"Expected 'init' imported, got {imported_labels}"
++
++
++# ---------------------------------------------------------------------------
++# Extended coverage (Step 5 of the brief)
++# ---------------------------------------------------------------------------
++
++def test_namespace_reset(tmp_path: Path) -> None:
++    """\\d . resets namespace; subsequent names are unqualified."""
++    f = tmp_path / "ns.q"
++    f.write_text("\\d .myns\nfoo:{1+1}\n\\d .\nbar:{2+2}\n")
++    out = extract_q(f)
++    names = _names(out)
++    assert ".myns.foo" in names, f"Got: {names}"
++    assert "bar" in names, f"Got: {names}"
++
++
++def test_variable_assignment(tmp_path: Path) -> None:
++    """Non-lambda assignments produce variable nodes."""
++    f = tmp_path / "vars.q"
++    f.write_text("x:42\ntrades:([]price:1 2 3)\n")
++    out = extract_q(f)
++    names = _names(out)
++    assert "x" in names, f"Got: {names}"
++    assert "trades" in names, f"Got: {names}"
++
++
++def test_qsql_uses_edge(tmp_path: Path) -> None:
++    """select from <table> inside a function emits a uses edge."""
++    f = tmp_path / "qsql.q"
++    f.write_text("getTrades:{select from trades}\n")
++    out = extract_q(f)
++    uses_edges = [e for e in out["edges"] if e["relation"] == "uses"]
++    assert len(uses_edges) >= 1, f"Expected at least 1 uses edge, got: {uses_edges}"
++
++
++def test_dotted_callee(tmp_path: Path) -> None:
++    """Calls to dotted names (namespaced functions) are captured."""
++    f = tmp_path / "dot.q"
++    f.write_text("\\d .svc\nhandler:{.util.log[\"hi\"]}\n")
++    out = extract_q(f)
++    calls = _calls(out)
++    assert any(
++        ".util.log" in dst
++        for _, dst in calls
++    ), f"Expected .util.log in call targets, got: {calls}"
++
++
++def test_nested_calls(tmp_path: Path) -> None:
++    """Nested function calls are all captured."""
++    f = tmp_path / "nested.q"
++    f.write_text("a:{1+1}\nb:{2+2}\nc:{a[]+b[]}\n")
++    out = extract_q(f)
++    calls = _calls(out)
++    c_calls = [dst for src, dst in calls if src.endswith("c")]
++    assert len(c_calls) >= 2, f"Expected c to call a and b, got: {c_calls}"
++
++
++def test_schema_validity(tmp_path: Path) -> None:
++    """Output passes graphify's validate_extraction schema check."""
++    from graphify.validate import validate_extraction
++    f = tmp_path / "schema.q"
++    f.write_text("\\d .app\nfoo:{[x]x+1}\nbar:{foo[10]}\n\\d .\n")
++    out = extract_q(f)
++    errors = validate_extraction(out)
++    assert errors == [], f"Schema validation errors: {errors}"
++
++
++def test_returns_nodes_and_edges_keys(tmp_path: Path) -> None:
++    """Minimal smoke test: output always has nodes and edges keys."""
++    f = tmp_path / "empty.q"
++    f.write_text("")
++    out = extract_q(f)
++    assert "nodes" in out
++    assert "edges" in out
+-- 
+2.50.1 (Apple Git-155)
+
