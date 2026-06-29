@@ -3,7 +3,15 @@ function sep1(rule, s) { return seq(rule, repeat(seq(s, rule))); }
 module.exports = {
   _expression: $ => choice($.binary_expression, $.call, $.lambda, $.parenthesized, $.list,
                             $.cond, $._literal_ref),
-  _literal_ref: $ => choice($.number, $.string, $.symbol, $.identifier, $.dotted_name),
+  // W1-literals: expanded to include all literal types from grammar/literals.js
+  _literal_ref: $ => choice(
+    $.number, $.boolean, $.byte, $.string, $.char, $.symbol,
+    $.null, $.infinity,
+    $.timestamp, $.datetime, $.date, $.month,
+    $.timespan, $.time, $.second, $.minute,
+    $.vector,
+    $.identifier, $.dotted_name,
+  ),
   _noun:        $ => $._literal_ref,
   binary_expression: $ => prec.left(1, seq(
     field('left',     $._expression),
