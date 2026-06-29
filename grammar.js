@@ -25,7 +25,18 @@ module.exports = grammar({
   extras: $ => [/[ \t\n\r]/, $.comment],   // spaces/newlines ignored in skeleton; Task 2 makes _eos significant
 
   // GLR conflicts are added here by Task 10 as real ambiguities surface.
-  conflicts: $ => [],
+  conflicts: $ => [
+    // W1-expression: single symbol (primary) vs symbol_vector (repeat1 symbol)
+    [$.symbol_vector, $._primary],
+    // W1-expression: bracket-form call vs index (structurally identical in q;
+    // q resolves index-vs-apply at eval time, not parse time)
+    [$.call, $.index],
+    // W1-expression: `primary primary` -> juxtaposition call vs bare application
+    [$.call, $._application],
+    // W1-expression: q-SQL keyword `select` is also in `builtin` choice
+    // (defined in identifiers/T4); statement form vs builtin-as-primary.
+    [$.builtin, $.select_statement],
+  ],
 
   word: $ => $.identifier,
 
