@@ -1,9 +1,9 @@
 # Real-repo parse failures
 
 Corpus: 90 `.q` files under `test/real/`. Target <2% bad; current regression floor <72%.
-Result: **70.00%** bad (63/90) — PASS (floor). Gap to target: 68%.
+Result: **68.89%** bad (62/90) — PASS (floor). Gap to target: 67%.
 
-- ERROR-node files: 63
+- ERROR-node files: 62
 - Timeouts (parser hang): 0
 - Crashes (non-zero exit): 0
 
@@ -55,7 +55,6 @@ Result: **70.00%** bad (63/90) — PASS (floor). Gap to target: 68%.
 - `test/real/kdb/utils/dbmaint.q`
 - `test/real/reQ/examples/aoc.q`
 - `test/real/reQ/examples/github.q`
-- `test/real/reQ/examples/jira.q`
 - `test/real/reQ/examples/util.q`
 - `test/real/reQ/lint.q`
 - `test/real/reQ/req/auth.q`

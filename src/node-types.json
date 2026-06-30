@@ -240,6 +240,10 @@
           "named": true
         },
         {
+          "type": "operator",
+          "named": true
+        },
+        {
           "type": "parenthesized",
           "named": true
         },
@@ -2417,6 +2421,10 @@
           "named": true
         },
         {
+          "type": "operator",
+          "named": true
+        },
+        {
           "type": "parenthesized",
           "named": true
         },
@@ -2610,6 +2618,10 @@
         },
         {
           "type": "number",
+          "named": true
+        },
+        {
+          "type": "operator",
           "named": true
         },
         {

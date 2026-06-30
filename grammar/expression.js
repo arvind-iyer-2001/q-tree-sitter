@@ -143,8 +143,10 @@ module.exports = {
   )),
 
   // Bracketed `;`-separated argument list. One `arguments` node per `[...]`;
-  // each slot is an _expression (slots may be elided for projection).
-  arguments: $ => seq('[', sep($._expression, ';'), ']'),
+  // each slot is an _expression, an elided slot (projection), OR a bare verb
+  // value — operators/`:`/`::` are first-class in q, e.g. `@[x;i;:;y]` passes
+  // assign `:` as the 3rd arg (q AST: `(@;`x;`i;:;`y)`).
+  arguments: $ => seq('[', sep(choice($._expression, $._op_value), ';'), ']'),
 
   // Postfix iterator yields a (derived) function; here applied via brackets or
   // left as a value. `function` may be an operator glyph (`+/`) or a primary
@@ -171,16 +173,30 @@ module.exports = {
     $.builtin, $.dotted_name, $.identifier,
   ),
 
-  // `()` is the empty general list; `(e)` is a parenthesized expression. The
-  // expression is optional so empty `()` parses (very common as an empty column
-  // value, e.g. `([]a:();b:())`).
-  parenthesized: $ => seq('(', optional($._expression), ')'),
+  // A bare verb used as a value: operators, the shared `$`/`'` tokens, and the
+  // assign verbs `:`/`::`. q treats these as first-class (passed as args, held
+  // in lists: `(+;-;*)`, `@[x;i;:;y]`). Scoped to arg/list/paren slots — NOT a
+  // general `_primary` — so it cannot collide with infix `binary`/`adverb_apply`
+  // (an operator can never *begin* an `_application`, so a slot starting with one
+  // is unambiguously a verb value).
+  _op_value: $ => choice(
+    alias(OPERATOR, $.operator),
+    alias($._dollar, $.operator),
+    alias($._quote, $.operator),
+    alias(':', $.operator),
+    alias('::', $.operator),
+  ),
 
-  // `(e1;e2;...)` — at least one `;`. Slots may be empty (elision => null atom).
+  // `()` is the empty general list; `(e)` is a parenthesized expression; `(+)`
+  // is a verb value. Optional body so empty `()` parses (empty column value).
+  parenthesized: $ => seq('(', optional(choice($._expression, $._op_value)), ')'),
+
+  // `(e1;e2;...)` — at least one `;`. Slots may be empty (elision => null atom)
+  // or bare verb values (`(+;-;*)`).
   list: $ => seq(
     '(',
-    optional($._expression),
-    repeat1(seq(';', optional($._expression))),
+    optional(choice($._expression, $._op_value)),
+    repeat1(seq(';', optional(choice($._expression, $._op_value)))),
     ')',
   ),
 

@@ -186,7 +186,11 @@ bool tree_sitter_q_external_scanner_scan(void *payload, TSLexer *l, const bool *
    * --------------------------------------------------------------- */
   if (valid[NEG_NUMBER] && !s->prev_was_value && l->lookahead == '-') {
     adv(l); /* consume `-` */
-    if (l->lookahead >= '0' && l->lookahead <= '9') {
+    /* A negative number starts with a digit (`-5`, `-5.0`) OR a leading dot
+     * (`-.5`, `-.1e3`) — q parses `-.5` as the float -0.5. */
+    bool lead_digit = (l->lookahead >= '0' && l->lookahead <= '9');
+    bool lead_dot   = (l->lookahead == '.');
+    if (lead_digit || lead_dot) {
       while ((l->lookahead >= '0' && l->lookahead <= '9') || l->lookahead == '.') {
         adv(l);
       }
