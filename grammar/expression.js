@@ -145,15 +145,23 @@ module.exports = {
   // Bracketed `;`-separated argument list. One `arguments` node per `[...]`;
   // each slot is an _expression, an elided slot (projection), OR a bare verb
   // value — operators/`:`/`::` are first-class in q, e.g. `@[x;i;:;y]` passes
-  // assign `:` as the 3rd arg (q AST: `(@;`x;`i;:;`y)`).
-  arguments: $ => seq('[', sep(choice($._expression, $._op_value), ';'), ']'),
+  // assign `:` as the 3rd arg (q AST: `(@;`x;`i;:;`y)`). EVERY slot (including
+  // the first) may be elided, so leading-elided projection `@[;`sym;f]` parses.
+  arguments: $ => seq(
+    '[',
+    optional(choice($._expression, $._op_value)),
+    repeat(seq(';', optional(choice($._expression, $._op_value)))),
+    ']',
+  ),
 
   // Postfix iterator yields a (derived) function; here applied via brackets or
   // left as a value. `function` may be an operator glyph (`+/`) or a primary
   // (`f'`).
+  // Adverbs stack: `@'\:` is `@` each (`'`) each-left (`\:`). repeat1 captures
+  // the chain (q AST nests them: `(\:;(';@))`).
   adverb_apply: $ => prec.left(PREC.adverb, seq(
     field('function', choice($._primary, alias(OPERATOR, $.operator))),
-    field('adverb', $._adverb),
+    repeat1(field('adverb', $._adverb)),
     optional(field('arguments', $.arguments)),
   )),
 

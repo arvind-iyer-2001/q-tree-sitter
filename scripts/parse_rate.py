@@ -15,7 +15,7 @@ import pathlib
 # toward TARGET as grammar modules gain coverage (see scripts/PARSE_FAILURES.md
 # for the remaining failing constructs). Lower FLOOR whenever the rate improves.
 TARGET = 0.02
-FLOOR = 0.72          # regression gate — was 96.7% before the wave of fixes
+FLOOR = 0.68          # regression gate — was 96.7% before the wave of fixes
 THRESHOLD = FLOOR     # CI uses FLOOR; flip to TARGET once coverage reaches it
 TIMEOUT = 15          # seconds per file; a hang here means a parser bug
 

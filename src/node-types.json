@@ -4,7 +4,7 @@
     "named": true,
     "fields": {
       "adverb": {
-        "multiple": false,
+        "multiple": true,
         "required": false,
         "types": [
           {

@@ -61,6 +61,23 @@ SNIPPETS = [
     ("global-amend",       "x::5"),
     ("nested-index",       "m[0;1]"),
     ("vector-conditional", "?[b;x;y]"),
+    # Round 2 — extracted from real-repo first-error lines
+    ("neg-in-paren",       "y:(-.5+x)"),
+    ("neg-in-bracket",     "r:exp[-.5*x]"),
+    ("op-each-take",       "r:p#'q"),
+    ("at-each",            "r:x@'i"),
+    ("at-each-left",       "r:x@'\\:i"),
+    ("set-attr",           "r:`g#x"),
+    ("empty-dict",         "d:()!()"),
+    ("proj-elided-first",  "@[;`sym;f]"),
+    ("proj-attr-amend",    "@[`.;`sym;`g#]"),
+    ("zero-colon",         "t:(\"SF\";enlist\",\")0:data"),
+    ("colon-colon-value",  "@[e;k;::]"),
+    ("each-on-fn-bracket", "(!)'[y]"),
+    ("eachright-vs",       "0b vs/:til 4"),
+    ("amend-in-lambda",    "a:{x-:1}"),
+    ("global-amend-stmt",  "r::select from t where a>0"),
+    ("compose-each-prior", "deltas':[x]"),
 ]
 
 

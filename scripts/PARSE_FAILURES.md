@@ -1,9 +1,9 @@
 # Real-repo parse failures
 
-Corpus: 90 `.q` files under `test/real/`. Target <2% bad; current regression floor <72%.
-Result: **68.89%** bad (62/90) — PASS (floor). Gap to target: 67%.
+Corpus: 90 `.q` files under `test/real/`. Target <2% bad; current regression floor <68%.
+Result: **66.67%** bad (60/90) — PASS (floor). Gap to target: 65%.
 
-- ERROR-node files: 62
+- ERROR-node files: 60
 - Timeouts (parser hang): 0
 - Crashes (non-zero exit): 0
 
@@ -16,7 +16,6 @@ Result: **68.89%** bad (62/90) — PASS (floor). Gap to target: 67%.
 - `test/real/cookbook/pubsub/subscriber.q`
 - `test/real/cookbook/r/rserve/demo.q`
 - `test/real/cookbook/r/rserver/rinit.q`
-- `test/real/cookbook/r/rserver/rtest.q`
 - `test/real/cookbook/start/buildhdb.q`
 - `test/real/cookbook/start/tick/cx.q`
 - `test/real/cookbook/start/tick/feed.q`
@@ -65,7 +64,6 @@ Result: **68.89%** bad (62/90) — PASS (floor). Gap to target: 67%.
 - `test/real/reQ/req/json.q`
 - `test/real/reQ/req/multipart.q`
 - `test/real/reQ/req/req.q`
-- `test/real/reQ/req/status.q`
 - `test/real/reQ/req/timeout.q`
 - `test/real/reQ/req/url.q`
 - `test/real/reQ/tests/test_b64.q`
