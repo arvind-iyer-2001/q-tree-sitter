@@ -22,8 +22,9 @@ module.exports = {
   // (`(qp n):v` assigns through the application `qp n`)
   assignment: $ => prec.right(1, seq(
     field('left', choice($.identifier, $.dotted_name, $.builtin,
+                         alias($._infix_kw, $.builtin),
                          $.parenthesized, alias($.call, $.index))),
-    field('operator', choice('::', ':', alias(AMEND, $.operator))),
+    field('operator', choice('::', ':', alias($.amend_op, $.operator))),
     field('right', choice($.assignment, $._expression)),
   )),
 
@@ -45,4 +46,8 @@ module.exports = {
   parameters: $ => prec.dynamic(1, seq('[', optional(sep1(field('param', $.param), ';')), ']')),
 
   param: $ => $.identifier,
+
+  // Named so _op_value (expression.js) can reuse the same token (`@[.:;x;::]`
+  // passes the value verb `.:` as an argument).
+  amend_op: $ => AMEND,
 };

@@ -2,50 +2,34 @@
 // references/keywords.md (§ alphabetical flattened list, all categories).
 // Total: 170+ entries covering control, env, interpret, io, iterate, join,
 // list, logic, math, meta, query, sort, table, and text categories.
+// Keywords q uses INFIX (`"?" vs x`, `d within r`, `s like p`, `t lj kt`).
+// Lexed as their own token so binary's operator slot accepts exactly these;
+// aliased back to $.builtin in noun positions so the tree shape is unchanged.
+const INFIX_KEYWORDS = [
+  'vs', 'sv', 'like', 'in', 'within', 'bin', 'binr', 'ss', 'xbar', 'xexp',
+  'xlog', 'xprev', 'xrank', 'xgroup', 'xasc', 'xdesc', 'xcol', 'xcols',
+  'xkey', 'mod', 'div', 'cross', 'union', 'inter', 'except', 'each', 'over',
+  'scan', 'prior', 'peach', 'cut', 'rotate', 'sublist', 'fby', 'mavg',
+  'msum', 'mmax', 'mmin', 'mcount', 'mdev', 'ema', 'wavg', 'wsum', 'cor',
+  'cov', 'scov', 'lsq', 'mmu', 'lj', 'ljf', 'ij', 'ijf', 'uj', 'ujf', 'pj',
+  'ej', 'aj', 'aj0', 'ajf', 'ajf0', 'asof', 'wj', 'wj1', 'upsert', 'insert',
+  'set', 'setenv', 'and', 'or',
+];
+
 const KEYWORDS = [
-  // control
-  'do', 'exit', 'if', 'while',
-  // env
-  'getenv', 'gtime', 'ltime', 'setenv',
-  // interpret
-  'eval', 'parse', 'reval', 'show', 'system', 'value',
-  // io
-  'dsave', 'get', 'hclose', 'hcount', 'hdel', 'hopen', 'hsym', 'load',
-  'read0', 'read1', 'rload', 'rsave', 'save', 'set',
-  // iterate
-  'each', 'over', 'peach', 'prior', 'scan',
-  // join
-  'aj', 'aj0', 'ajf', 'ajf0', 'asof', 'ej', 'ij', 'ijf', 'lj', 'ljf',
-  'pj', 'uj', 'ujf', 'wj', 'wj1',
-  // list
-  'count', 'cross', 'cut', 'enlist', 'except', 'fills', 'first', 'flip',
-  'group', 'in', 'inter', 'last', 'mcount', 'next', 'prev', 'raze',
-  'reverse', 'rotate', 'sublist', 'sv', 'til', 'union', 'vs', 'where',
-  'xprev',
-  // logic
-  'all', 'and', 'any', 'not', 'or',
-  // math
-  'abs', 'acos', 'asin', 'atan', 'avg', 'avgs', 'ceiling', 'cor', 'cos',
-  'cov', 'deltas', 'dev', 'div', 'ema', 'exp', 'floor', 'inv', 'log',
-  'lsq', 'mavg', 'max', 'maxs', 'mdev', 'med', 'min', 'mins', 'mmax',
-  'mmin', 'mmu', 'mod', 'msum', 'neg', 'prd', 'prds', 'rand', 'ratios',
-  'reciprocal', 'scov', 'sdev', 'signum', 'sin', 'sqrt', 'sum', 'sums',
-  'svar', 'tan', 'var', 'wavg', 'within', 'wsum', 'xexp', 'xlog',
-  // meta
-  'attr', 'null', 'tables', 'type', 'view', 'views',
-  // query (q-SQL keyword functions)
-  'delete', 'exec', 'fby', 'select', 'update',
-  // sort
-  'asc', 'bin', 'binr', 'desc', 'differ', 'distinct', 'iasc', 'idesc',
-  'rank', 'xbar', 'xrank',
-  // table
-  'cols', 'csv', 'fkeys', 'insert', 'key', 'keys', 'meta', 'ungroup',
-  'upsert', 'xasc', 'xcol', 'xcols', 'xdesc', 'xgroup', 'xkey',
-  // text
-  'like', 'lower', 'ltrim', 'md5', 'rtrim', 'ss', 'ssr', 'string', 'trim',
-  'upper',
-  // q-SQL structural words (also reserved)
-  'by', 'from',
+  'do', 'exit', 'if', 'while', 'getenv', 'gtime', 'ltime', 'eval', 'parse',
+  'reval', 'show', 'system', 'value', 'dsave', 'get', 'hclose', 'hcount',
+  'hdel', 'hopen', 'hsym', 'load', 'read0', 'read1', 'rload', 'rsave',
+  'save', 'count', 'enlist', 'fills', 'first', 'flip', 'group', 'last',
+  'next', 'prev', 'raze', 'reverse', 'til', 'where', 'all', 'any', 'not',
+  'abs', 'acos', 'asin', 'atan', 'avg', 'avgs', 'ceiling', 'cos', 'deltas',
+  'dev', 'exp', 'floor', 'inv', 'log', 'max', 'maxs', 'med', 'min', 'mins',
+  'neg', 'prd', 'prds', 'rand', 'ratios', 'reciprocal', 'sdev', 'signum',
+  'sin', 'sqrt', 'sum', 'sums', 'svar', 'tan', 'var', 'attr', 'null',
+  'tables', 'type', 'view', 'views', 'delete', 'exec', 'select', 'update',
+  'asc', 'desc', 'differ', 'distinct', 'iasc', 'idesc', 'rank', 'cols',
+  'csv', 'fkeys', 'key', 'keys', 'meta', 'ungroup', 'lower', 'ltrim', 'md5',
+  'rtrim', 'ssr', 'string', 'trim', 'upper', 'by', 'from',
 ];
 
 module.exports = {
@@ -66,6 +50,10 @@ module.exports = {
   // token(prec(1, …)) ensures the lexer resolves keyword vs identifier at the
   // character level — "count" → builtin, "counter" → identifier.
   builtin: $ => token(prec(1, choice(...KEYWORDS))),
+
+  // Infix-capable keyword token; referenced by binary's operator slot and
+  // aliased to $.builtin everywhere a keyword is used as a plain noun.
+  _infix_kw: $ => token(prec(1, choice(...INFIX_KEYWORDS))),
 
   // symbol_vector: two or more juxtaposed backtick-symbols with no spaces.
   // Implemented as a single lexer token so the scanner greedily matches all

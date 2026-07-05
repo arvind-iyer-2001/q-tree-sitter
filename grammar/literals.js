@@ -96,7 +96,7 @@ module.exports = {
     '-0Wp', '-0Wm', '-0Wd',
     '-0Wn', '-0Wu', '-0Wv', '-0Wt',
     '-0W',
-    '-0w',
+    '-0w', '-0wj', '-0wi', '-0wh', '-0we', '-0wf',
     // positive typed infinities
     '0Wh', '0Wi', '0Wj',
     '0We', '0Wf',
@@ -105,8 +105,8 @@ module.exports = {
     '0Wn', '0Wu', '0Wv', '0Wt',
     // untyped long inf
     '0W',
-    // float inf (lower-case)
-    '0w',
+    // float inf (lower-case, optional suffix in the wild: 0wj)
+    '0w', '0wj', '0wi', '0wh', '0we', '0wf',
   ))),
 
   // -------------------------------------------------------------------------

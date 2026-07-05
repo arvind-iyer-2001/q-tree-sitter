@@ -105,6 +105,7 @@ module.exports = {
     field('operator', choice(
       $.operator,
       alias($._dollar, $.operator),
+      alias($._infix_kw, $.builtin),
       $.adverb_apply,
     )),
     optional(field('right', choice($._expression, $._op_value))),
@@ -155,6 +156,7 @@ module.exports = {
       $._noun,
       $.operator,
       alias($._dollar, $.operator),
+      alias($._infix_kw, $.builtin),
     )),
     repeat1(field('adverb', $.adverb)),
   )),
@@ -173,7 +175,7 @@ module.exports = {
     $.number, $.boolean, $.byte, $.string, $.char, $.symbol, $.symbol_vector,
     $.vector, $.null, $.infinity,
     $.timestamp, $.datetime, $.date, $.month, $.timespan, $.time, $.second, $.minute,
-    $.builtin, $.dotted_name, $.identifier,
+    $.builtin, alias($._infix_kw, $.builtin), $.dotted_name, $.identifier,
   ),
 
   // Nouns that can be juxtaposition-applied: functions, names, indexable
@@ -183,8 +185,8 @@ module.exports = {
   // handles ARE functions); the _nn argument family keeps `3-4` subtraction.
   _applicable: $ => choice(
     $.lambda, $.parenthesized, $.list, $.table_literal, $.cond,
-    $.string, $.symbol, $.symbol_vector, $.number,
-    $.builtin, $.dotted_name, $.identifier,
+    $.string, $.symbol, $.symbol_vector, $.number, $.vector,
+    $.builtin, alias($._infix_kw, $.builtin), $.dotted_name, $.identifier,
     $.call, $.index,
   ),
 
@@ -233,7 +235,7 @@ module.exports = {
     alias($._number_token, $.number),
     alias($.vector_nn, $.vector),
     $.timestamp, $.datetime, $.date, $.month, $.timespan, $.time, $.second, $.minute,
-    $.builtin, $.dotted_name, $.identifier,
+    $.builtin, alias($._infix_kw, $.builtin), $.dotted_name, $.identifier,
   ),
 
   // Vector whose first element is positive (later elements may be negative:
@@ -251,6 +253,7 @@ module.exports = {
     $.operator,
     alias($._dollar, $.operator),
     alias($._quote, $.operator),
+    alias($.amend_op, $.operator),   // value verbs: `.:`, `@:`, `+:` ...
     alias(':', $.operator),
     alias('::', $.operator),
   ),

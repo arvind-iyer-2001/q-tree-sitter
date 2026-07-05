@@ -109,6 +109,9 @@ module.exports = grammar({
       // it, which avoids a two-token lexer collision (`a$b` previously failed).
       _dollar: $ => token('$'),
 
+      // `k)` lines embed raw k; parsing k is out of scope — one opaque token.
+      k_expression: $ => token(seq('k)', /[^\r\n]*/)),
+
       // Shared `'` token. `'` is the signal/throw prefix (`'err`) AND the
       // each/quote adverb glyph (`f'`). Like `$`, one token type lets the parser
       // disambiguate structurally (prefix-of-statement vs postfix-on-value)
@@ -134,6 +137,8 @@ module.exports = grammar({
         // bracket statement group `[a:1;b:2]` — legal as a statement and in
         // cond/control slots (which are _statement lists)
         $.block,
+        // `k)...` — embedded k expression, treated as an opaque line
+        $.k_expression,
         $._expression,
       ),
     },

@@ -632,6 +632,10 @@
             "named": true
           },
           {
+            "type": "builtin",
+            "named": true
+          },
+          {
             "type": "operator",
             "named": true
           }
@@ -875,6 +879,10 @@
         },
         {
           "type": "infinity",
+          "named": true
+        },
+        {
+          "type": "k_expression",
           "named": true
         },
         {
@@ -1490,6 +1498,10 @@
           "named": true
         },
         {
+          "type": "k_expression",
+          "named": true
+        },
+        {
           "type": "lambda",
           "named": true
         },
@@ -1677,6 +1689,10 @@
         },
         {
           "type": "infinity",
+          "named": true
+        },
+        {
+          "type": "k_expression",
           "named": true
         },
         {
@@ -2530,6 +2546,10 @@
           },
           {
             "type": "infinity",
+            "named": true
+          },
+          {
+            "type": "k_expression",
             "named": true
           },
           {
@@ -3586,6 +3606,10 @@
           "named": true
         },
         {
+          "type": "k_expression",
+          "named": true
+        },
+        {
           "type": "lambda",
           "named": true
         },
@@ -4298,6 +4322,10 @@
   },
   {
     "type": "infinity",
+    "named": true
+  },
+  {
+    "type": "k_expression",
     "named": true
   },
   {

@@ -1,26 +1,17 @@
 # Real-repo parse failures
 
 Corpus: 90 `.q` files under `test/real/`. Target <2% bad; current regression floor <68%.
-Result: **33.33%** bad (30/90) — PASS (floor). Gap to target: 31%.
+Result: **15.56%** bad (14/90) — PASS (floor). Gap to target: 14%.
 
-- ERROR-node files: 30
+- ERROR-node files: 14
 - Timeouts (parser hang): 0
 - Crashes (non-zero exit): 0
 
 ## ERROR-node files
 
-- `test/real/cookbook/bloomberg/bpipe.q`
 - `test/real/cookbook/bloomberg/fh_callbacks.q`
-- `test/real/cookbook/dataloader/gencsv.q`
-- `test/real/cookbook/dataloader/loader.q`
-- `test/real/cookbook/r/rserve/demo.q`
-- `test/real/cookbook/start/buildhdb.q`
-- `test/real/cookbook/start/tick/cx.q`
-- `test/real/cookbook/tutorial/buildsmartmeterdb.q`
 - `test/real/cookbook/tutorial/smartmeterfunctions.q`
 - `test/real/cookbook/tutorial/tutorial.q`
-- `test/real/cookbook/tutorial/ui/smartmeterui.q`
-- `test/real/cookbook/yahoo.q`
 - `test/real/kdb/e/tpcd.q`
 - `test/real/kdb/taq/adj.q`
 - `test/real/kdb/taq/bucket.q`
@@ -29,16 +20,9 @@ Result: **33.33%** bad (30/90) — PASS (floor). Gap to target: 31%.
 - `test/real/kdb/tick/ssl.q`
 - `test/real/kdb/utils/csvguess.q`
 - `test/real/kdb/utils/csvutil.q`
-- `test/real/kdb/utils/dbmaint.q`
-- `test/real/reQ/examples/aoc.q`
-- `test/real/reQ/examples/github.q`
-- `test/real/reQ/req/auth.q`
 - `test/real/reQ/req/cookie.q`
-- `test/real/reQ/req/doh_google.q`
-- `test/real/reQ/req/ext/os.q`
-- `test/real/reQ/req/json.q`
 - `test/real/reQ/req/req.q`
-- `test/real/reQ/req/url.q`
+- `test/real/reQ/tests/test_cookies.q`
 
 ## Timeouts
 

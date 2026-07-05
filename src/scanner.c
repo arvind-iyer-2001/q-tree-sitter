@@ -62,14 +62,48 @@ bool tree_sitter_q_external_scanner_scan(void *payload, TSLexer *l, const bool *
   bool saw_ws = skip_horiz(l);
 
   /* ---------------------------------------------------------------
+   * EOS FIRST: statement terminator (newline at top level). Must run
+   * before the comment branch, which may skip newlines while hunting
+   * for `/` — a statement has to end at its newline before any comment
+   * on the next line is considered.
+   * --------------------------------------------------------------- */
+  if (valid[EOS] && (l->lookahead == '\n' || l->lookahead == '\r') && s->depth == 0) {
+    bool was_cr = (l->lookahead == '\r');
+    adv(l);
+    if (was_cr && l->lookahead == '\n') adv(l); /* \r\n */
+    /* q continuation rule: a line that BEGINS with whitespace continues
+     * the previous statement — the newline is NOT a terminator. Return
+     * false so the newline is re-lexed as an ignorable extra. */
+    if (l->lookahead == ' ' || l->lookahead == '\t') {
+      return false;
+    }
+    s->prev_was_value = false;
+    l->result_symbol = EOS;
+    return true;
+  }
+
+  /* ---------------------------------------------------------------
    * COMMENT: three forms
    * 1. Line comment: `/` at column 0 — rest of line
    * 2. Trailing comment: `/` at column > 0 with whitespace before it
    * 3. Block comment: a line with only `/` starts a block; terminated
    *    by a line with only `\` or end of file.
+   *
+   * The branch may skip whitespace INCLUDING NEWLINES itself: extras are
+   * consumed by the internal lexer between scanner calls, so by the time
+   * the scanner would sit directly on a mid-line `/` the "was there
+   * whitespace before it" signal is gone. Peeking across newlines here is
+   * safe — if no `/` follows, we return false and the position resets.
    * --------------------------------------------------------------- */
   if (valid[COMMENT]) {
+    bool saw_any = saw_ws;
+    while (l->lookahead == '\n' || l->lookahead == '\r' ||
+           l->lookahead == ' '  || l->lookahead == '\t') {
+      skip(l);
+      saw_any = true;
+    }
     uint32_t col = l->get_column(l);
+    saw_ws = saw_any;
 
     if (l->lookahead == '/') {
       if (col == 0) {
@@ -207,20 +241,7 @@ bool tree_sitter_q_external_scanner_scan(void *payload, TSLexer *l, const bool *
    * newline.
    * --------------------------------------------------------------- */
   if (valid[EOS]) {
-    if ((l->lookahead == '\n' || l->lookahead == '\r') && s->depth == 0) {
-      bool was_cr = (l->lookahead == '\r');
-      adv(l);
-      if (was_cr && l->lookahead == '\n') adv(l); /* \r\n */
-      /* q continuation rule: a line that BEGINS with whitespace continues
-       * the previous statement — the newline is NOT a terminator. Return
-       * false so the newline is re-lexed as an ignorable extra. */
-      if (l->lookahead == ' ' || l->lookahead == '\t') {
-        return false;
-      }
-      s->prev_was_value = false;
-      l->result_symbol = EOS;
-      return true;
-    }
+    /* Newline EOS is handled FIRST, above the comment branch. */
     /* EOF terminator: emit a single zero-width EOS to close a trailing
      * unterminated statement. It must NOT advance (nothing to consume at
      * EOF), so guard with a serialized flag — otherwise repeat(choice(...))
