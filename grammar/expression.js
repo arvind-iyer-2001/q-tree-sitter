@@ -1,67 +1,33 @@
 // =============================================================================
-// CONFLICTS FOR TASK 10:
-// (Reconcile these conflict resolutions when merging all modules. Every GLR
-//  conflict surfaced by `tree-sitter generate` for the expression core is
-//  recorded here, with how it was resolved. Final state: `tree-sitter generate`
-//  is clean — no warnings, no unresolved conflicts.)
+// grammar/expression.js — expression core, rebuilt on the k/q grammar model
+// (2026-07-05 rewrite; see AUDIT_2026-07-05.md for why the old core was replaced)
 //
-// CONFLICTS THAT REQUIRE a `conflicts:` entry in grammar.js (true ambiguity,
-// GLR keeps both stacks):
+// q's real grammar is tiny and uniform:
 //
-//   A. [$.symbol_vector, $._primary]
-//      A single `symbol` is a `_primary`; a run of symbols is a `symbol_vector`
-//      (repeat1 symbol, defined in identifiers/T4). At `symbol • symbol` the
-//      parser cannot decide without lookahead. -> conflicts entry.
+//   expr    := noun | noun verb expr | noun expr | verb-as-value
+//   verb    := operator | derived
+//   derived := (operator | noun | derived) iterator        (iterators stack)
+//   noun    := primary | noun[args]                        (left-recursive)
 //
-//   B. [$.call, $.index]
-//      Both are `primary '[' args ']'` (now `primary arguments`). q resolves
-//      index-vs-apply at EVAL time, not parse time, so they are genuinely
-//      ambiguous. `call` wins in practice (declared first / GLR), `index` is
-//      retained as a named node for other modules / T10. -> conflicts entry.
+// Three structural decisions carry the whole design:
 //
-//   C. [$.call, $._application]
-//      `primary primary` (juxtaposition) -> is the second primary the argument
-//      of a prefix `call`, or a bare `_application` sibling? Genuine ambiguity;
-//      GLR keeps both. The juxtaposition `call` branch is left at DEFAULT static
-//      precedence (0) on purpose: giving it a higher prec made the parser eat
-//      `1` `2` across an intervening operator in `1+2` (it dropped the `binary`
-//      reduction and errored on `+`). At default prec the [call,_application]
-//      conflict lets `binary` survive because an operator cannot begin an
-//      `_application`. -> conflicts entry.
+// 1. ITERATORS ARE token.immediate. q's lexical rule is that an iterator glyph
+//    attaches with NO whitespace (`f'`, `+/`, `vs/:`); with whitespace, `/`
+//    starts a comment instead. token.immediate encodes exactly that, which
+//    retires the external ADVERB_TOK (whose prev_was_value gate could never
+//    work — the scanner never sees internally-lexed tokens).
 //
-//   D. [$.builtin, $.select_statement]
-//      `builtin` (identifiers/T4) includes the keyword `select`, which also
-//      starts `select_statement` (qsql/T7). `select` as a bare primary vs the
-//      start of a select statement. -> conflicts entry.
+// 2. DERIVED VERBS ARE FIRST-CLASS. `adverb_apply` (name kept for the
+//    extractor) may appear as binary's operator (`x f'y`, `a,'b`), as a
+//    bracket-call function (`f'[x;y]`), as a juxtaposition function (`(+/)x`),
+//    or bare as a trailing value (`{..}\:`). The old grammar only had the
+//    postfix form, so every infix use parsed by GLR accident — top-level
+//    often "worked", inside `{}` it errored (the audit's headline bug).
 //
-// CONFLICTS that `tree-sitter` reported as "unnecessary" once prec/structure was
-// in place — these were tried, then REMOVED from grammar.js (resolved without a
-// conflicts entry). Listed so T10 does not re-add them:
-//
-//   E. binary vs call (juxtaposition)  -> resolved: operator cannot begin an
-//      _application, so `binary` reduces deterministically.
-//   F. binary vs adverb_apply          -> resolved: the adverb glyph token forces
-//      the adverb_apply branch; an adverb token cannot begin a binary.
-//   G. parenthesized vs list           -> resolved: `( e )` vs `( e ; ... )`
-//      disambiguated by the `;` (list requires repeat1 of `; e`).
-//   H. parenthesized vs table_literal  -> resolved: table_literal requires `[`
-//      immediately after `(`; parenthesized cannot start with `[`.
-//
-// RTL is encoded by `binary` = prec.right(PREC.binary, left _application, op,
-// optional right _expression). `optional(right)` models operator-left-projection
-// (`3+`). prec.right makes `2*3+4` fold right: (2 * (3 + 4)).
-//
-// NOTE / DEVIATION FOR T10 (scanner dependency):
-//   The brief specifies the adverb glyph come from the external `$._adverb_tok`
-//   (Task 2 scanner). The Task-2 scanner is currently a stub that emits NOTHING,
-//   so `_adverb_tok` never fires and adverb/vector tests could not pass. To make
-//   THIS worktree's corpus green, `_adverb` is a choice of the external
-//   `$._adverb_tok` AND an in-grammar `_adverb_glyph` token. When the real
-//   scanner lands, the external branch takes over for whitespace-sensitive cases;
-//   T10 may drop the in-grammar fallback. Likewise the corpus avoids
-//   space-separated vector literals (`1 2 3`) and negative literals because those
-//   also depend on the (stubbed) external scanner; bracket/`;`-separated forms
-//   are used instead.
+// 3. JUXTAPOSITION IS RTL AND UNRESTRICTED. `call` (juxt form) is
+//    `noun _expression` — any noun applies (bracket-call results:
+//    `neg[h](...)`; conds: `count$[c;a;b]`), and the argument is everything
+//    to the right (`f x+1` = f(x+1)).
 // =============================================================================
 
 function sep(rule, s) {
@@ -70,83 +36,106 @@ function sep(rule, s) {
 
 // NOTE: `$` is intentionally NOT in this set — it has its own shared $._dollar
 // token (grammar.js) so cond `$[...]` and the binary `$` operator use ONE token
-// type. Overload resolution (cast/enum/pad/cond) is q's eval-time concern, not
-// the parser's.
-const OPERATOR = token(choice(
+// type. Overload resolution (cast/enum/pad/cond) is q's eval-time concern.
+//
+// NOT token()-fused: each glyph must stay an individual anonymous token so
+// `'-'` here and `'-'` inside the negative-number rule are the SAME token —
+// a fused "operator" token forces the LEXER to pick operator-vs-number
+// (context-free, always wrong somewhere); with one shared token the choice
+// becomes a syntactic GLR fork the parser resolves by state.
+const OPERATOR_GLYPHS = [
   '<=', '>=', '<>',
   '+', '-', '*', '%', '&', '|', '^', '=', '<', '>', '~', '!',
   '#', '_', '?', '@', '.', ',',
-));
+];
 
+// Iterator glyphs. token.immediate = no preceding whitespace, matching q's
+// lexical rule and disambiguating `f/` (over) from `f /comment`. Two-char
+// glyphs listed first for longest match. `'`/`':` are here too: in iterator
+// position immediacy separates them from statement-initial signal `'expr`.
+const ITER = token.immediate(choice("':", '/:', '\\:', "'", '/', '\\'));
+
+// binary > juxt: at `x • +/y` both infix (binary via derived verb) and
+// juxtaposition (x applied to the verb-value expression `(+/)y`) are viable;
+// q's rule is that a verb after a noun is INFIX, so binary must win.
 const PREC = {
-  binary: 1,
-  adverb: 2,
+  juxt: 1,
+  binary: 2,
+  adverb: 3,
   bracket: 4,
 };
 
 module.exports = {
+  // Named rule (not a fused token) — see OPERATOR_GLYPHS note above.
+  operator: $ => choice(...OPERATOR_GLYPHS),
+
   _expression: $ => choice(
     $.binary,
-    $._application,
-    // W1-qsql (T7): qsql statements are valid expression values (RHS of
-    // assignment, e.g. `q:select ... from t`).
+    $._noun,             // includes call/index (bracket + juxt application)
+    $.adverb_apply,      // bare derived verb as a trailing value: `{..}\:`
+    // qsql statements are valid expression values (RHS of assignment).
     $.select_statement,
     $.exec_statement,
     $.update_statement,
     $.delete_statement,
-    // W1-qsql (T7): assignment as an expression value enables computed columns
-    // `col:expr` inside select/by/where phrases (which are _expression lists).
+    // assignment as expression enables computed columns `col:expr` in qsql
+    // phrases and mid-expression assignment (`c>x:0 t\x`).
     $.assignment,
-    $.cond,
     $.control,
   ),
 
-  // Right-to-left, no precedence: left arg is the single value immediately to
-  // the left (an _application); right arg is everything remaining (_expression).
-  // Right-recursive => folds RTL. Right is optional to model operator left-
-  // projection (`3+`).
+  // Nouns: values that can be applied/indexed/infixed-over. Left-recursion
+  // through the bracket forms means `g[a][b]`, `neg[h]`, `(f)[x]` are nouns.
+  _noun: $ => choice(
+    $._primary,
+    $.call,
+    $.index,
+  ),
+
+  // Infix: RTL, no operator precedence. Left is ONE noun; right is everything
+  // else (right recursion => folds right-to-left). `optional(right)` models
+  // operator left-projection (`3+`; `"/",`). The operator slot admits derived
+  // verbs — `x f'y`, `a,'b`, `0 t\x`, `x vs/:y` — which is the audit's #1 fix.
   binary: $ => prec.right(PREC.binary, seq(
-    field('left', $._application),
-    field('operator', choice(alias(OPERATOR, $.operator), alias($._dollar, $.operator))),
+    field('left', $._noun),
+    field('operator', choice(
+      $.operator,
+      alias($._dollar, $.operator),
+      $.adverb_apply,
+    )),
     optional(field('right', $._expression)),
   )),
 
-  _application: $ => choice(
-    $.call,
-    $.index,
-    $.adverb_apply,
-    $._primary,
-  ),
-
-  // Application: bracket form `f[a;b]` / `.[f;args]` / `@[x;i;f]`, and prefix
-  // juxtaposition `f x`. Operators (`.`, `@`, ...) may be the bracketed function.
+  // Application, bracket form: `f[a;b]`, `.[f;args]`, `@[x;i;f]`, `g[a][b]`,
+  // `f'[x;y]` (derived-verb function), `(expr)[i]`. Operators may be the
+  // bracketed function (`@[x;i;:;y]`).
   call: $ => choice(
     prec(PREC.bracket, seq(
-      field('function', choice($._primary, alias(OPERATOR, $.operator))),
+      field('function', choice($._noun, $.adverb_apply, $.operator)),
       field('arguments', $.arguments),
     )),
-    // Juxtaposition apply: kept at default (0) static prec so the GLR parser
-    // does not statically prefer it over `binary`; the declared
-    // [call, _application] conflict lets both survive and `binary` wins when an
-    // operator intervenes (an operator cannot begin an `_application`).
-    prec.right(seq(
-      field('function', $._primary),
-      field('arguments', $._application),
+    // Juxtaposition apply, RTL: `f x`, `count$[c;a;b]`, `neg[h](...)`,
+    // `(+/) x`. Argument is the whole right-hand expression (`f x+1` = f(x+1)).
+    // Function is an APPLICABLE noun — plain numeric/temporal literals can't
+    // apply (else `3-4` lexes `-4` as a neg literal and parses as call(3,-4)).
+    // Argument must not START with a negative literal — `x-5`, `y-1`,
+    // `count[x]-5` are subtraction in q, never application of a neg number.
+    prec.right(PREC.juxt, seq(
+      field('function', choice($._applicable, $.adverb_apply)),
+      field('arguments', $._expression_nn),
     )),
   ),
 
-  // Structurally identical to bracket-call; kept as a named node for other
-  // modules / T10. `call` wins the bracket form via equal prec + conflicts.
+  // Structurally identical to bracket-call; kept as a named node for the
+  // extractor. `call` wins the bracket form via the [call, index] conflict.
   index: $ => prec(PREC.bracket, seq(
-    field('function', $._primary),
+    field('function', $._noun),
     field('arguments', $.arguments),
   )),
 
-  // Bracketed `;`-separated argument list. One `arguments` node per `[...]`;
-  // each slot is an _expression, an elided slot (projection), OR a bare verb
-  // value — operators/`:`/`::` are first-class in q, e.g. `@[x;i;:;y]` passes
-  // assign `:` as the 3rd arg (q AST: `(@;`x;`i;:;`y)`). EVERY slot (including
-  // the first) may be elided, so leading-elided projection `@[;`sym;f]` parses.
+  // Bracketed `;`-separated argument list. Every slot (including the first)
+  // may be elided (projection: `f[;2]`, `@[;`sym;f]`, `qtln[;;8]`) or hold a
+  // bare verb value (`@[x;i;:;y]`).
   arguments: $ => seq(
     '[',
     optional(choice($._expression, $._op_value)),
@@ -154,53 +143,114 @@ module.exports = {
     ']',
   ),
 
-  // Postfix iterator yields a (derived) function; here applied via brackets or
-  // left as a value. `function` may be an operator glyph (`+/`) or a primary
-  // (`f'`).
-  // Adverbs stack: `@'\:` is `@` each (`'`) each-left (`\:`). repeat1 captures
-  // the chain (q AST nests them: `(\:;(';@))`).
-  adverb_apply: $ => prec.left(PREC.adverb, seq(
-    field('function', choice($._primary, alias(OPERATOR, $.operator))),
-    repeat1(field('adverb', $._adverb)),
-    optional(field('arguments', $.arguments)),
+  // Derived verb: iterator(s) fused onto an operator, noun, or another derived
+  // verb. repeat1 captures stacks (`@'\:`, `,//`). Name kept from the old
+  // grammar for extractor compatibility.
+  adverb_apply: $ => prec(PREC.adverb, seq(
+    field('function', choice(
+      $._noun,
+      $.operator,
+      alias($._dollar, $.operator),
+    )),
+    repeat1(field('adverb', alias(ITER, $.adverb))),
   )),
 
-  // External scanner (Task 2) supplies the whitespace-sensitive token; the
-  // in-grammar glyph is the fallback so adverbs parse before the scanner lands.
-  // `'` (the single-quote each adverb) comes from the shared $._quote token so
-  // it does not collide with signal_stmt's `'`. The 2-char glyphs and `\`,`/`
-  // stay here. Longest-match keeps `':`/`/:`/`\:` whole; bare `'` -> $._quote.
-  _adverb: $ => choice($._adverb_tok, $._adverb_glyph, $._quote),
-  _adverb_glyph: $ => token(choice("':", '\\:', '/:', '\\', '/')),
-
   _primary: $ => choice(
-    $.lambda, $.parenthesized, $.list, $.table_literal,
+    $.lambda, $.parenthesized, $.list, $.table_literal, $.cond,
     $.number, $.boolean, $.byte, $.string, $.char, $.symbol, $.symbol_vector,
     $.vector, $.null, $.infinity,
     $.timestamp, $.datetime, $.date, $.month, $.timespan, $.time, $.second, $.minute,
     $.builtin, $.dotted_name, $.identifier,
   ),
 
+  // Nouns that can be juxtaposition-applied: functions, names, indexable
+  // containers (`"abc" 1`, `(1;2) 0`, `` `a`b`c 1 ``) and bracket results.
+  // Excludes numeric/boolean/temporal atoms — `3 x` is never application in q.
+  // $.number is included for the q print idiom `-1"msg"` / `0N!x` (int file
+  // handles ARE functions); the _nn argument family keeps `3-4` subtraction.
+  _applicable: $ => choice(
+    $.lambda, $.parenthesized, $.list, $.table_literal, $.cond,
+    $.string, $.symbol, $.symbol_vector, $.number,
+    $.builtin, $.dotted_name, $.identifier,
+    $.call, $.index,
+  ),
+
+  // ---------------------------------------------------------------------
+  // "_nn" (no-leading-negative) expression family: identical to the plain
+  // rules (and aliased to the same node names) EXCEPT the leftmost noun
+  // cannot be a bare number/vector. Used ONLY as the juxtaposition
+  // argument: without it, `x-5` lexes `-5` as a negative literal and
+  // parses as call(x, -5) — q semantics say subtraction. Negatives stay
+  // legal everywhere deeper (`f 5+-3`; binary rhs; slots; parens).
+  // ---------------------------------------------------------------------
+  _expression_nn: $ => choice(
+    alias($.binary_nn, $.binary),
+    $._noun_nn,
+    $.adverb_apply,
+    $.select_statement,
+    $.exec_statement,
+    $.update_statement,
+    $.delete_statement,
+    $.assignment,
+    $.control,
+  ),
+
+  binary_nn: $ => prec.right(PREC.binary, seq(
+    field('left', $._noun_nn),
+    field('operator', choice(
+      $.operator,
+      alias($._dollar, $.operator),
+      $.adverb_apply,
+    )),
+    optional(field('right', $._expression)),
+  )),
+
+  _noun_nn: $ => choice(
+    $._primary_nn,
+    $.call,
+    $.index,
+  ),
+
+  // Numbers/vectors are allowed as long as they don't LEAD with `-`:
+  // `til 10` and `f 1 2 3` are applications; only `x-5` must stay binary.
+  _primary_nn: $ => choice(
+    $.lambda, $.parenthesized, $.list, $.table_literal, $.cond,
+    $.boolean, $.byte, $.string, $.char, $.symbol, $.symbol_vector,
+    $.null, $.infinity,
+    alias($._number_token, $.number),
+    alias($.vector_nn, $.vector),
+    $.timestamp, $.datetime, $.date, $.month, $.timespan, $.time, $.second, $.minute,
+    $.builtin, $.dotted_name, $.identifier,
+  ),
+
+  // Vector whose first element is positive (later elements may be negative:
+  // `f 1 -2 3`). Aliased to $.vector.
+  vector_nn: $ => prec.dynamic(2, prec.left(2, seq(
+    alias($._number_token, $.number),
+    repeat1(seq($._list_ws, $.number)),
+  ))),
+
   // A bare verb used as a value: operators, the shared `$`/`'` tokens, and the
-  // assign verbs `:`/`::`. q treats these as first-class (passed as args, held
-  // in lists: `(+;-;*)`, `@[x;i;:;y]`). Scoped to arg/list/paren slots — NOT a
-  // general `_primary` — so it cannot collide with infix `binary`/`adverb_apply`
-  // (an operator can never *begin* an `_application`, so a slot starting with one
-  // is unambiguously a verb value).
+  // assign verbs `:`/`::`. Scoped to arg/list/paren slots — NOT a general
+  // `_primary` — so it cannot collide with infix `binary` (an operator can
+  // never *begin* a noun, so a slot starting with one is a verb value).
   _op_value: $ => choice(
-    alias(OPERATOR, $.operator),
+    $.operator,
     alias($._dollar, $.operator),
     alias($._quote, $.operator),
     alias(':', $.operator),
     alias('::', $.operator),
   ),
 
-  // `()` is the empty general list; `(e)` is a parenthesized expression; `(+)`
-  // is a verb value. Optional body so empty `()` parses (empty column value).
-  parenthesized: $ => seq('(', optional(choice($._expression, $._op_value)), ')'),
+  // `()` empty list; `(e)` parenthesized; `(+)`/`(+/)` verb values.
+  parenthesized: $ => seq(
+    '(',
+    optional(choice($._expression, $._op_value)),
+    ')',
+  ),
 
-  // `(e1;e2;...)` — at least one `;`. Slots may be empty (elision => null atom)
-  // or bare verb values (`(+;-;*)`).
+  // `(e1;e2;...)` — at least one `;`. Slots may be empty (elision) or bare
+  // verb values (`(+;-;*)`).
   list: $ => seq(
     '(',
     optional(choice($._expression, $._op_value)),
@@ -208,14 +258,21 @@ module.exports = {
     ')',
   ),
 
-  // `([keycols] col:vals; ...)` — `[]` may be empty (simple table). Columns are
-  // `name:vals` assignments (or bare value expressions). T10: `assignment` is now
-  // part of `_expression`, so columns are just `_expression` (no separate
-  // _table_column choice — that caused an _expression/_table_column conflict).
+  // `([keycols] col:vals; ...)` — `[]` may be empty (simple table).
   table_literal: $ => seq(
     '(',
     '[', alias(sep($._expression, ';'), $.key_columns), ']',
     sep($._expression, ';'),
     ')',
+  ),
+
+  // `[e1;e2;...]` — bracket statement group, q's multi-statement expression
+  // (`$[c;[a:1;b:2];0]`, and as a bare grouped statement). Slots are
+  // statements; elision tolerated.
+  block: $ => seq(
+    '[',
+    optional($._statement),
+    repeat(seq(';', optional($._statement))),
+    ']',
   ),
 };

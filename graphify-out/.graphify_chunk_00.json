@@ -1,0 +1,844 @@
+{
+  "nodes": [
+    {
+      "id": "progress_sdd_project",
+      "label": "tree-sitter-q + Graphify SDD Project",
+      "file_type": "document",
+      "source_file": ".superpowers/sdd/progress.md",
+      "source_location": "1-31"
+    },
+    {
+      "id": "task_1_foundation",
+      "label": "Task 1: Foundation — compiling skeleton + frozen interfaces",
+      "file_type": "concept",
+      "source_file": ".superpowers/sdd/task-1-brief.md"
+    },
+    {
+      "id": "task_1_report",
+      "label": "Task 1 Report: Foundation Complete",
+      "file_type": "document",
+      "source_file": ".superpowers/sdd/task-1-report.md"
+    },
+    {
+      "id": "task_2_scanner",
+      "label": "Task 2: External scanner (src/scanner.c)",
+      "file_type": "concept",
+      "source_file": ".superpowers/sdd/task-2-brief.md"
+    },
+    {
+      "id": "task_2_report",
+      "label": "Task 2 Report: External Scanner Complete",
+      "file_type": "document",
+      "source_file": ".superpowers/sdd/task-2-report.md"
+    },
+    {
+      "id": "task_3_literals",
+      "label": "Task 3: Literals (grammar/literals.js)",
+      "file_type": "concept",
+      "source_file": ".superpowers/sdd/task-3-brief.md"
+    },
+    {
+      "id": "task_3_report",
+      "label": "Task 3 Report: Literals Complete",
+      "file_type": "document",
+      "source_file": ".superpowers/sdd/task-3-report.md"
+    },
+    {
+      "id": "task_4_identifiers",
+      "label": "Task 4: Identifiers, namespaces, builtins, symbol vectors",
+      "file_type": "concept",
+      "source_file": ".superpowers/sdd/task-4-brief.md"
+    },
+    {
+      "id": "task_4_report",
+      "label": "Task 4 Report: Identifiers Complete",
+      "file_type": "document",
+      "source_file": ".superpowers/sdd/task-4-report.md"
+    },
+    {
+      "id": "task_5_functions",
+      "label": "Task 5: Functions — lambda, parameters, assignment",
+      "file_type": "concept",
+      "source_file": ".superpowers/sdd/task-5-brief.md"
+    },
+    {
+      "id": "task_5_report",
+      "label": "Task 5 Report: Functions Complete",
+      "file_type": "document",
+      "source_file": ".superpowers/sdd/task-5-report.md"
+    },
+    {
+      "id": "task_6_expression",
+      "label": "Task 6: Expression core — RTL, application, adverbs, lists",
+      "file_type": "concept",
+      "source_file": ".superpowers/sdd/task-6-brief.md"
+    },
+    {
+      "id": "task_6_report",
+      "label": "Task 6 Report: Expression Core Complete",
+      "file_type": "document",
+      "source_file": ".superpowers/sdd/task-6-report.md"
+    },
+    {
+      "id": "task_7_qsql",
+      "label": "Task 7: q-SQL (grammar/qsql.js)",
+      "file_type": "concept",
+      "source_file": ".superpowers/sdd/task-7-brief.md"
+    },
+    {
+      "id": "task_7_report",
+      "label": "Task 7 Report: q-SQL Grammar Complete",
+      "file_type": "document",
+      "source_file": ".superpowers/sdd/task-7-report.md"
+    },
+    {
+      "id": "task_8_control",
+      "label": "Task 8: Control flow & cond (grammar/control.js)",
+      "file_type": "concept",
+      "source_file": ".superpowers/sdd/task-8-brief.md"
+    },
+    {
+      "id": "task_8_report",
+      "label": "Task 8 Report: Control Flow Complete",
+      "file_type": "document",
+      "source_file": ".superpowers/sdd/task-8-report.md"
+    },
+    {
+      "id": "task_10_convergence",
+      "label": "Task 10: Convergence — merge, generate, resolve GLR conflicts",
+      "file_type": "concept",
+      "source_file": ".superpowers/sdd/task-10-brief.md"
+    },
+    {
+      "id": "task_10_report",
+      "label": "Task 10 Report: Convergence Complete",
+      "file_type": "document",
+      "source_file": ".superpowers/sdd/task-10-report.md"
+    },
+    {
+      "id": "task_11_wheel",
+      "label": "Task 11: Python wheel build + language() load test",
+      "file_type": "concept",
+      "source_file": ".superpowers/sdd/task-11-brief.md"
+    },
+    {
+      "id": "task_11_report",
+      "label": "Task 11 Report: Python Wheel Build Complete",
+      "file_type": "document",
+      "source_file": ".superpowers/sdd/task-11-report.md"
+    },
+    {
+      "id": "task_12_graphify",
+      "label": "Task 12: Graphify extractor (graphify/extractors/q.py)",
+      "file_type": "concept",
+      "source_file": ".superpowers/sdd/task-12-brief.md"
+    },
+    {
+      "id": "task_13_parse_rate",
+      "label": "Task 13: Real-repo parse-rate harness",
+      "file_type": "concept",
+      "source_file": ".superpowers/sdd/task-13-brief.md"
+    },
+    {
+      "id": "wave_1_parallel",
+      "label": "Wave 1: Parallel Grammar Tasks",
+      "file_type": "rationale",
+      "source_file": ".superpowers/sdd/progress.md",
+      "rationale": "Tasks 2-9 run in parallel worktrees after Task 1 foundation completes. Each owns a grammar module and implements corresponding test corpus."
+    },
+    {
+      "id": "wave_2_convergence",
+      "label": "Wave 2: Convergence and Merge",
+      "file_type": "rationale",
+      "source_file": ".superpowers/sdd/progress.md",
+      "rationale": "Task 10 merges all wave-1 branches to main, resolves GLR conflicts, regenerates parser, validates full corpus green."
+    },
+    {
+      "id": "wave_3_packaging",
+      "label": "Wave 3: Packaging and Integration",
+      "file_type": "rationale",
+      "source_file": ".superpowers/sdd/progress.md",
+      "rationale": "Tasks 11-13 build Python wheel, verify language() loads, and integrate with Graphify for extraction."
+    },
+    {
+      "id": "tree_sitter_grammar_architecture",
+      "label": "Tree-sitter Modular Grammar Architecture",
+      "file_type": "rationale",
+      "source_file": ".superpowers/sdd/task-1-brief.md",
+      "rationale": "Grammar split into modules (literals, identifiers, functions, expression, qsql, control, commands) merged via Object.assign(). Each module independently testable, each wave-1 task owns one module."
+    },
+    {
+      "id": "expression_rtl_design",
+      "label": "Right-to-Left (RTL) Expression Model",
+      "file_type": "rationale",
+      "source_file": ".superpowers/sdd/task-6-brief.md",
+      "rationale": "q has no operator precedence; every dyadic operation binds right. Implemented as right-recursive binary fold: binary = prec.right(seq(left:_application, operator, right:_expression)). Ensures 2*3+4 parses right-nested."
+    },
+    {
+      "id": "glr_conflict_strategy",
+      "label": "GLR Conflict Resolution Strategy",
+      "file_type": "rationale",
+      "source_file": ".superpowers/sdd/task-6-report.md",
+      "rationale": "Four conflicts intentionally kept: symbol_vector/_primary (single vs repeat), call/index (q resolves at eval), call/_application (juxtaposition), builtin/select (keyword reuse). Others removed via prec/structure. Task 10 reconciles across all branches."
+    },
+    {
+      "id": "external_scanner_tokens",
+      "label": "External Scanner Token Set",
+      "file_type": "rationale",
+      "source_file": ".superpowers/sdd/task-2-brief.md",
+      "rationale": "Seven external tokens: COMMENT (line/block), SYSTEM_COMMAND_TOK (backslash), NEG_NUMBER (whitespace-sensitive), LIST_WS (vector separator), ADVERB_TOK (postfix iterator), EOS (statement terminator), ERROR_SENTINEL."
+    },
+    {
+      "id": "node_taxonomy",
+      "label": "Frozen Node Type Taxonomy",
+      "file_type": "rationale",
+      "source_file": ".superpowers/sdd/task-1-report.md",
+      "rationale": "Complete rule-name set frozen after Task 1: assignment, lambda, parameters, call, index, binary, adverb_apply, select_statement, control, cond, plus 20+ literal types. All downstream tasks reference these names."
+    },
+    {
+      "id": "namespace_qualification",
+      "label": "Namespace Qualification (\\d)",
+      "file_type": "rationale",
+      "source_file": ".superpowers/sdd/task-2-report.md",
+      "rationale": "Scanner emits SYSTEM_COMMAND_TOK for backslash commands; parser defers \\d to namespace_directive rule. Namespace state tracked by Graphify extractor for function/variable scoping."
+    },
+    {
+      "id": "computed_column_syntax",
+      "label": "q-SQL Computed Column Syntax",
+      "file_type": "rationale",
+      "source_file": ".superpowers/sdd/task-7-report.md",
+      "rationale": "Phrases inside select/exec/update/delete clauses are `;`-separated expressions. To support col:expr naming, _expression is overridden in qsql.js to include assignment, allowing column-def within phrase context."
+    },
+    {
+      "id": "cache_clash_concern",
+      "label": "macOS Tree-sitter Dylib Cache Clash",
+      "file_type": "rationale",
+      "source_file": ".superpowers/sdd/progress.md",
+      "rationale": "Grammar name 'q' shared across worktrees caches ~.../Library/Caches/tree-sitter/lib/q.dylib. Always use tree-sitter test --rebuild in worktrees; prevents stale binary loading."
+    },
+    {
+      "id": "graphify_extractor_contract",
+      "label": "Graphify Extractor Contract",
+      "file_type": "rationale",
+      "source_file": ".superpowers/sdd/task-12-brief.md",
+      "rationale": "Extractor returns {nodes:[{id, name, kind, line}], edges:[{src, dst, relation, line, confidence}]}. Kinds: file, function, variable. Relations: contains, calls, imports, uses. Namespace-aware via \\d tracking."
+    },
+    {
+      "id": "c1_task_1_completed",
+      "label": "Task 1 Completed: d3e3fe2",
+      "file_type": "document",
+      "source_file": ".superpowers/sdd/task-1-report.md",
+      "source_location": "9-11"
+    },
+    {
+      "id": "c1_task_2_completed",
+      "label": "Task 2 Completed: 764089c (w1-scanner)",
+      "file_type": "document",
+      "source_file": ".superpowers/sdd/task-2-report.md",
+      "source_location": "5-6"
+    },
+    {
+      "id": "c1_task_3_completed",
+      "label": "Task 3 Completed: feb6b0b (w1-literals)",
+      "file_type": "document",
+      "source_file": ".superpowers/sdd/task-3-report.md",
+      "source_location": "5-5"
+    },
+    {
+      "id": "c1_task_4_completed",
+      "label": "Task 4 Completed: 5968b35 (w1-identifiers)",
+      "file_type": "document",
+      "source_file": ".superpowers/sdd/task-4-report.md",
+      "source_location": "3-4"
+    },
+    {
+      "id": "c1_task_5_completed",
+      "label": "Task 5 Completed: 0de7651 (w1-functions)",
+      "file_type": "document",
+      "source_file": ".superpowers/sdd/task-5-report.md",
+      "source_location": "4-5"
+    },
+    {
+      "id": "c1_task_6_completed",
+      "label": "Task 6 Completed: 010c3a6 (w1-expression)",
+      "file_type": "document",
+      "source_file": ".superpowers/sdd/task-6-report.md",
+      "source_location": "4-5"
+    },
+    {
+      "id": "c1_task_7_completed",
+      "label": "Task 7 Completed: 6c3d582 (w1-qsql)",
+      "file_type": "document",
+      "source_file": ".superpowers/sdd/task-7-report.md",
+      "source_location": "3-4"
+    },
+    {
+      "id": "c1_task_8_completed",
+      "label": "Task 8 Completed: e522c5c (w1-control)",
+      "file_type": "document",
+      "source_file": ".superpowers/sdd/task-8-report.md",
+      "source_location": "3-4"
+    },
+    {
+      "id": "c1_task_10_completed",
+      "label": "Task 10 Completed: 0cfc478 (convergence commit)",
+      "file_type": "document",
+      "source_file": ".superpowers/sdd/progress.md",
+      "source_location": "28-28"
+    },
+    {
+      "id": "c1_task_11_completed",
+      "label": "Task 11 Completed: 59cea5a (wheel)",
+      "file_type": "document",
+      "source_file": ".superpowers/sdd/task-11-report.md",
+      "source_location": "48-49"
+    }
+  ],
+  "edges": [
+    {
+      "source": "progress_sdd_project",
+      "target": "wave_1_parallel",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".superpowers/sdd/progress.md",
+      "source_location": "8-21"
+    },
+    {
+      "source": "progress_sdd_project",
+      "target": "wave_2_convergence",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".superpowers/sdd/progress.md",
+      "source_location": "28-28"
+    },
+    {
+      "source": "progress_sdd_project",
+      "target": "wave_3_packaging",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".superpowers/sdd/progress.md",
+      "source_location": "29-31"
+    },
+    {
+      "source": "task_1_foundation",
+      "target": "task_1_report",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "task_2_scanner",
+      "target": "task_2_report",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "task_3_literals",
+      "target": "task_3_report",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "task_4_identifiers",
+      "target": "task_4_report",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "task_5_functions",
+      "target": "task_5_report",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "task_6_expression",
+      "target": "task_6_report",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "task_7_qsql",
+      "target": "task_7_report",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "task_8_control",
+      "target": "task_8_report",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "task_10_convergence",
+      "target": "task_10_report",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "task_11_wheel",
+      "target": "task_11_report",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "task_1_foundation",
+      "target": "task_2_scanner",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".superpowers/sdd/task-2-brief.md",
+      "source_location": "3-4"
+    },
+    {
+      "source": "task_1_foundation",
+      "target": "task_3_literals",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".superpowers/sdd/task-3-brief.md",
+      "source_location": "3-4"
+    },
+    {
+      "source": "task_1_foundation",
+      "target": "task_4_identifiers",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".superpowers/sdd/task-4-brief.md",
+      "source_location": "3-4"
+    },
+    {
+      "source": "task_1_foundation",
+      "target": "task_5_functions",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".superpowers/sdd/task-5-brief.md",
+      "source_location": "3-4"
+    },
+    {
+      "source": "task_1_foundation",
+      "target": "task_6_expression",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".superpowers/sdd/task-6-brief.md",
+      "source_location": "3-4"
+    },
+    {
+      "source": "task_1_foundation",
+      "target": "task_7_qsql",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".superpowers/sdd/task-7-brief.md",
+      "source_location": "3-4"
+    },
+    {
+      "source": "task_1_foundation",
+      "target": "task_8_control",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".superpowers/sdd/task-8-brief.md",
+      "source_location": "3-4"
+    },
+    {
+      "source": "task_6_expression",
+      "target": "task_3_literals",
+      "relation": "shares_data_with",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".superpowers/sdd/task-6-brief.md",
+      "source_location": "11-11"
+    },
+    {
+      "source": "task_6_expression",
+      "target": "task_4_identifiers",
+      "relation": "shares_data_with",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".superpowers/sdd/task-6-brief.md",
+      "source_location": "11-11"
+    },
+    {
+      "source": "task_6_expression",
+      "target": "task_5_functions",
+      "relation": "shares_data_with",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".superpowers/sdd/task-6-brief.md",
+      "source_location": "11-11"
+    },
+    {
+      "source": "task_7_qsql",
+      "target": "task_6_expression",
+      "relation": "shares_data_with",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".superpowers/sdd/task-7-brief.md",
+      "source_location": "10-10"
+    },
+    {
+      "source": "task_8_control",
+      "target": "task_6_expression",
+      "relation": "shares_data_with",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".superpowers/sdd/task-8-brief.md",
+      "source_location": "10-10"
+    },
+    {
+      "source": "task_10_convergence",
+      "target": "task_1_foundation",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".superpowers/sdd/task-10-brief.md",
+      "source_location": "3-3"
+    },
+    {
+      "source": "task_10_convergence",
+      "target": "task_2_scanner",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".superpowers/sdd/progress.md",
+      "source_location": "11-21"
+    },
+    {
+      "source": "task_10_convergence",
+      "target": "task_3_literals",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".superpowers/sdd/progress.md",
+      "source_location": "8-21"
+    },
+    {
+      "source": "task_10_convergence",
+      "target": "task_4_identifiers",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".superpowers/sdd/progress.md",
+      "source_location": "8-21"
+    },
+    {
+      "source": "task_10_convergence",
+      "target": "task_5_functions",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".superpowers/sdd/progress.md",
+      "source_location": "8-21"
+    },
+    {
+      "source": "task_10_convergence",
+      "target": "task_6_expression",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".superpowers/sdd/progress.md",
+      "source_location": "8-21"
+    },
+    {
+      "source": "task_10_convergence",
+      "target": "task_7_qsql",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".superpowers/sdd/progress.md",
+      "source_location": "8-21"
+    },
+    {
+      "source": "task_10_convergence",
+      "target": "task_8_control",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".superpowers/sdd/progress.md",
+      "source_location": "8-21"
+    },
+    {
+      "source": "task_11_wheel",
+      "target": "task_10_convergence",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".superpowers/sdd/task-11-brief.md",
+      "source_location": "3-3"
+    },
+    {
+      "source": "task_12_graphify",
+      "target": "task_10_convergence",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".superpowers/sdd/task-12-brief.md",
+      "source_location": "3-3"
+    },
+    {
+      "source": "task_12_graphify",
+      "target": "task_11_wheel",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".superpowers/sdd/task-12-brief.md",
+      "source_location": "3-3"
+    },
+    {
+      "source": "task_13_parse_rate",
+      "target": "task_10_convergence",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".superpowers/sdd/task-13-brief.md",
+      "source_location": "3-3"
+    },
+    {
+      "source": "tree_sitter_grammar_architecture",
+      "target": "task_1_foundation",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "expression_rtl_design",
+      "target": "task_6_expression",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "glr_conflict_strategy",
+      "target": "task_10_convergence",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "external_scanner_tokens",
+      "target": "task_2_scanner",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "node_taxonomy",
+      "target": "task_1_foundation",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "namespace_qualification",
+      "target": "task_2_scanner",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "computed_column_syntax",
+      "target": "task_7_qsql",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "cache_clash_concern",
+      "target": "wave_1_parallel",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "graphify_extractor_contract",
+      "target": "task_12_graphify",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "c1_task_1_completed",
+      "target": "task_1_report",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "c1_task_2_completed",
+      "target": "task_2_report",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "c1_task_3_completed",
+      "target": "task_3_report",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "c1_task_4_completed",
+      "target": "task_4_report",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "c1_task_5_completed",
+      "target": "task_5_report",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "c1_task_6_completed",
+      "target": "task_6_report",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "c1_task_7_completed",
+      "target": "task_7_report",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "c1_task_8_completed",
+      "target": "task_8_report",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "c1_task_10_completed",
+      "target": "task_10_report",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "c1_task_11_completed",
+      "target": "task_11_report",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "task_3_report",
+      "target": "task_2_scanner",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": ".superpowers/sdd/task-3-report.md",
+      "source_location": "56-58"
+    },
+    {
+      "source": "task_4_report",
+      "target": "task_6_expression",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.75,
+      "source_file": ".superpowers/sdd/task-4-report.md",
+      "source_location": "19-26"
+    },
+    {
+      "source": "task_5_report",
+      "target": "task_6_expression",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.75,
+      "source_file": ".superpowers/sdd/task-5-report.md",
+      "source_location": "37-39"
+    },
+    {
+      "source": "task_6_report",
+      "target": "task_2_scanner",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": ".superpowers/sdd/task-6-report.md",
+      "source_location": "68-87"
+    },
+    {
+      "source": "task_7_report",
+      "target": "task_6_expression",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": ".superpowers/sdd/task-7-report.md",
+      "source_location": "28-32"
+    },
+    {
+      "source": "task_8_report",
+      "target": "task_6_expression",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": ".superpowers/sdd/task-8-report.md",
+      "source_location": "74-77"
+    }
+  ],
+  "hyperedges": [
+    {
+      "id": "wave_1_grammar_tasks",
+      "label": "Wave 1: Parallel Grammar Task Cluster",
+      "nodes": [
+        "task_2_scanner",
+        "task_3_literals",
+        "task_4_identifiers",
+        "task_5_functions",
+        "task_6_expression",
+        "task_7_qsql",
+        "task_8_control"
+      ],
+      "relation": "participate_in",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".superpowers/sdd/progress.md"
+    },
+    {
+      "source": "task_1_foundation",
+      "relation": "form",
+      "nodes": [
+        "task_1_foundation",
+        "wave_1_parallel",
+        "task_10_convergence"
+      ],
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "id": "convergence_dependency_chain",
+      "label": "Convergence: Wave-1 Merge to Main",
+      "nodes": [
+        "wave_1_parallel",
+        "task_10_convergence",
+        "wave_2_convergence"
+      ],
+      "relation": "implement",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".superpowers/sdd/progress.md"
+    }
+  ],
+  "input_tokens": 0,
+  "output_tokens": 0
+}

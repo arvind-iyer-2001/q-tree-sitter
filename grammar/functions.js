@@ -13,8 +13,11 @@ const AMEND = token(choice(
 module.exports = {
   // assignment: right-associative.
   // left can be: identifier, dotted_name, or index (x[i] for amend-assign)
+  // left can be: identifier, dotted_name, builtin (q lets keyword-named
+  // globals be assigned — `view::select ...` defines a view named `view`),
+  // or index (x[i] for amend-assign)
   assignment: $ => prec.right(1, seq(
-    field('left', choice($.identifier, $.dotted_name, alias($.call, $.index))),
+    field('left', choice($.identifier, $.dotted_name, $.builtin, alias($.call, $.index))),
     field('operator', choice('::', ':', alias(AMEND, $.operator))),
     field('right', choice($.assignment, $._expression)),
   )),
@@ -31,7 +34,10 @@ module.exports = {
     '}',
   ),
 
-  parameters: $ => seq('[', optional(sep1(field('param', $.param), ';')), ']'),
+  // prec.dynamic: `{[a;b] ...}` — a `[` opening a lambda is ALWAYS the
+  // parameter list in q, never a bracket statement-block; the dynamic prec
+  // beats $.block when GLR holds both parses to the closing `]`.
+  parameters: $ => prec.dynamic(1, seq('[', optional(sep1(field('param', $.param), ';')), ']')),
 
   param: $ => $.identifier,
 };

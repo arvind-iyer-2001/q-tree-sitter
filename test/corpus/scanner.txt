@@ -96,12 +96,11 @@ b:2
 (source_file
   (assignment
     left: (identifier)
-    right: (assignment
-      left: (index
-        function: (number)
-        (comment)
-        arguments: (identifier))
-      right: (number))))
+    right: (number))
+  (comment)
+  (assignment
+    left: (identifier)
+    right: (number)))
 
 ==================
 system command timer

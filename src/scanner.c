@@ -54,24 +54,21 @@ static bool skip_horiz(TSLexer *l) {
 bool tree_sitter_q_external_scanner_scan(void *payload, TSLexer *l, const bool *valid) {
   Scanner *s = (Scanner *)payload;
 
+  /* Skip horizontal whitespace ONCE, up front, and share the result. Every
+   * ws-sensitive branch (trailing comment, LIST_WS) reads this flag — when
+   * each branch called skip_horiz itself, the first branch consumed the
+   * whitespace and every later branch saw saw_ws=false (that bug silently
+   * turned `1 2 3` vectors into juxtaposition chains). */
+  bool saw_ws = skip_horiz(l);
+
   /* ---------------------------------------------------------------
    * COMMENT: three forms
    * 1. Line comment: `/` at column 0 — rest of line
-   * 2. Trailing comment: `/` at column > 0 (space before was consumed
-   *    by extras in the internal lexer before calling us)
+   * 2. Trailing comment: `/` at column > 0 with whitespace before it
    * 3. Block comment: a line with only `/` starts a block; terminated
    *    by a line with only `\` or end of file.
-   *
-   * Key insight: by the time the external scanner is called, the
-   * internal lexer has already consumed whitespace via `extras`.
-   * So if we see `/` at col > 0, there was a space before it.
-   * At col == 0, the `/` is either a line comment or block comment start.
    * --------------------------------------------------------------- */
   if (valid[COMMENT]) {
-    /* The internal lexer may have already consumed spaces (as extras),
-     * so we might be positioned directly at `/`. But we also call
-     * skip_horiz ourselves to handle any remaining spaces not yet consumed. */
-    bool saw_ws = skip_horiz(l);
     uint32_t col = l->get_column(l);
 
     if (l->lookahead == '/') {
@@ -124,28 +121,26 @@ bool tree_sitter_q_external_scanner_scan(void *payload, TSLexer *l, const bool *
           l->result_symbol = COMMENT;
           return true;
         } else {
-          /* Single-line comment at col 0 */
+          /* Single-line comment at col 0. Leave the newline for the EOS
+           * scanner — statements now REQUIRE separators, so a comment that
+           * swallows its newline erases the statement boundary. */
           while (l->lookahead != '\n' && l->lookahead != '\r' && l->lookahead != 0) {
             adv(l);
           }
-          /* Consume the terminating newline so it's part of the comment token */
-          if (l->lookahead == '\r') adv(l);
-          if (l->lookahead == '\n') adv(l);
           l->result_symbol = COMMENT;
           return true;
         }
-      } else if (saw_ws || !valid[ADVERB_TOK]) {
-        /* col > 0 trailing comment. A `/` here is a comment ONLY if a space
-         * preceded it (saw_ws) — `x:1 /note` — or if no adverb is grammatically
-         * expected. With NO preceding space in adverb position (`+/`, `f/`) the
-         * `/` is the over-iterator, not a comment, so fall through. */
+      } else if (saw_ws) {
+        /* col > 0 trailing comment. A `/` here is a comment ONLY if whitespace
+         * precedes it (`x:1 /note`) — q's lexical rule. With NO preceding
+         * space (`+/`, `f/`) the `/` is the over-iterator, which the grammar
+         * now lexes itself via token.immediate, so fall through. */
         adv(l);
         while (l->lookahead != '\n' && l->lookahead != '\r' && l->lookahead != 0) {
           adv(l);
         }
-        /* Consume the trailing newline as part of the comment token */
-        if (l->lookahead == '\r') adv(l);
-        if (l->lookahead == '\n') adv(l);
+        /* Do NOT consume the newline — EOS must still fire on it, or the
+         * following line fuses into this statement (`a:1 /c` + `b:2`). */
         l->result_symbol = COMMENT;
         return true;
       }
@@ -163,7 +158,6 @@ bool tree_sitter_q_external_scanner_scan(void *payload, TSLexer *l, const bool *
    * SYSTEM_COMMAND_TOK. The downstream extractor (T12) inspects the text.
    * --------------------------------------------------------------- */
   if (valid[SYSTEM_COMMAND_TOK]) {
-    skip_horiz(l);
     uint32_t col = l->get_column(l);
     if (col == 0 && l->lookahead == '\\') {
       adv(l); /* consume '\' */
@@ -178,34 +172,13 @@ bool tree_sitter_q_external_scanner_scan(void *payload, TSLexer *l, const bool *
   }
 
   /* ---------------------------------------------------------------
-   * NEG_NUMBER: a `-` immediately followed by a digit, where the
-   * left context is NOT a value/name/)/].
-   * prev_was_value tracks left context.
-   * When called: lookahead is `-` and we haven't skipped whitespace yet
-   * (extras already consumed spaces before calling us).
+   * NEG_NUMBER: RETIRED (2026-07-05 rewrite). Whether `-5` is a negative
+   * literal or subtraction depends on the parse state, which the scanner
+   * cannot know (its prev_was_value gate was unknowable for internally
+   * lexed tokens — see AUDIT_2026-07-05.md). Negative literals are now the
+   * grammar composition `'-' _number_token`; the enum slot stays so the
+   * externals order keeps matching grammar.js.
    * --------------------------------------------------------------- */
-  if (valid[NEG_NUMBER] && !s->prev_was_value && l->lookahead == '-') {
-    adv(l); /* consume `-` */
-    /* A negative number starts with a digit (`-5`, `-5.0`) OR a leading dot
-     * (`-.5`, `-.1e3`) — q parses `-.5` as the float -0.5. */
-    bool lead_digit = (l->lookahead >= '0' && l->lookahead <= '9');
-    bool lead_dot   = (l->lookahead == '.');
-    if (lead_digit || lead_dot) {
-      while ((l->lookahead >= '0' && l->lookahead <= '9') || l->lookahead == '.') {
-        adv(l);
-      }
-      /* optional exponent */
-      if (l->lookahead == 'e' || l->lookahead == 'E') {
-        adv(l);
-        if (l->lookahead == '+' || l->lookahead == '-') adv(l);
-        while (l->lookahead >= '0' && l->lookahead <= '9') adv(l);
-      }
-      s->prev_was_value = true;
-      l->result_symbol = NEG_NUMBER;
-      return true;
-    }
-    return false;
-  }
 
   /* ---------------------------------------------------------------
    * ADVERB_TOK: postfix iterator glyphs after a value.
@@ -228,10 +201,10 @@ bool tree_sitter_q_external_scanner_scan(void *payload, TSLexer *l, const bool *
    * newline.
    * --------------------------------------------------------------- */
   if (valid[EOS]) {
-    skip_horiz(l);
     if ((l->lookahead == '\n' || l->lookahead == '\r') && s->depth == 0) {
+      bool was_cr = (l->lookahead == '\r');
       adv(l);
-      if (l->lookahead == '\n' && l->lookahead == '\r') adv(l); /* \r\n */
+      if (was_cr && l->lookahead == '\n') adv(l); /* \r\n */
       s->prev_was_value = false;
       l->result_symbol = EOS;
       return true;
@@ -258,15 +231,21 @@ bool tree_sitter_q_external_scanner_scan(void *payload, TSLexer *l, const bool *
    * left set to true). NOTE: must come after COMMENT since both may be valid.
    * --------------------------------------------------------------- */
   if (valid[LIST_WS]) {
-    bool saw = skip_horiz(l);
-    if (saw && l->lookahead >= '0' && l->lookahead <= '9') {
+    if (saw_ws && l->lookahead >= '0' && l->lookahead <= '9') {
       l->result_symbol = LIST_WS;
       return true;
     }
-    if (saw && l->lookahead == '-' && valid[NEG_NUMBER]) {
-      s->prev_was_value = false;
-      l->result_symbol = LIST_WS;
-      return true;
+    /* `-5 -4 -3`: separator before a NEGATIVE element. Peek past the `-`
+     * for a digit/dot; mark_end first so the `-` itself stays unconsumed
+     * (the grammar's number rule owns it). */
+    if (saw_ws && l->lookahead == '-') {
+      l->mark_end(l);
+      adv(l);
+      if ((l->lookahead >= '0' && l->lookahead <= '9') || l->lookahead == '.') {
+        l->result_symbol = LIST_WS;
+        return true;
+      }
+      return false;
     }
   }
 

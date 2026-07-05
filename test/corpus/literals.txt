@@ -382,29 +382,19 @@ e:-0We
 (source_file
   (assignment
     left: (identifier)
-    right: (call
-      function: (number)
-      arguments: (identifier)))
+    right: (infinity))
   (assignment
     left: (identifier)
-    right: (call
-      function: (number)
-      arguments: (identifier)))
+    right: (infinity))
   (assignment
     left: (identifier)
-    right: (call
-      function: (number)
-      arguments: (identifier)))
+    right: (infinity))
   (assignment
     left: (identifier)
-    right: (call
-      function: (number)
-      arguments: (identifier)))
+    right: (infinity))
   (assignment
     left: (identifier)
-    right: (call
-      function: (number)
-      arguments: (identifier))))
+    right: (infinity)))
 
 ==================
 temporal literals - date
@@ -575,6 +565,6 @@ numeric vector - NOTE: full vector parsing requires _list_ws from Task 2 scanner
 ---
 
 (source_file
-  (call
+  (vector
     (number)
     (number)))

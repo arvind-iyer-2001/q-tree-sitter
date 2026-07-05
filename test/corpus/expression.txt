@@ -47,8 +47,10 @@ s:+/[1;2]
 (source_file
   (assignment
     left: (identifier)
-    right: (adverb_apply
-      function: (operator)
+    right: (call
+      function: (adverb_apply
+        function: (operator)
+        adverb: (adverb))
       arguments: (arguments
         (number)
         (number)))))
@@ -111,8 +113,9 @@ c:count x
 (source_file
   (assignment
     left: (identifier)
-    right: (builtin))
-  (identifier))
+    right: (call
+      function: (builtin)
+      arguments: (identifier))))
 
 ==================
 each adverb
@@ -123,8 +126,10 @@ e:f'[1;2;3]
 (source_file
   (assignment
     left: (identifier)
-    right: (adverb_apply
-      function: (identifier)
+    right: (call
+      function: (adverb_apply
+        function: (identifier)
+        adverb: (adverb))
       arguments: (arguments
         (number)
         (number)
@@ -139,8 +144,10 @@ sc:+\[1;2;3]
 (source_file
   (assignment
     left: (identifier)
-    right: (adverb_apply
-      function: (operator)
+    right: (call
+      function: (adverb_apply
+        function: (operator)
+        adverb: (adverb))
       arguments: (arguments
         (number)
         (number)
@@ -155,8 +162,10 @@ er:f/:[1;2]
 (source_file
   (assignment
     left: (identifier)
-    right: (adverb_apply
-      function: (identifier)
+    right: (call
+      function: (adverb_apply
+        function: (identifier)
+        adverb: (adverb))
       arguments: (arguments
         (number)
         (number)))))
@@ -170,8 +179,10 @@ el:f\:[1;2]
 (source_file
   (assignment
     left: (identifier)
-    right: (adverb_apply
-      function: (identifier)
+    right: (call
+      function: (adverb_apply
+        function: (identifier)
+        adverb: (adverb))
       arguments: (arguments
         (number)
         (number)))))
@@ -185,8 +196,10 @@ ep:f':[1;2]
 (source_file
   (assignment
     left: (identifier)
-    right: (adverb_apply
-      function: (identifier)
+    right: (call
+      function: (adverb_apply
+        function: (identifier)
+        adverb: (adverb))
       arguments: (arguments
         (number)
         (number)))))
@@ -231,9 +244,9 @@ pj:f[a;;c]
 ---
 
 (source_file
-  (builtin)
-  (return_stmt
-    (call
+  (assignment
+    left: (builtin)
+    right: (call
       function: (identifier)
       arguments: (arguments
         (identifier)

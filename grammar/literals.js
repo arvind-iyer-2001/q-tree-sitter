@@ -8,9 +8,18 @@ module.exports = {
   // number: integer (j/i/h suffixes), float (f), real (e), exponential
   // Includes $._neg_number alias for negative literals from the external scanner.
   // -------------------------------------------------------------------------
+  // Negative literals are a GRAMMAR composition (`'-' _number_token`), not a
+  // fused lexer token: whether `-5` is a literal or subtraction depends on the
+  // parse state (`x-5` subtracts; `n?-5`, `f[-5]`, `x:-5` negate), which only
+  // the parser knows. The external NEG_NUMBER token is retired (audit: its
+  // prev_was_value gate was unknowable). The juxt-argument _nn family blocks
+  // the one bad reading (`call(x, -5)`).
   number: $ => choice(
-    $._neg_number,   // negative numeric literal — provided by external scanner (Task 2)
-    token(choice(
+    seq('-', $._number_token),
+    $._number_token,
+  ),
+
+  _number_token: $ => token(choice(
       // Null/infinity are handled by their own rules with higher precedence.
       // Float with optional exponent — must come BEFORE bare integer to avoid ambiguity
       // e.g. "3.14", "0.0", "3.14f", "3.14e", "1.2e20", "1.234568e+08", "0f", "42f"
@@ -20,8 +29,7 @@ module.exports = {
       // Integer with suffix: "42j", "42i", "42h", or bare "42"
       // "0e" and "0f" (no decimal) — integer + e/f suffix
       /[0-9]+[jihfe]?/,
-    ))
-  ),
+  )),
 
   // -------------------------------------------------------------------------
   // boolean: 0b, 1b, and boolean vectors like 0101b, 01110001b
@@ -161,5 +169,7 @@ module.exports = {
   // $._list_ws token (w1-scanner) — significant whitespace separating numbers
   // in vector context — so `1 2 3` is one vector, not juxtaposed atoms.
   // -------------------------------------------------------------------------
-  vector: $ => prec.left(2, seq($.number, repeat1(seq($._list_ws, $.number)))),
+  // prec.dynamic: with numbers in _applicable (for the `-1"msg"` print idiom)
+  // a GLR fork could read `1 2 3` as juxtaposition chains; the vector must win.
+  vector: $ => prec.dynamic(2, prec.left(2, seq($.number, repeat1(seq($._list_ws, $.number))))),
 };

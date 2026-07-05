@@ -1,0 +1,2577 @@
+{
+  "nodes": [
+    {
+      "id": "progress_sdd_project",
+      "label": "tree-sitter-q + Graphify SDD Project",
+      "file_type": "document",
+      "source_file": ".superpowers/sdd/progress.md",
+      "source_location": "1-31"
+    },
+    {
+      "id": "task_1_foundation",
+      "label": "Task 1: Foundation — compiling skeleton + frozen interfaces",
+      "file_type": "concept",
+      "source_file": ".superpowers/sdd/task-1-brief.md"
+    },
+    {
+      "id": "task_1_report",
+      "label": "Task 1 Report: Foundation Complete",
+      "file_type": "document",
+      "source_file": ".superpowers/sdd/task-1-report.md"
+    },
+    {
+      "id": "task_2_scanner",
+      "label": "Task 2: External scanner (src/scanner.c)",
+      "file_type": "concept",
+      "source_file": ".superpowers/sdd/task-2-brief.md"
+    },
+    {
+      "id": "task_2_report",
+      "label": "Task 2 Report: External Scanner Complete",
+      "file_type": "document",
+      "source_file": ".superpowers/sdd/task-2-report.md"
+    },
+    {
+      "id": "task_3_literals",
+      "label": "Task 3: Literals (grammar/literals.js)",
+      "file_type": "concept",
+      "source_file": ".superpowers/sdd/task-3-brief.md"
+    },
+    {
+      "id": "task_3_report",
+      "label": "Task 3 Report: Literals Complete",
+      "file_type": "document",
+      "source_file": ".superpowers/sdd/task-3-report.md"
+    },
+    {
+      "id": "task_4_identifiers",
+      "label": "Task 4: Identifiers, namespaces, builtins, symbol vectors",
+      "file_type": "concept",
+      "source_file": ".superpowers/sdd/task-4-brief.md"
+    },
+    {
+      "id": "task_4_report",
+      "label": "Task 4 Report: Identifiers Complete",
+      "file_type": "document",
+      "source_file": ".superpowers/sdd/task-4-report.md"
+    },
+    {
+      "id": "task_5_functions",
+      "label": "Task 5: Functions — lambda, parameters, assignment",
+      "file_type": "concept",
+      "source_file": ".superpowers/sdd/task-5-brief.md"
+    },
+    {
+      "id": "task_5_report",
+      "label": "Task 5 Report: Functions Complete",
+      "file_type": "document",
+      "source_file": ".superpowers/sdd/task-5-report.md"
+    },
+    {
+      "id": "task_6_expression",
+      "label": "Task 6: Expression core — RTL, application, adverbs, lists",
+      "file_type": "concept",
+      "source_file": ".superpowers/sdd/task-6-brief.md"
+    },
+    {
+      "id": "task_6_report",
+      "label": "Task 6 Report: Expression Core Complete",
+      "file_type": "document",
+      "source_file": ".superpowers/sdd/task-6-report.md"
+    },
+    {
+      "id": "task_7_qsql",
+      "label": "Task 7: q-SQL (grammar/qsql.js)",
+      "file_type": "concept",
+      "source_file": ".superpowers/sdd/task-7-brief.md"
+    },
+    {
+      "id": "task_7_report",
+      "label": "Task 7 Report: q-SQL Grammar Complete",
+      "file_type": "document",
+      "source_file": ".superpowers/sdd/task-7-report.md"
+    },
+    {
+      "id": "task_8_control",
+      "label": "Task 8: Control flow & cond (grammar/control.js)",
+      "file_type": "concept",
+      "source_file": ".superpowers/sdd/task-8-brief.md"
+    },
+    {
+      "id": "task_8_report",
+      "label": "Task 8 Report: Control Flow Complete",
+      "file_type": "document",
+      "source_file": ".superpowers/sdd/task-8-report.md"
+    },
+    {
+      "id": "task_10_convergence",
+      "label": "Task 10: Convergence — merge, generate, resolve GLR conflicts",
+      "file_type": "concept",
+      "source_file": ".superpowers/sdd/task-10-brief.md"
+    },
+    {
+      "id": "task_10_report",
+      "label": "Task 10 Report: Convergence Complete",
+      "file_type": "document",
+      "source_file": ".superpowers/sdd/task-10-report.md"
+    },
+    {
+      "id": "task_11_wheel",
+      "label": "Task 11: Python wheel build + language() load test",
+      "file_type": "concept",
+      "source_file": ".superpowers/sdd/task-11-brief.md"
+    },
+    {
+      "id": "task_11_report",
+      "label": "Task 11 Report: Python Wheel Build Complete",
+      "file_type": "document",
+      "source_file": ".superpowers/sdd/task-11-report.md"
+    },
+    {
+      "id": "task_12_graphify",
+      "label": "Task 12: Graphify extractor (graphify/extractors/q.py)",
+      "file_type": "concept",
+      "source_file": ".superpowers/sdd/task-12-brief.md"
+    },
+    {
+      "id": "task_13_parse_rate",
+      "label": "Task 13: Real-repo parse-rate harness",
+      "file_type": "concept",
+      "source_file": ".superpowers/sdd/task-13-brief.md"
+    },
+    {
+      "id": "wave_1_parallel",
+      "label": "Wave 1: Parallel Grammar Tasks",
+      "file_type": "rationale",
+      "source_file": ".superpowers/sdd/progress.md",
+      "rationale": "Tasks 2-9 run in parallel worktrees after Task 1 foundation completes. Each owns a grammar module and implements corresponding test corpus."
+    },
+    {
+      "id": "wave_2_convergence",
+      "label": "Wave 2: Convergence and Merge",
+      "file_type": "rationale",
+      "source_file": ".superpowers/sdd/progress.md",
+      "rationale": "Task 10 merges all wave-1 branches to main, resolves GLR conflicts, regenerates parser, validates full corpus green."
+    },
+    {
+      "id": "wave_3_packaging",
+      "label": "Wave 3: Packaging and Integration",
+      "file_type": "rationale",
+      "source_file": ".superpowers/sdd/progress.md",
+      "rationale": "Tasks 11-13 build Python wheel, verify language() loads, and integrate with Graphify for extraction."
+    },
+    {
+      "id": "tree_sitter_grammar_architecture",
+      "label": "Tree-sitter Modular Grammar Architecture",
+      "file_type": "rationale",
+      "source_file": ".superpowers/sdd/task-1-brief.md",
+      "rationale": "Grammar split into modules (literals, identifiers, functions, expression, qsql, control, commands) merged via Object.assign(). Each module independently testable, each wave-1 task owns one module."
+    },
+    {
+      "id": "expression_rtl_design",
+      "label": "Right-to-Left (RTL) Expression Model",
+      "file_type": "rationale",
+      "source_file": ".superpowers/sdd/task-6-brief.md",
+      "rationale": "q has no operator precedence; every dyadic operation binds right. Implemented as right-recursive binary fold: binary = prec.right(seq(left:_application, operator, right:_expression)). Ensures 2*3+4 parses right-nested."
+    },
+    {
+      "id": "glr_conflict_strategy",
+      "label": "GLR Conflict Resolution Strategy",
+      "file_type": "rationale",
+      "source_file": ".superpowers/sdd/task-6-report.md",
+      "rationale": "Four conflicts intentionally kept: symbol_vector/_primary (single vs repeat), call/index (q resolves at eval), call/_application (juxtaposition), builtin/select (keyword reuse). Others removed via prec/structure. Task 10 reconciles across all branches."
+    },
+    {
+      "id": "external_scanner_tokens",
+      "label": "External Scanner Token Set",
+      "file_type": "rationale",
+      "source_file": ".superpowers/sdd/task-2-brief.md",
+      "rationale": "Seven external tokens: COMMENT (line/block), SYSTEM_COMMAND_TOK (backslash), NEG_NUMBER (whitespace-sensitive), LIST_WS (vector separator), ADVERB_TOK (postfix iterator), EOS (statement terminator), ERROR_SENTINEL."
+    },
+    {
+      "id": "node_taxonomy",
+      "label": "Frozen Node Type Taxonomy",
+      "file_type": "rationale",
+      "source_file": ".superpowers/sdd/task-1-report.md",
+      "rationale": "Complete rule-name set frozen after Task 1: assignment, lambda, parameters, call, index, binary, adverb_apply, select_statement, control, cond, plus 20+ literal types. All downstream tasks reference these names."
+    },
+    {
+      "id": "namespace_qualification",
+      "label": "Namespace Qualification (\\d)",
+      "file_type": "rationale",
+      "source_file": ".superpowers/sdd/task-2-report.md",
+      "rationale": "Scanner emits SYSTEM_COMMAND_TOK for backslash commands; parser defers \\d to namespace_directive rule. Namespace state tracked by Graphify extractor for function/variable scoping."
+    },
+    {
+      "id": "computed_column_syntax",
+      "label": "q-SQL Computed Column Syntax",
+      "file_type": "rationale",
+      "source_file": ".superpowers/sdd/task-7-report.md",
+      "rationale": "Phrases inside select/exec/update/delete clauses are `;`-separated expressions. To support col:expr naming, _expression is overridden in qsql.js to include assignment, allowing column-def within phrase context."
+    },
+    {
+      "id": "cache_clash_concern",
+      "label": "macOS Tree-sitter Dylib Cache Clash",
+      "file_type": "rationale",
+      "source_file": ".superpowers/sdd/progress.md",
+      "rationale": "Grammar name 'q' shared across worktrees caches ~.../Library/Caches/tree-sitter/lib/q.dylib. Always use tree-sitter test --rebuild in worktrees; prevents stale binary loading."
+    },
+    {
+      "id": "graphify_extractor_contract",
+      "label": "Graphify Extractor Contract",
+      "file_type": "rationale",
+      "source_file": ".superpowers/sdd/task-12-brief.md",
+      "rationale": "Extractor returns {nodes:[{id, name, kind, line}], edges:[{src, dst, relation, line, confidence}]}. Kinds: file, function, variable. Relations: contains, calls, imports, uses. Namespace-aware via \\d tracking."
+    },
+    {
+      "id": "c1_task_1_completed",
+      "label": "Task 1 Completed: d3e3fe2",
+      "file_type": "document",
+      "source_file": ".superpowers/sdd/task-1-report.md",
+      "source_location": "9-11"
+    },
+    {
+      "id": "c1_task_2_completed",
+      "label": "Task 2 Completed: 764089c (w1-scanner)",
+      "file_type": "document",
+      "source_file": ".superpowers/sdd/task-2-report.md",
+      "source_location": "5-6"
+    },
+    {
+      "id": "c1_task_3_completed",
+      "label": "Task 3 Completed: feb6b0b (w1-literals)",
+      "file_type": "document",
+      "source_file": ".superpowers/sdd/task-3-report.md",
+      "source_location": "5-5"
+    },
+    {
+      "id": "c1_task_4_completed",
+      "label": "Task 4 Completed: 5968b35 (w1-identifiers)",
+      "file_type": "document",
+      "source_file": ".superpowers/sdd/task-4-report.md",
+      "source_location": "3-4"
+    },
+    {
+      "id": "c1_task_5_completed",
+      "label": "Task 5 Completed: 0de7651 (w1-functions)",
+      "file_type": "document",
+      "source_file": ".superpowers/sdd/task-5-report.md",
+      "source_location": "4-5"
+    },
+    {
+      "id": "c1_task_6_completed",
+      "label": "Task 6 Completed: 010c3a6 (w1-expression)",
+      "file_type": "document",
+      "source_file": ".superpowers/sdd/task-6-report.md",
+      "source_location": "4-5"
+    },
+    {
+      "id": "c1_task_7_completed",
+      "label": "Task 7 Completed: 6c3d582 (w1-qsql)",
+      "file_type": "document",
+      "source_file": ".superpowers/sdd/task-7-report.md",
+      "source_location": "3-4"
+    },
+    {
+      "id": "c1_task_8_completed",
+      "label": "Task 8 Completed: e522c5c (w1-control)",
+      "file_type": "document",
+      "source_file": ".superpowers/sdd/task-8-report.md",
+      "source_location": "3-4"
+    },
+    {
+      "id": "c1_task_10_completed",
+      "label": "Task 10 Completed: 0cfc478 (convergence commit)",
+      "file_type": "document",
+      "source_file": ".superpowers/sdd/progress.md",
+      "source_location": "28-28"
+    },
+    {
+      "id": "c1_task_11_completed",
+      "label": "Task 11 Completed: 59cea5a (wheel)",
+      "file_type": "document",
+      "source_file": ".superpowers/sdd/task-11-report.md",
+      "source_location": "48-49"
+    },
+    {
+      "id": "task_8_report_grammar_control_cond",
+      "label": "Cond conditional expression",
+      "file_type": "rationale",
+      "source_file": ".superpowers/sdd/task-8-report.md",
+      "source_location": "line 27-34"
+    },
+    {
+      "id": "task_8_report_grammar_control_control_stmt",
+      "label": "Control flow statements (if/do/while)",
+      "file_type": "rationale",
+      "source_file": ".superpowers/sdd/task-8-report.md",
+      "source_location": "line 29-31"
+    },
+    {
+      "id": "task_8_report_grammar_control_return_stmt",
+      "label": "Return statement with colon prefix",
+      "file_type": "rationale",
+      "source_file": ".superpowers/sdd/task-8-report.md",
+      "source_location": "line 32"
+    },
+    {
+      "id": "task_8_report_grammar_control_signal_stmt",
+      "label": "Signal/throw statement with quote prefix",
+      "file_type": "rationale",
+      "source_file": ".superpowers/sdd/task-8-report.md",
+      "source_location": "line 33"
+    },
+    {
+      "id": "task_8_report_glr_conflict_assignment",
+      "label": "GLR conflict between assignment and literal reference",
+      "file_type": "rationale",
+      "source_file": ".superpowers/sdd/task-8-report.md",
+      "source_location": "line 75-76"
+    },
+    {
+      "id": "task_9_report_namespace_directive",
+      "label": "Namespace directive folded into system_command",
+      "file_type": "rationale",
+      "source_file": ".superpowers/sdd/task-9-report.md",
+      "source_location": "line 3-5"
+    },
+    {
+      "id": "task_9_report_system_command",
+      "label": "System command - all backslash commands",
+      "file_type": "rationale",
+      "source_file": ".superpowers/sdd/task-9-report.md",
+      "source_location": "line 26"
+    },
+    {
+      "id": "agents_md_project_goal",
+      "label": "Comprehensive Tree-sitter grammar for KDB+/q with Graphify integration",
+      "file_type": "rationale",
+      "source_file": "AGENTS.md",
+      "source_location": "line 3"
+    },
+    {
+      "id": "plan_design_tree_sitter_q_graphify",
+      "label": "Tree-sitter q + Graphify integration implementation plan",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-06-28-tree-sitter-q-graphify.md"
+    },
+    {
+      "id": "design_spec_tree_sitter_q_graphify",
+      "label": "Design: Tree-sitter grammar for KDB+/q + Graphify integration",
+      "file_type": "document",
+      "source_file": "docs/superpowers/specs/2026-06-28-tree-sitter-q-graphify-design.md"
+    },
+    {
+      "id": "grammar_js_main",
+      "label": "Main grammar module - merges all submodules",
+      "file_type": "code",
+      "source_file": "grammar.js"
+    },
+    {
+      "id": "grammar_literals_js",
+      "label": "Literal lexical forms (numbers, temporal, strings, symbols, etc)",
+      "file_type": "code",
+      "source_file": "grammar/literals.js"
+    },
+    {
+      "id": "grammar_identifiers_js",
+      "label": "Identifier rules, dotted names, builtins, symbol vectors",
+      "file_type": "code",
+      "source_file": "grammar/identifiers.js"
+    },
+    {
+      "id": "grammar_functions_js",
+      "label": "Lambda, parameters, assignment rules",
+      "file_type": "code",
+      "source_file": "grammar/functions.js"
+    },
+    {
+      "id": "grammar_expression_js",
+      "label": "Right-to-left expression core, application, adverbs, lists",
+      "file_type": "code",
+      "source_file": "grammar/expression.js"
+    },
+    {
+      "id": "grammar_qsql_js",
+      "label": "q-SQL select/exec/update/delete with clauses",
+      "file_type": "code",
+      "source_file": "grammar/qsql.js"
+    },
+    {
+      "id": "grammar_control_js",
+      "label": "Control flow (cond, if/do/while, return, signal)",
+      "file_type": "code",
+      "source_file": "grammar/control.js"
+    },
+    {
+      "id": "grammar_commands_js",
+      "label": "System/backslash commands grammar",
+      "file_type": "code",
+      "source_file": "grammar/commands.js"
+    },
+    {
+      "id": "binding_c_python",
+      "label": "Python binding exposing language() function",
+      "file_type": "code",
+      "source_file": "bindings/python/tree_sitter_q/binding.c"
+    },
+    {
+      "id": "binding_init_py",
+      "label": "Python module __init__.py exposing language()",
+      "file_type": "code",
+      "source_file": "bindings/python/tree_sitter_q/__init__.py"
+    },
+    {
+      "id": "package_json_config",
+      "label": "Tree-sitter CLI package configuration",
+      "file_type": "code",
+      "source_file": "package.json"
+    },
+    {
+      "id": "wave_0_foundation_task1",
+      "label": "Task 1: Foundation - compiling skeleton + frozen interfaces",
+      "file_type": "concept",
+      "source_file": "docs/superpowers/plans/2026-06-28-tree-sitter-q-graphify.md"
+    },
+    {
+      "id": "wave_1_grammar_scanner_tasks",
+      "label": "Wave 1: Grammar + Scanner - 8 parallel tasks (T2-T9)",
+      "file_type": "concept",
+      "source_file": "docs/superpowers/plans/2026-06-28-tree-sitter-q-graphify.md"
+    },
+    {
+      "id": "wave_2_convergence_task10",
+      "label": "Task 10: Convergence - merge, generate, resolve conflicts, full corpus green",
+      "file_type": "concept",
+      "source_file": "docs/superpowers/plans/2026-06-28-tree-sitter-q-graphify.md"
+    },
+    {
+      "id": "wave_3_package_extract_corpus",
+      "label": "Wave 3: Package/Extract/Corpus (T11, T12, T13 parallel)",
+      "file_type": "concept",
+      "source_file": "docs/superpowers/plans/2026-06-28-tree-sitter-q-graphify.md"
+    },
+    {
+      "id": "wave_4_wire_e2e",
+      "label": "Wave 4: Wire + E2E (T14, T15 sequential)",
+      "file_type": "concept",
+      "source_file": "docs/superpowers/plans/2026-06-28-tree-sitter-q-graphify.md"
+    },
+    {
+      "id": "external_scanner_whitespace_semantics",
+      "label": "External scanner handles whitespace semantics, comments, negative numbers",
+      "file_type": "rationale",
+      "source_file": "docs/superpowers/specs/2026-06-28-tree-sitter-q-graphify-design.md",
+      "source_location": "line 30-31"
+    },
+    {
+      "id": "rtl_expression_model",
+      "label": "Right-to-left expression evaluation with no operator precedence",
+      "file_type": "rationale",
+      "source_file": "docs/superpowers/specs/2026-06-28-tree-sitter-q-graphify-design.md",
+      "source_location": "line 32"
+    },
+    {
+      "id": "adverb_system",
+      "label": "Postfix adverbs (/, \\, ', /:, \\:, etc) applied to verbs",
+      "file_type": "rationale",
+      "source_file": "docs/superpowers/specs/2026-06-28-tree-sitter-q-graphify-design.md",
+      "source_location": "line 33-34"
+    },
+    {
+      "id": "function_as_assignment_lambda",
+      "label": "Functions defined as assignments to lambdas",
+      "file_type": "rationale",
+      "source_file": "docs/superpowers/specs/2026-06-28-tree-sitter-q-graphify-design.md",
+      "source_location": "line 37-38"
+    },
+    {
+      "id": "qsql_dsl",
+      "label": "q-SQL DSL with select/exec/update/delete and clauses",
+      "file_type": "rationale",
+      "source_file": "docs/superpowers/specs/2026-06-28-tree-sitter-q-graphify-design.md",
+      "source_location": "line 36"
+    },
+    {
+      "id": "namespace_system",
+      "label": "Namespace system via .ns.name qualification and \\d directive",
+      "file_type": "rationale",
+      "source_file": "docs/superpowers/specs/2026-06-28-tree-sitter-q-graphify-design.md",
+      "source_location": "line 8, 97"
+    },
+    {
+      "id": "graphify_extractor_bespoke",
+      "label": "Bespoke Graphify extractor for q language",
+      "file_type": "rationale",
+      "source_file": "docs/superpowers/specs/2026-06-28-tree-sitter-q-graphify-design.md",
+      "source_location": "line 92-101"
+    },
+    {
+      "id": "literal_zoo",
+      "label": "Comprehensive literal types: dates, times, numbers, symbols, strings, bool vectors",
+      "file_type": "rationale",
+      "source_file": "docs/superpowers/specs/2026-06-28-tree-sitter-q-graphify-design.md",
+      "source_location": "line 38-39"
+    },
+    {
+      "id": "node_taxonomy_assignment",
+      "label": "Assignment node with left/operator/right fields",
+      "file_type": "concept",
+      "source_file": "docs/superpowers/plans/2026-06-28-tree-sitter-q-graphify.md",
+      "source_location": "line 99"
+    },
+    {
+      "id": "node_taxonomy_lambda",
+      "label": "Lambda node with optional parameters and body fields",
+      "file_type": "concept",
+      "source_file": "docs/superpowers/plans/2026-06-28-tree-sitter-q-graphify.md",
+      "source_location": "line 99"
+    },
+    {
+      "id": "node_taxonomy_call",
+      "label": "Call node with function and arguments fields",
+      "file_type": "concept",
+      "source_file": "docs/superpowers/plans/2026-06-28-tree-sitter-q-graphify.md",
+      "source_location": "line 99"
+    },
+    {
+      "id": "node_taxonomy_qsql",
+      "label": "q-SQL nodes: select/exec/update/delete with clause children",
+      "file_type": "concept",
+      "source_file": "docs/superpowers/plans/2026-06-28-tree-sitter-q-graphify.md",
+      "source_location": "line 99"
+    },
+    {
+      "id": "node_taxonomy_control",
+      "label": "Control flow nodes: cond, control, return_stmt, signal_stmt",
+      "file_type": "concept",
+      "source_file": "docs/superpowers/plans/2026-06-28-tree-sitter-q-graphify.md",
+      "source_location": "line 99"
+    },
+    {
+      "id": "node_taxonomy_system_command",
+      "label": "System command node with command and optional argument fields",
+      "file_type": "concept",
+      "source_file": "docs/superpowers/plans/2026-06-28-tree-sitter-q-graphify.md",
+      "source_location": "line 99"
+    },
+    {
+      "id": "references_datatypes_q_datatype",
+      "label": "q Datatypes",
+      "file_type": "concept",
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/references/datatypes.md",
+      "source_location": "line 1-37",
+      "source_url": null,
+      "captured_at": "2026-07-05",
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "references_datatypes_scalar_types",
+      "label": "Scalar Types",
+      "file_type": "concept",
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/references/datatypes.md",
+      "source_location": "line 13-37",
+      "source_url": null,
+      "captured_at": "2026-07-05",
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "references_datatypes_temporal_types",
+      "label": "Temporal Datatypes",
+      "file_type": "concept",
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/references/datatypes.md",
+      "source_location": "line 151-178",
+      "source_url": null,
+      "captured_at": "2026-07-05",
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "references_datatypes_literal_forms",
+      "label": "Literal Lexical Forms",
+      "file_type": "concept",
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/references/datatypes.md",
+      "source_location": "line 93-219",
+      "source_url": null,
+      "captured_at": "2026-07-05",
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "references_keywords_qsql_templates",
+      "label": "q-SQL Template Words",
+      "file_type": "concept",
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/references/keywords.md",
+      "source_location": "line 19-47",
+      "source_url": null,
+      "captured_at": "2026-07-05",
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "references_keywords_control_words",
+      "label": "Control Words",
+      "file_type": "concept",
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/references/keywords.md",
+      "source_location": "line 50-63",
+      "source_url": null,
+      "captured_at": "2026-07-05",
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "references_keywords_keyword_functions",
+      "label": "Keyword Functions",
+      "file_type": "concept",
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/references/keywords.md",
+      "source_location": "line 70-158",
+      "source_url": null,
+      "captured_at": "2026-07-05",
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "references_operators_glyphs",
+      "label": "Primitive Operator Glyphs",
+      "file_type": "concept",
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/references/operators.md",
+      "source_location": "line 44-221",
+      "source_url": null,
+      "captured_at": "2026-07-05",
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "references_operators_iterators",
+      "label": "Iterator Glyphs",
+      "file_type": "concept",
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/references/operators.md",
+      "source_location": "line 222-249",
+      "source_url": null,
+      "captured_at": "2026-07-05",
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "references_operators_multichar",
+      "label": "Multi-Character Tokens",
+      "file_type": "concept",
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/references/operators.md",
+      "source_location": "line 24-41",
+      "source_url": null,
+      "captured_at": "2026-07-05",
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "references_qsql_template_syntax",
+      "label": "q-SQL Template Syntax",
+      "file_type": "concept",
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/references/qsql.md",
+      "source_location": "line 14-52",
+      "source_url": null,
+      "captured_at": "2026-07-05",
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "references_qsql_evaluation_order",
+      "label": "q-SQL Evaluation Order",
+      "file_type": "rationale",
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/references/qsql.md",
+      "source_location": "line 54-62",
+      "source_url": null,
+      "captured_at": "2026-07-05",
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "references_qsql_from_phrase",
+      "label": "From Phrase",
+      "file_type": "concept",
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/references/qsql.md",
+      "source_location": "line 66-75",
+      "source_url": null,
+      "captured_at": "2026-07-05",
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "references_qsql_where_phrase",
+      "label": "Where Phrase",
+      "file_type": "concept",
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/references/qsql.md",
+      "source_location": "line 77-85",
+      "source_url": null,
+      "captured_at": "2026-07-05",
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "references_qsql_select_phrase",
+      "label": "Select Phrase",
+      "file_type": "concept",
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/references/qsql.md",
+      "source_location": "line 97-110",
+      "source_url": null,
+      "captured_at": "2026-07-05",
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "references_qsql_functional_forms",
+      "label": "Functional q-SQL Forms",
+      "file_type": "concept",
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/references/qsql.md",
+      "source_location": "line 166-182",
+      "source_url": null,
+      "captured_at": "2026-07-05",
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "references_syntax_evaluation_order",
+      "label": "Right-to-Left Evaluation",
+      "file_type": "rationale",
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/references/syntax.md",
+      "source_location": "line 17-37",
+      "source_url": null,
+      "captured_at": "2026-07-05",
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "references_syntax_lambda_notation",
+      "label": "Lambda Notation",
+      "file_type": "concept",
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/references/syntax.md",
+      "source_location": "line 41-54",
+      "source_url": null,
+      "captured_at": "2026-07-05",
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "references_syntax_application_forms",
+      "label": "Application Forms",
+      "file_type": "concept",
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/references/syntax.md",
+      "source_location": "line 66-92",
+      "source_url": null,
+      "captured_at": "2026-07-05",
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "references_syntax_whitespace_sensitivity",
+      "label": "Whitespace Sensitivity",
+      "file_type": "rationale",
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/references/syntax.md",
+      "source_location": "line 95-127",
+      "source_url": null,
+      "captured_at": "2026-07-05",
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "references_syntax_comments",
+      "label": "Comment Forms",
+      "file_type": "concept",
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/references/syntax.md",
+      "source_location": "line 129-145",
+      "source_url": null,
+      "captured_at": "2026-07-05",
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "references_syntax_statement_separation",
+      "label": "Statement Separation",
+      "file_type": "concept",
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/references/syntax.md",
+      "source_location": "line 149-162",
+      "source_url": null,
+      "captured_at": "2026-07-05",
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "references_syntax_namespaces",
+      "label": "Names and Namespaces",
+      "file_type": "concept",
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/references/syntax.md",
+      "source_location": "line 190-201",
+      "source_url": null,
+      "captured_at": "2026-07-05",
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "references_syntax_system_commands",
+      "label": "System Commands",
+      "file_type": "concept",
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/references/syntax.md",
+      "source_location": "line 222-272",
+      "source_url": null,
+      "captured_at": "2026-07-05",
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "scripts_analyze_errors_tool",
+      "label": "analyze_errors.py",
+      "file_type": "code",
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/scripts/analyze_errors.py",
+      "source_location": "line 1-46",
+      "source_url": null,
+      "captured_at": "2026-07-05",
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "scripts_diff_oracle_tool",
+      "label": "diff_oracle.py",
+      "file_type": "code",
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/scripts/diff_oracle.py",
+      "source_location": "line 1-80",
+      "source_url": null,
+      "captured_at": "2026-07-05",
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "scripts_parse_rate_tool",
+      "label": "parse_rate.py",
+      "file_type": "code",
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/scripts/parse_rate.py",
+      "source_location": "line 1-62",
+      "source_url": null,
+      "captured_at": "2026-07-05",
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "scripts_parse_failures_doc",
+      "label": "Real-Repo Parse Failures Report",
+      "file_type": "document",
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/scripts/PARSE_FAILURES.md",
+      "source_location": "line 1-79",
+      "source_url": null,
+      "captured_at": "2026-07-05",
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "src_grammar_q",
+      "label": "Tree-Sitter Grammar for q",
+      "file_type": "code",
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/src/grammar.json",
+      "source_location": "line 1-150",
+      "source_url": null,
+      "captured_at": "2026-07-05",
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "src_node_types_schema",
+      "label": "Node Types Schema",
+      "file_type": "code",
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/src/node-types.json",
+      "source_location": "line 1-100",
+      "source_url": null,
+      "captured_at": "2026-07-05",
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "test_corpus_commands",
+      "label": "Commands Test Corpus",
+      "file_type": "document",
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/test/corpus/commands.txt",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": "2026-07-05",
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "test_corpus_control",
+      "label": "Control Flow Test Corpus",
+      "file_type": "document",
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/test/corpus/control.txt",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": "2026-07-05",
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "test_corpus_functions",
+      "label": "Functions Test Corpus",
+      "file_type": "document",
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/test/corpus/functions.txt",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": "2026-07-05",
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "test_corpus_expressions",
+      "label": "Expressions Test Corpus",
+      "file_type": "document",
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/test/corpus/expression.txt",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": "2026-07-05",
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "test_corpus_literals",
+      "label": "Literals Test Corpus",
+      "file_type": "document",
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/test/corpus/literals.txt",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": "2026-07-05",
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "test_corpus_identifiers",
+      "label": "Identifiers Test Corpus",
+      "file_type": "document",
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/test/corpus/identifiers.txt",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": "2026-07-05",
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "test_qsql_select_statement",
+      "label": "select_statement",
+      "file_type": "code",
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/test/corpus/qsql.txt",
+      "source_location": "lines 4-10",
+      "captured_at": "2026-07-05",
+      "confidence_score": 1.0
+    },
+    {
+      "id": "test_qsql_exec_statement",
+      "label": "exec_statement",
+      "file_type": "code",
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/test/corpus/qsql.txt",
+      "source_location": "lines 72-85",
+      "captured_at": "2026-07-05",
+      "confidence_score": 1.0
+    },
+    {
+      "id": "test_qsql_update_statement",
+      "label": "update_statement",
+      "file_type": "code",
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/test/corpus/qsql.txt",
+      "source_location": "lines 90-105",
+      "captured_at": "2026-07-05",
+      "confidence_score": 1.0
+    },
+    {
+      "id": "test_qsql_delete_statement",
+      "label": "delete_statement",
+      "file_type": "code",
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/test/corpus/qsql.txt",
+      "source_location": "lines 110-134",
+      "captured_at": "2026-07-05",
+      "confidence_score": 1.0
+    },
+    {
+      "id": "test_qsql_from_clause",
+      "label": "from_clause",
+      "file_type": "code",
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/test/corpus/qsql.txt",
+      "source_location": "multiple",
+      "captured_at": "2026-07-05",
+      "confidence_score": 1.0
+    },
+    {
+      "id": "test_qsql_where_clause",
+      "label": "where_clause",
+      "file_type": "code",
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/test/corpus/qsql.txt",
+      "source_location": "multiple",
+      "captured_at": "2026-07-05",
+      "confidence_score": 1.0
+    },
+    {
+      "id": "test_qsql_by_clause",
+      "label": "by_clause",
+      "file_type": "code",
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/test/corpus/qsql.txt",
+      "source_location": "lines 31-49",
+      "captured_at": "2026-07-05",
+      "confidence_score": 1.0
+    },
+    {
+      "id": "test_qsql_index",
+      "label": "index",
+      "file_type": "code",
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/test/corpus/qsql.txt",
+      "source_location": "lines 37-40",
+      "captured_at": "2026-07-05",
+      "confidence_score": 1.0
+    },
+    {
+      "id": "test_qsql_binary_operation",
+      "label": "binary",
+      "file_type": "code",
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/test/corpus/qsql.txt",
+      "source_location": "multiple",
+      "captured_at": "2026-07-05",
+      "confidence_score": 1.0
+    },
+    {
+      "id": "test_scanner_comment",
+      "label": "comment",
+      "file_type": "code",
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/test/corpus/scanner.txt",
+      "source_location": "multiple",
+      "captured_at": "2026-07-05",
+      "confidence_score": 1.0
+    },
+    {
+      "id": "test_scanner_system_command",
+      "label": "system_command",
+      "file_type": "code",
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/test/corpus/scanner.txt",
+      "source_location": "multiple",
+      "captured_at": "2026-07-05",
+      "confidence_score": 1.0
+    },
+    {
+      "id": "test_scanner_assignment",
+      "label": "assignment",
+      "file_type": "code",
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/test/corpus/scanner.txt",
+      "source_location": "multiple",
+      "captured_at": "2026-07-05",
+      "confidence_score": 1.0
+    },
+    {
+      "id": "test_skeleton_lambda",
+      "label": "lambda",
+      "file_type": "code",
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/test/corpus/skeleton.txt",
+      "source_location": "lines 9-13",
+      "captured_at": "2026-07-05",
+      "confidence_score": 1.0
+    },
+    {
+      "id": "test_python_test_load",
+      "label": "test_load.py",
+      "file_type": "code",
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/tests/python/test_load.py",
+      "source_location": "lines 1-16",
+      "captured_at": "2026-07-05",
+      "confidence_score": 1.0
+    },
+    {
+      "id": "test_python_tree_sitter_q",
+      "label": "tree_sitter_q module",
+      "file_type": "code",
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/tests/python/test_load.py",
+      "source_location": "lines 2-3, 10-11",
+      "captured_at": "2026-07-05",
+      "confidence_score": 1.0
+    },
+    {
+      "id": "test_python_language_function",
+      "label": "language()",
+      "file_type": "code",
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/tests/python/test_load.py",
+      "source_location": "lines 3, 11",
+      "captured_at": "2026-07-05",
+      "confidence_score": 1.0
+    },
+    {
+      "id": "tree_sitter_json_grammar",
+      "label": "q grammar",
+      "file_type": "code",
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/tree-sitter.json",
+      "source_location": "lines 3-7",
+      "captured_at": "2026-07-05",
+      "confidence_score": 1.0
+    },
+    {
+      "id": "tree_sitter_json_metadata",
+      "label": "KDB+/q tree-sitter grammar",
+      "file_type": "rationale",
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/tree-sitter.json",
+      "source_location": "lines 10-13",
+      "captured_at": "2026-07-05",
+      "confidence_score": 1.0
+    },
+    {
+      "id": "corpus_qsql_test_cases",
+      "label": "SQL-like query test suite",
+      "file_type": "rationale",
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/test/corpus/qsql.txt",
+      "source_location": "entire file",
+      "captured_at": "2026-07-05",
+      "confidence_score": 0.85
+    },
+    {
+      "id": "corpus_scanner_test_cases",
+      "label": "Lexical scanner test suite",
+      "file_type": "rationale",
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/test/corpus/scanner.txt",
+      "source_location": "entire file",
+      "captured_at": "2026-07-05",
+      "confidence_score": 0.85
+    }
+  ],
+  "edges": [
+    {
+      "source": "progress_sdd_project",
+      "target": "wave_1_parallel",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".superpowers/sdd/progress.md",
+      "source_location": "8-21"
+    },
+    {
+      "source": "progress_sdd_project",
+      "target": "wave_2_convergence",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".superpowers/sdd/progress.md",
+      "source_location": "28-28"
+    },
+    {
+      "source": "progress_sdd_project",
+      "target": "wave_3_packaging",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".superpowers/sdd/progress.md",
+      "source_location": "29-31"
+    },
+    {
+      "source": "task_1_foundation",
+      "target": "task_1_report",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "task_2_scanner",
+      "target": "task_2_report",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "task_3_literals",
+      "target": "task_3_report",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "task_4_identifiers",
+      "target": "task_4_report",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "task_5_functions",
+      "target": "task_5_report",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "task_6_expression",
+      "target": "task_6_report",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "task_7_qsql",
+      "target": "task_7_report",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "task_8_control",
+      "target": "task_8_report",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "task_10_convergence",
+      "target": "task_10_report",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "task_11_wheel",
+      "target": "task_11_report",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "task_1_foundation",
+      "target": "task_2_scanner",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".superpowers/sdd/task-2-brief.md",
+      "source_location": "3-4"
+    },
+    {
+      "source": "task_1_foundation",
+      "target": "task_3_literals",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".superpowers/sdd/task-3-brief.md",
+      "source_location": "3-4"
+    },
+    {
+      "source": "task_1_foundation",
+      "target": "task_4_identifiers",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".superpowers/sdd/task-4-brief.md",
+      "source_location": "3-4"
+    },
+    {
+      "source": "task_1_foundation",
+      "target": "task_5_functions",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".superpowers/sdd/task-5-brief.md",
+      "source_location": "3-4"
+    },
+    {
+      "source": "task_1_foundation",
+      "target": "task_6_expression",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".superpowers/sdd/task-6-brief.md",
+      "source_location": "3-4"
+    },
+    {
+      "source": "task_1_foundation",
+      "target": "task_7_qsql",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".superpowers/sdd/task-7-brief.md",
+      "source_location": "3-4"
+    },
+    {
+      "source": "task_1_foundation",
+      "target": "task_8_control",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".superpowers/sdd/task-8-brief.md",
+      "source_location": "3-4"
+    },
+    {
+      "source": "task_6_expression",
+      "target": "task_3_literals",
+      "relation": "shares_data_with",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".superpowers/sdd/task-6-brief.md",
+      "source_location": "11-11"
+    },
+    {
+      "source": "task_6_expression",
+      "target": "task_4_identifiers",
+      "relation": "shares_data_with",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".superpowers/sdd/task-6-brief.md",
+      "source_location": "11-11"
+    },
+    {
+      "source": "task_6_expression",
+      "target": "task_5_functions",
+      "relation": "shares_data_with",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".superpowers/sdd/task-6-brief.md",
+      "source_location": "11-11"
+    },
+    {
+      "source": "task_7_qsql",
+      "target": "task_6_expression",
+      "relation": "shares_data_with",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".superpowers/sdd/task-7-brief.md",
+      "source_location": "10-10"
+    },
+    {
+      "source": "task_8_control",
+      "target": "task_6_expression",
+      "relation": "shares_data_with",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".superpowers/sdd/task-8-brief.md",
+      "source_location": "10-10"
+    },
+    {
+      "source": "task_10_convergence",
+      "target": "task_1_foundation",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".superpowers/sdd/task-10-brief.md",
+      "source_location": "3-3"
+    },
+    {
+      "source": "task_10_convergence",
+      "target": "task_2_scanner",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".superpowers/sdd/progress.md",
+      "source_location": "11-21"
+    },
+    {
+      "source": "task_10_convergence",
+      "target": "task_3_literals",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".superpowers/sdd/progress.md",
+      "source_location": "8-21"
+    },
+    {
+      "source": "task_10_convergence",
+      "target": "task_4_identifiers",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".superpowers/sdd/progress.md",
+      "source_location": "8-21"
+    },
+    {
+      "source": "task_10_convergence",
+      "target": "task_5_functions",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".superpowers/sdd/progress.md",
+      "source_location": "8-21"
+    },
+    {
+      "source": "task_10_convergence",
+      "target": "task_6_expression",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".superpowers/sdd/progress.md",
+      "source_location": "8-21"
+    },
+    {
+      "source": "task_10_convergence",
+      "target": "task_7_qsql",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".superpowers/sdd/progress.md",
+      "source_location": "8-21"
+    },
+    {
+      "source": "task_10_convergence",
+      "target": "task_8_control",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".superpowers/sdd/progress.md",
+      "source_location": "8-21"
+    },
+    {
+      "source": "task_11_wheel",
+      "target": "task_10_convergence",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".superpowers/sdd/task-11-brief.md",
+      "source_location": "3-3"
+    },
+    {
+      "source": "task_12_graphify",
+      "target": "task_10_convergence",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".superpowers/sdd/task-12-brief.md",
+      "source_location": "3-3"
+    },
+    {
+      "source": "task_12_graphify",
+      "target": "task_11_wheel",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".superpowers/sdd/task-12-brief.md",
+      "source_location": "3-3"
+    },
+    {
+      "source": "task_13_parse_rate",
+      "target": "task_10_convergence",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".superpowers/sdd/task-13-brief.md",
+      "source_location": "3-3"
+    },
+    {
+      "source": "tree_sitter_grammar_architecture",
+      "target": "task_1_foundation",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "expression_rtl_design",
+      "target": "task_6_expression",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "glr_conflict_strategy",
+      "target": "task_10_convergence",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "external_scanner_tokens",
+      "target": "task_2_scanner",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "node_taxonomy",
+      "target": "task_1_foundation",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "namespace_qualification",
+      "target": "task_2_scanner",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "computed_column_syntax",
+      "target": "task_7_qsql",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "cache_clash_concern",
+      "target": "wave_1_parallel",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "graphify_extractor_contract",
+      "target": "task_12_graphify",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "c1_task_1_completed",
+      "target": "task_1_report",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "c1_task_2_completed",
+      "target": "task_2_report",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "c1_task_3_completed",
+      "target": "task_3_report",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "c1_task_4_completed",
+      "target": "task_4_report",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "c1_task_5_completed",
+      "target": "task_5_report",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "c1_task_6_completed",
+      "target": "task_6_report",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "c1_task_7_completed",
+      "target": "task_7_report",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "c1_task_8_completed",
+      "target": "task_8_report",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "c1_task_10_completed",
+      "target": "task_10_report",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "c1_task_11_completed",
+      "target": "task_11_report",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "task_3_report",
+      "target": "task_2_scanner",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": ".superpowers/sdd/task-3-report.md",
+      "source_location": "56-58"
+    },
+    {
+      "source": "task_4_report",
+      "target": "task_6_expression",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.75,
+      "source_file": ".superpowers/sdd/task-4-report.md",
+      "source_location": "19-26"
+    },
+    {
+      "source": "task_5_report",
+      "target": "task_6_expression",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.75,
+      "source_file": ".superpowers/sdd/task-5-report.md",
+      "source_location": "37-39"
+    },
+    {
+      "source": "task_6_report",
+      "target": "task_2_scanner",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": ".superpowers/sdd/task-6-report.md",
+      "source_location": "68-87"
+    },
+    {
+      "source": "task_7_report",
+      "target": "task_6_expression",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": ".superpowers/sdd/task-7-report.md",
+      "source_location": "28-32"
+    },
+    {
+      "source": "task_8_report",
+      "target": "task_6_expression",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": ".superpowers/sdd/task-8-report.md",
+      "source_location": "74-77"
+    },
+    {
+      "source": "grammar_js_main",
+      "target": "grammar_literals_js",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "grammar.js",
+      "source_location": "line 1"
+    },
+    {
+      "source": "grammar_js_main",
+      "target": "grammar_identifiers_js",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "grammar.js",
+      "source_location": "line 2"
+    },
+    {
+      "source": "grammar_js_main",
+      "target": "grammar_functions_js",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "grammar.js",
+      "source_location": "line 3"
+    },
+    {
+      "source": "grammar_js_main",
+      "target": "grammar_expression_js",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "grammar.js",
+      "source_location": "line 4"
+    },
+    {
+      "source": "grammar_js_main",
+      "target": "grammar_qsql_js",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "grammar.js",
+      "source_location": "line 5"
+    },
+    {
+      "source": "grammar_js_main",
+      "target": "grammar_control_js",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "grammar.js",
+      "source_location": "line 6"
+    },
+    {
+      "source": "grammar_js_main",
+      "target": "grammar_commands_js",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "grammar.js",
+      "source_location": "line 7"
+    },
+    {
+      "source": "grammar_literals_js",
+      "target": "grammar_identifiers_js",
+      "relation": "references",
+      "confidence": "INFERRED",
+      "confidence_score": 0.75,
+      "source_file": "grammar/literals.js",
+      "source_location": "line 165: uses $._list_ws from identifiers"
+    },
+    {
+      "source": "grammar_functions_js",
+      "target": "grammar_expression_js",
+      "relation": "references",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": "grammar/functions.js",
+      "source_location": "line 19: assignment.right references $._expression"
+    },
+    {
+      "source": "grammar_expression_js",
+      "target": "grammar_literals_js",
+      "relation": "references",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": "grammar/expression.js",
+      "source_location": "line: _primary references number, symbol, identifier from literals"
+    },
+    {
+      "source": "grammar_expression_js",
+      "target": "grammar_identifiers_js",
+      "relation": "references",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": "grammar/expression.js",
+      "source_location": "line: _primary references identifier, dotted_name, builtin"
+    },
+    {
+      "source": "grammar_expression_js",
+      "target": "grammar_functions_js",
+      "relation": "references",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": "grammar/expression.js",
+      "source_location": "line: _primary references lambda"
+    },
+    {
+      "source": "grammar_expression_js",
+      "target": "grammar_control_js",
+      "relation": "references",
+      "confidence": "INFERRED",
+      "confidence_score": 0.75,
+      "source_file": "grammar/expression.js",
+      "source_location": "line 99-100: cond in _expression"
+    },
+    {
+      "source": "grammar_expression_js",
+      "target": "grammar_qsql_js",
+      "relation": "references",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": "grammar/expression.js",
+      "source_location": "line 92-96: qsql statements in _expression"
+    },
+    {
+      "source": "grammar_qsql_js",
+      "target": "grammar_expression_js",
+      "relation": "references",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": "grammar/qsql.js",
+      "source_location": "line: clauses use $._expression for filter/projection"
+    },
+    {
+      "source": "grammar_control_js",
+      "target": "grammar_expression_js",
+      "relation": "references",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": "grammar/control.js",
+      "source_location": "line 10: cond uses $._expression"
+    },
+    {
+      "source": "grammar_control_js",
+      "target": "grammar_js_main",
+      "relation": "references",
+      "confidence": "INFERRED",
+      "confidence_score": 0.75,
+      "source_file": "grammar/control.js",
+      "source_location": "line: uses shared $._dollar and $._quote tokens"
+    },
+    {
+      "source": "grammar_commands_js",
+      "target": "grammar_identifiers_js",
+      "relation": "references",
+      "confidence": "INFERRED",
+      "confidence_score": 0.75,
+      "source_file": "grammar/commands.js",
+      "source_location": "line: system_command references $._system_command_tok from externals"
+    },
+    {
+      "source": "binding_c_python",
+      "target": "grammar_js_main",
+      "relation": "implements",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": "bindings/python/tree_sitter_q/binding.c",
+      "source_location": "line 3: calls tree_sitter_q() which is generated from grammar"
+    },
+    {
+      "source": "binding_init_py",
+      "target": "binding_c_python",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "bindings/python/tree_sitter_q/__init__.py",
+      "source_location": "line 3: imports _binding.language"
+    },
+    {
+      "source": "plan_design_tree_sitter_q_graphify",
+      "target": "agents_md_project_goal",
+      "relation": "references",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85
+    },
+    {
+      "source": "design_spec_tree_sitter_q_graphify",
+      "target": "plan_design_tree_sitter_q_graphify",
+      "relation": "rationale_for",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85
+    },
+    {
+      "source": "wave_0_foundation_task1",
+      "target": "grammar_js_main",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/plans/2026-06-28-tree-sitter-q-graphify.md"
+    },
+    {
+      "source": "wave_1_grammar_scanner_tasks",
+      "target": "grammar_literals_js",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "wave_1_grammar_scanner_tasks",
+      "target": "grammar_identifiers_js",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "wave_1_grammar_scanner_tasks",
+      "target": "grammar_functions_js",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "wave_1_grammar_scanner_tasks",
+      "target": "grammar_expression_js",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "wave_1_grammar_scanner_tasks",
+      "target": "grammar_qsql_js",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "wave_1_grammar_scanner_tasks",
+      "target": "grammar_control_js",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "wave_1_grammar_scanner_tasks",
+      "target": "grammar_commands_js",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "wave_2_convergence_task10",
+      "target": "grammar_js_main",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "rtl_expression_model",
+      "target": "grammar_expression_js",
+      "relation": "implements",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95
+    },
+    {
+      "source": "external_scanner_whitespace_semantics",
+      "target": "grammar_literals_js",
+      "relation": "rationale_for",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85
+    },
+    {
+      "source": "adverb_system",
+      "target": "grammar_expression_js",
+      "relation": "implements",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95
+    },
+    {
+      "source": "function_as_assignment_lambda",
+      "target": "grammar_functions_js",
+      "relation": "implements",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95
+    },
+    {
+      "source": "qsql_dsl",
+      "target": "grammar_qsql_js",
+      "relation": "implements",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95
+    },
+    {
+      "source": "namespace_system",
+      "target": "grammar_commands_js",
+      "relation": "implements",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85
+    },
+    {
+      "source": "namespace_system",
+      "target": "grammar_identifiers_js",
+      "relation": "implements",
+      "confidence": "INFERRED",
+      "confidence_score": 0.75
+    },
+    {
+      "source": "graphify_extractor_bespoke",
+      "target": "function_as_assignment_lambda",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "literal_zoo",
+      "target": "grammar_literals_js",
+      "relation": "implements",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95
+    },
+    {
+      "source": "task_8_report_grammar_control_cond",
+      "target": "grammar_control_js",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "task_8_report_grammar_control_control_stmt",
+      "target": "grammar_control_js",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "task_8_report_grammar_control_return_stmt",
+      "target": "grammar_control_js",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "task_8_report_grammar_control_signal_stmt",
+      "target": "grammar_control_js",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "task_9_report_system_command",
+      "target": "grammar_commands_js",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "source": "task_9_report_namespace_directive",
+      "target": "task_9_report_system_command",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85
+    },
+    {
+      "source": "references_datatypes_q_datatype",
+      "target": "references_datatypes_scalar_types",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/references/datatypes.md",
+      "source_location": "line 16-37",
+      "weight": 1.0
+    },
+    {
+      "source": "references_datatypes_q_datatype",
+      "target": "references_datatypes_temporal_types",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/references/datatypes.md",
+      "source_location": "line 13-178",
+      "weight": 1.0
+    },
+    {
+      "source": "references_datatypes_q_datatype",
+      "target": "references_datatypes_literal_forms",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/references/datatypes.md",
+      "source_location": "line 1-10",
+      "weight": 1.0
+    },
+    {
+      "source": "references_datatypes_literal_forms",
+      "target": "src_grammar_q",
+      "relation": "references",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/references/datatypes.md",
+      "source_location": "line 2",
+      "weight": 1.0
+    },
+    {
+      "source": "references_keywords_qsql_templates",
+      "target": "references_qsql_template_syntax",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/references/keywords.md",
+      "source_location": "line 22",
+      "weight": 1.0
+    },
+    {
+      "source": "references_keywords_control_words",
+      "target": "references_syntax_application_forms",
+      "relation": "references",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/references/keywords.md",
+      "source_location": "line 52-53",
+      "weight": 1.0
+    },
+    {
+      "source": "references_operators_glyphs",
+      "target": "references_operators_iterators",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/references/operators.md",
+      "source_location": "line 222",
+      "weight": 1.0
+    },
+    {
+      "source": "references_operators_glyphs",
+      "target": "references_operators_multichar",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/references/operators.md",
+      "source_location": "line 1-41",
+      "weight": 1.0
+    },
+    {
+      "source": "references_qsql_template_syntax",
+      "target": "references_qsql_evaluation_order",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/references/qsql.md",
+      "source_location": "line 44-50",
+      "weight": 1.0
+    },
+    {
+      "source": "references_qsql_template_syntax",
+      "target": "references_qsql_from_phrase",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/references/qsql.md",
+      "source_location": "line 32-33",
+      "weight": 1.0
+    },
+    {
+      "source": "references_qsql_template_syntax",
+      "target": "references_qsql_where_phrase",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/references/qsql.md",
+      "source_location": "line 32-33",
+      "weight": 1.0
+    },
+    {
+      "source": "references_qsql_template_syntax",
+      "target": "references_qsql_select_phrase",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/references/qsql.md",
+      "source_location": "line 32-33",
+      "weight": 1.0
+    },
+    {
+      "source": "references_qsql_template_syntax",
+      "target": "references_qsql_functional_forms",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/references/qsql.md",
+      "source_location": "line 183",
+      "weight": 1.0
+    },
+    {
+      "source": "references_syntax_evaluation_order",
+      "target": "references_syntax_application_forms",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/references/syntax.md",
+      "source_location": "line 24-25",
+      "weight": 1.0
+    },
+    {
+      "source": "references_syntax_lambda_notation",
+      "target": "references_syntax_application_forms",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/references/syntax.md",
+      "source_location": "line 42-54",
+      "weight": 1.0
+    },
+    {
+      "source": "references_syntax_whitespace_sensitivity",
+      "target": "src_grammar_q",
+      "relation": "references",
+      "confidence": "INFERRED",
+      "confidence_score": 0.75,
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/references/syntax.md",
+      "source_location": "line 289-292",
+      "weight": 1.0
+    },
+    {
+      "source": "references_syntax_comments",
+      "target": "references_syntax_whitespace_sensitivity",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/references/syntax.md",
+      "source_location": "line 131",
+      "weight": 1.0
+    },
+    {
+      "source": "references_syntax_namespaces",
+      "target": "references_syntax_system_commands",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/references/syntax.md",
+      "source_location": "line 238",
+      "weight": 1.0
+    },
+    {
+      "source": "scripts_analyze_errors_tool",
+      "target": "scripts_parse_failures_doc",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/scripts/analyze_errors.py",
+      "source_location": "line 1",
+      "weight": 1.0
+    },
+    {
+      "source": "scripts_parse_rate_tool",
+      "target": "scripts_parse_failures_doc",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/scripts/parse_rate.py",
+      "source_location": "line 64",
+      "weight": 1.0
+    },
+    {
+      "source": "scripts_diff_oracle_tool",
+      "target": "src_grammar_q",
+      "relation": "references",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/scripts/diff_oracle.py",
+      "source_location": "line 1-80",
+      "weight": 1.0
+    },
+    {
+      "source": "src_grammar_q",
+      "target": "src_node_types_schema",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/src/grammar.json",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "test_corpus_commands",
+      "target": "references_syntax_system_commands",
+      "relation": "implements",
+      "confidence": "INFERRED",
+      "confidence_score": 0.9,
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/test/corpus/commands.txt",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "test_corpus_control",
+      "target": "references_keywords_control_words",
+      "relation": "implements",
+      "confidence": "INFERRED",
+      "confidence_score": 0.9,
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/test/corpus/control.txt",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "test_corpus_functions",
+      "target": "references_syntax_lambda_notation",
+      "relation": "implements",
+      "confidence": "INFERRED",
+      "confidence_score": 0.9,
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/test/corpus/functions.txt",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "test_corpus_expressions",
+      "target": "references_syntax_evaluation_order",
+      "relation": "implements",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/test/corpus/expression.txt",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "test_corpus_literals",
+      "target": "references_datatypes_literal_forms",
+      "relation": "implements",
+      "confidence": "INFERRED",
+      "confidence_score": 0.9,
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/test/corpus/literals.txt",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "test_corpus_identifiers",
+      "target": "references_syntax_namespaces",
+      "relation": "implements",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/test/corpus/identifiers.txt",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "test_qsql_select_statement",
+      "target": "test_qsql_from_clause",
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/test/corpus/qsql.txt",
+      "weight": 1.0
+    },
+    {
+      "source": "test_qsql_select_statement",
+      "target": "test_qsql_where_clause",
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/test/corpus/qsql.txt",
+      "weight": 1.0
+    },
+    {
+      "source": "test_qsql_exec_statement",
+      "target": "test_qsql_from_clause",
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/test/corpus/qsql.txt",
+      "weight": 1.0
+    },
+    {
+      "source": "test_qsql_update_statement",
+      "target": "test_qsql_by_clause",
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/test/corpus/qsql.txt",
+      "weight": 1.0
+    },
+    {
+      "source": "test_qsql_index",
+      "target": "test_qsql_binary_operation",
+      "relation": "semantically_similar_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.65,
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/test/corpus/qsql.txt",
+      "weight": 1.0
+    },
+    {
+      "source": "test_scanner_comment",
+      "target": "test_scanner_assignment",
+      "relation": "shares_data_with",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/test/corpus/scanner.txt",
+      "weight": 1.0
+    },
+    {
+      "source": "test_scanner_system_command",
+      "target": "test_scanner_comment",
+      "relation": "semantically_similar_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.75,
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/test/corpus/scanner.txt",
+      "weight": 1.0
+    },
+    {
+      "source": "test_skeleton_lambda",
+      "target": "test_qsql_binary_operation",
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/test/corpus/skeleton.txt",
+      "weight": 1.0
+    },
+    {
+      "source": "test_python_test_load",
+      "target": "test_python_tree_sitter_q",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/tests/python/test_load.py",
+      "weight": 1.0
+    },
+    {
+      "source": "test_python_tree_sitter_q",
+      "target": "test_python_language_function",
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/tests/python/test_load.py",
+      "weight": 1.0
+    },
+    {
+      "source": "test_python_language_function",
+      "target": "tree_sitter_json_grammar",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/tests/python/test_load.py",
+      "weight": 1.0
+    },
+    {
+      "source": "tree_sitter_json_grammar",
+      "target": "tree_sitter_json_metadata",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/tree-sitter.json",
+      "weight": 1.0
+    },
+    {
+      "source": "corpus_qsql_test_cases",
+      "target": "test_qsql_select_statement",
+      "relation": "implements",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/test/corpus/qsql.txt",
+      "weight": 1.0
+    },
+    {
+      "source": "corpus_scanner_test_cases",
+      "target": "test_scanner_comment",
+      "relation": "implements",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/test/corpus/scanner.txt",
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": [
+    {
+      "id": "wave_1_grammar_tasks",
+      "label": "Wave 1: Parallel Grammar Task Cluster",
+      "nodes": [
+        "task_2_scanner",
+        "task_3_literals",
+        "task_4_identifiers",
+        "task_5_functions",
+        "task_6_expression",
+        "task_7_qsql",
+        "task_8_control"
+      ],
+      "relation": "participate_in",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".superpowers/sdd/progress.md"
+    },
+    {
+      "source": "task_1_foundation",
+      "relation": "form",
+      "nodes": [
+        "task_1_foundation",
+        "wave_1_parallel",
+        "task_10_convergence"
+      ],
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0
+    },
+    {
+      "id": "convergence_dependency_chain",
+      "label": "Convergence: Wave-1 Merge to Main",
+      "nodes": [
+        "wave_1_parallel",
+        "task_10_convergence",
+        "wave_2_convergence"
+      ],
+      "relation": "implement",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".superpowers/sdd/progress.md"
+    },
+    {
+      "id": "wave1_parallel_grammar_modules",
+      "label": "Wave 1: Parallel grammar module tasks with modular file structure",
+      "nodes": [
+        "grammar_literals_js",
+        "grammar_identifiers_js",
+        "grammar_functions_js",
+        "grammar_expression_js",
+        "grammar_qsql_js",
+        "grammar_control_js",
+        "grammar_commands_js"
+      ],
+      "relation": "implement",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/plans/2026-06-28-tree-sitter-q-graphify.md"
+    },
+    {
+      "id": "python_binding_stack",
+      "label": "Python binding stack: C extension + module wrapper + language() export",
+      "nodes": [
+        "binding_c_python",
+        "binding_init_py",
+        "package_json_config"
+      ],
+      "relation": "form",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/specs/2026-06-28-tree-sitter-q-graphify-design.md"
+    },
+    {
+      "id": "node_taxonomy_frozen_contract",
+      "label": "Frozen node taxonomy: assignment/lambda/call/qsql/control/system_command",
+      "nodes": [
+        "node_taxonomy_assignment",
+        "node_taxonomy_lambda",
+        "node_taxonomy_call",
+        "node_taxonomy_qsql",
+        "node_taxonomy_control",
+        "node_taxonomy_system_command"
+      ],
+      "relation": "participate_in",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/plans/2026-06-28-tree-sitter-q-graphify.md"
+    },
+    {
+      "id": "reference_architecture_semantic_layer",
+      "label": "q Language Reference Specification",
+      "nodes": [
+        "references_datatypes_q_datatype",
+        "references_keywords_qsql_templates",
+        "references_operators_glyphs",
+        "references_syntax_evaluation_order"
+      ],
+      "relation": "form",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/references"
+    },
+    {
+      "id": "test_coverage_corpus",
+      "label": "Test Corpus Coverage",
+      "nodes": [
+        "test_corpus_commands",
+        "test_corpus_control",
+        "test_corpus_functions",
+        "test_corpus_literals"
+      ],
+      "relation": "implement",
+      "confidence": "EXTRACTED",
+      "confidence_score": 0.95,
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/test/corpus"
+    },
+    {
+      "id": "parse_validation_pipeline",
+      "label": "Parse Quality Validation",
+      "nodes": [
+        "scripts_parse_rate_tool",
+        "scripts_analyze_errors_tool",
+        "scripts_diff_oracle_tool"
+      ],
+      "relation": "participate_in",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/scripts"
+    },
+    {
+      "id": "qsql_query_construct",
+      "label": "SQL-like query construct",
+      "nodes": [
+        "test_qsql_select_statement",
+        "test_qsql_from_clause",
+        "test_qsql_where_clause"
+      ],
+      "relation": "implement",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/test/corpus/qsql.txt"
+    },
+    {
+      "id": "scanner_lexical_elements",
+      "label": "Lexical scanner elements",
+      "nodes": [
+        "test_scanner_comment",
+        "test_scanner_system_command",
+        "test_scanner_assignment"
+      ],
+      "relation": "participate_in",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/test/corpus/scanner.txt"
+    },
+    {
+      "id": "test_python_integration",
+      "label": "Python tree-sitter integration",
+      "nodes": [
+        "test_python_test_load",
+        "test_python_tree_sitter_q",
+        "test_python_language_function"
+      ],
+      "relation": "implement",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "/Users/arvindiyer/development/q-tree-sitter/tests/python/test_load.py"
+    }
+  ],
+  "input_tokens": 0,
+  "output_tokens": 0
+}

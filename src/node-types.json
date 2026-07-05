@@ -5,20 +5,10 @@
     "fields": {
       "adverb": {
         "multiple": true,
-        "required": false,
+        "required": true,
         "types": [
           {
-            "type": "'",
-            "named": false
-          }
-        ]
-      },
-      "arguments": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "arguments",
+            "type": "adverb",
             "named": true
           }
         ]
@@ -40,7 +30,15 @@
             "named": true
           },
           {
+            "type": "call",
+            "named": true
+          },
+          {
             "type": "char",
+            "named": true
+          },
+          {
+            "type": "cond",
             "named": true
           },
           {
@@ -57,6 +55,10 @@
           },
           {
             "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "index",
             "named": true
           },
           {
@@ -303,6 +305,10 @@
         "required": true,
         "types": [
           {
+            "type": "builtin",
+            "named": true
+          },
+          {
             "type": "dotted_name",
             "named": true
           },
@@ -495,10 +501,6 @@
         "required": true,
         "types": [
           {
-            "type": "adverb_apply",
-            "named": true
-          },
-          {
             "type": "boolean",
             "named": true
           },
@@ -516,6 +518,10 @@
           },
           {
             "type": "char",
+            "named": true
+          },
+          {
+            "type": "cond",
             "named": true
           },
           {
@@ -612,6 +618,10 @@
         "multiple": false,
         "required": true,
         "types": [
+          {
+            "type": "adverb_apply",
+            "named": true
+          },
           {
             "type": "operator",
             "named": true
@@ -768,6 +778,177 @@
           }
         ]
       }
+    }
+  },
+  {
+    "type": "block",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "adverb_apply",
+          "named": true
+        },
+        {
+          "type": "assignment",
+          "named": true
+        },
+        {
+          "type": "binary",
+          "named": true
+        },
+        {
+          "type": "block",
+          "named": true
+        },
+        {
+          "type": "boolean",
+          "named": true
+        },
+        {
+          "type": "builtin",
+          "named": true
+        },
+        {
+          "type": "byte",
+          "named": true
+        },
+        {
+          "type": "call",
+          "named": true
+        },
+        {
+          "type": "char",
+          "named": true
+        },
+        {
+          "type": "cond",
+          "named": true
+        },
+        {
+          "type": "control",
+          "named": true
+        },
+        {
+          "type": "date",
+          "named": true
+        },
+        {
+          "type": "datetime",
+          "named": true
+        },
+        {
+          "type": "delete_statement",
+          "named": true
+        },
+        {
+          "type": "dotted_name",
+          "named": true
+        },
+        {
+          "type": "exec_statement",
+          "named": true
+        },
+        {
+          "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "index",
+          "named": true
+        },
+        {
+          "type": "infinity",
+          "named": true
+        },
+        {
+          "type": "lambda",
+          "named": true
+        },
+        {
+          "type": "list",
+          "named": true
+        },
+        {
+          "type": "minute",
+          "named": true
+        },
+        {
+          "type": "month",
+          "named": true
+        },
+        {
+          "type": "null",
+          "named": true
+        },
+        {
+          "type": "number",
+          "named": true
+        },
+        {
+          "type": "parenthesized",
+          "named": true
+        },
+        {
+          "type": "return_stmt",
+          "named": true
+        },
+        {
+          "type": "second",
+          "named": true
+        },
+        {
+          "type": "select_statement",
+          "named": true
+        },
+        {
+          "type": "signal_stmt",
+          "named": true
+        },
+        {
+          "type": "string",
+          "named": true
+        },
+        {
+          "type": "symbol",
+          "named": true
+        },
+        {
+          "type": "symbol_vector",
+          "named": true
+        },
+        {
+          "type": "system_command",
+          "named": true
+        },
+        {
+          "type": "table_literal",
+          "named": true
+        },
+        {
+          "type": "time",
+          "named": true
+        },
+        {
+          "type": "timespan",
+          "named": true
+        },
+        {
+          "type": "timestamp",
+          "named": true
+        },
+        {
+          "type": "update_statement",
+          "named": true
+        },
+        {
+          "type": "vector",
+          "named": true
+        }
+      ]
     }
   },
   {
@@ -942,6 +1123,14 @@
             "named": true
           },
           {
+            "type": "assignment",
+            "named": true
+          },
+          {
+            "type": "binary",
+            "named": true
+          },
+          {
             "type": "boolean",
             "named": true
           },
@@ -962,6 +1151,14 @@
             "named": true
           },
           {
+            "type": "cond",
+            "named": true
+          },
+          {
+            "type": "control",
+            "named": true
+          },
+          {
             "type": "date",
             "named": true
           },
@@ -970,7 +1167,15 @@
             "named": true
           },
           {
+            "type": "delete_statement",
+            "named": true
+          },
+          {
             "type": "dotted_name",
+            "named": true
+          },
+          {
+            "type": "exec_statement",
             "named": true
           },
           {
@@ -1018,6 +1223,10 @@
             "named": true
           },
           {
+            "type": "select_statement",
+            "named": true
+          },
+          {
             "type": "string",
             "named": true
           },
@@ -1046,6 +1255,10 @@
             "named": true
           },
           {
+            "type": "update_statement",
+            "named": true
+          },
+          {
             "type": "vector",
             "named": true
           }
@@ -1055,6 +1268,10 @@
         "multiple": false,
         "required": true,
         "types": [
+          {
+            "type": "adverb_apply",
+            "named": true
+          },
           {
             "type": "boolean",
             "named": true
@@ -1068,7 +1285,15 @@
             "named": true
           },
           {
+            "type": "call",
+            "named": true
+          },
+          {
             "type": "char",
+            "named": true
+          },
+          {
+            "type": "cond",
             "named": true
           },
           {
@@ -1085,6 +1310,10 @@
           },
           {
             "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "index",
             "named": true
           },
           {
@@ -1169,7 +1398,7 @@
     "fields": {},
     "children": {
       "multiple": true,
-      "required": true,
+      "required": false,
       "types": [
         {
           "type": "adverb_apply",
@@ -1181,6 +1410,10 @@
         },
         {
           "type": "binary",
+          "named": true
+        },
+        {
+          "type": "block",
           "named": true
         },
         {
@@ -1272,11 +1505,19 @@
           "named": true
         },
         {
+          "type": "return_stmt",
+          "named": true
+        },
+        {
           "type": "second",
           "named": true
         },
         {
           "type": "select_statement",
+          "named": true
+        },
+        {
+          "type": "signal_stmt",
           "named": true
         },
         {
@@ -1289,6 +1530,10 @@
         },
         {
           "type": "symbol_vector",
+          "named": true
+        },
+        {
+          "type": "system_command",
           "named": true
         },
         {
@@ -1343,7 +1588,7 @@
     },
     "children": {
       "multiple": true,
-      "required": true,
+      "required": false,
       "types": [
         {
           "type": "adverb_apply",
@@ -1355,6 +1600,10 @@
         },
         {
           "type": "binary",
+          "named": true
+        },
+        {
+          "type": "block",
           "named": true
         },
         {
@@ -1758,6 +2007,14 @@
             "named": true
           },
           {
+            "type": "assignment",
+            "named": true
+          },
+          {
+            "type": "binary",
+            "named": true
+          },
+          {
             "type": "boolean",
             "named": true
           },
@@ -1778,6 +2035,14 @@
             "named": true
           },
           {
+            "type": "cond",
+            "named": true
+          },
+          {
+            "type": "control",
+            "named": true
+          },
+          {
             "type": "date",
             "named": true
           },
@@ -1786,7 +2051,15 @@
             "named": true
           },
           {
+            "type": "delete_statement",
+            "named": true
+          },
+          {
             "type": "dotted_name",
+            "named": true
+          },
+          {
+            "type": "exec_statement",
             "named": true
           },
           {
@@ -1834,6 +2107,10 @@
             "named": true
           },
           {
+            "type": "select_statement",
+            "named": true
+          },
+          {
             "type": "string",
             "named": true
           },
@@ -1862,6 +2139,10 @@
             "named": true
           },
           {
+            "type": "update_statement",
+            "named": true
+          },
+          {
             "type": "vector",
             "named": true
           }
@@ -1871,6 +2152,10 @@
         "multiple": false,
         "required": true,
         "types": [
+          {
+            "type": "adverb_apply",
+            "named": true
+          },
           {
             "type": "boolean",
             "named": true
@@ -1884,7 +2169,15 @@
             "named": true
           },
           {
+            "type": "call",
+            "named": true
+          },
+          {
             "type": "char",
+            "named": true
+          },
+          {
+            "type": "cond",
             "named": true
           },
           {
@@ -1901,6 +2194,10 @@
           },
           {
             "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "index",
             "named": true
           },
           {
@@ -2156,6 +2453,10 @@
           },
           {
             "type": "binary",
+            "named": true
+          },
+          {
+            "type": "block",
             "named": true
           },
           {
@@ -3208,6 +3509,10 @@
           "named": true
         },
         {
+          "type": "block",
+          "named": true
+        },
+        {
           "type": "boolean",
           "named": true
         },
@@ -3735,7 +4040,23 @@
     }
   },
   {
+    "type": "!",
+    "named": false
+  },
+  {
+    "type": "#",
+    "named": false
+  },
+  {
     "type": "$",
+    "named": false
+  },
+  {
+    "type": "%",
+    "named": false
+  },
+  {
+    "type": "&",
     "named": false
   },
   {
@@ -3751,7 +4072,23 @@
     "named": false
   },
   {
+    "type": "*",
+    "named": false
+  },
+  {
+    "type": "+",
+    "named": false
+  },
+  {
     "type": ",",
+    "named": false
+  },
+  {
+    "type": "-",
+    "named": false
+  },
+  {
+    "type": ".",
     "named": false
   },
   {
@@ -3767,12 +4104,56 @@
     "named": false
   },
   {
+    "type": "<",
+    "named": false
+  },
+  {
+    "type": "<=",
+    "named": false
+  },
+  {
+    "type": "<>",
+    "named": false
+  },
+  {
+    "type": "=",
+    "named": false
+  },
+  {
+    "type": ">",
+    "named": false
+  },
+  {
+    "type": ">=",
+    "named": false
+  },
+  {
+    "type": "?",
+    "named": false
+  },
+  {
+    "type": "@",
+    "named": false
+  },
+  {
     "type": "[",
     "named": false
   },
   {
     "type": "]",
     "named": false
+  },
+  {
+    "type": "^",
+    "named": false
+  },
+  {
+    "type": "_",
+    "named": false
+  },
+  {
+    "type": "adverb",
+    "named": true
   },
   {
     "type": "boolean",
@@ -3899,7 +4280,15 @@
     "named": false
   },
   {
+    "type": "|",
+    "named": false
+  },
+  {
     "type": "}",
+    "named": false
+  },
+  {
+    "type": "~",
     "named": false
   }
 ]
