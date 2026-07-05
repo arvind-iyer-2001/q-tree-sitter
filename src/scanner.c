@@ -72,14 +72,16 @@ bool tree_sitter_q_external_scanner_scan(void *payload, TSLexer *l, const bool *
     adv(l);
     if (was_cr && l->lookahead == '\n') adv(l); /* \r\n */
     /* q continuation rule: a line that BEGINS with whitespace continues
-     * the previous statement — the newline is NOT a terminator. Return
-     * false so the newline is re-lexed as an ignorable extra. */
-    if (l->lookahead == ' ' || l->lookahead == '\t') {
-      return false;
+     * the previous statement — the newline is NOT a terminator. Do NOT
+     * return here: fall through so the COMMENT branch still gets its look
+     * (returning false ends the whole scan call, and tree-sitter will not
+     * consult the scanner again until after the internal lexer has eaten
+     * the whitespace — which orphaned comment lines after blank lines). */
+    if (l->lookahead != ' ' && l->lookahead != '\t') {
+      s->prev_was_value = false;
+      l->result_symbol = EOS;
+      return true;
     }
-    s->prev_was_value = false;
-    l->result_symbol = EOS;
-    return true;
   }
 
   /* ---------------------------------------------------------------
