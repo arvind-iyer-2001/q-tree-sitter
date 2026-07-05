@@ -118,9 +118,10 @@ module.exports = {
   //   second    (hh:mm:ss)                 must beat minute
   // -------------------------------------------------------------------------
 
-  // timestamp (12): YYYY.MM.DDDhh:mm:ss[.f{1-9}]
+  // timestamp (12): YYYY.MM.DDD[hh[:mm[:ss[.f{1-9}]]]] — time part may be
+  // partial or absent (`1970.01.01D00`, `2000.01.01D`)
   timestamp: $ => token(prec(5,
-    /[0-9]{4}\.[0-9]{2}\.[0-9]{2}D[0-9]{2}:[0-9]{2}:[0-9]{2}(\.[0-9]{1,9})?/
+    /[0-9]{4}\.[0-9]{2}\.[0-9]{2}D([0-9]{2}(:[0-9]{2}(:[0-9]{2}(\.[0-9]{1,9})?)?)?)?/
   )),
 
   // datetime (15, deprecated): YYYY.MM.DDThh:mm:ss[.fff]

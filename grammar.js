@@ -93,11 +93,15 @@ module.exports = grammar({
       // which let `g'x` parse as statement `g` + signal-statement `'x`,
       // stealing the iterator glyph. Leading/trailing/blank separators are
       // tolerated (corpus harness feeds a leading newline).
+      // prec.dynamic on each separated statement: a juxtaposition can span a
+      // newline on the GLR stack where EOS was invalid (`f "s"` + next line as
+      // its argument); at the merge, the parse with MORE separated statements
+      // must win — one point per separator-statement pair breaks the tie.
       source_file: $ => seq(
         repeat(choice($._eos, ';')),
         optional(seq(
           $._statement,
-          repeat(seq(repeat1(choice($._eos, ';')), $._statement)),
+          repeat(prec.dynamic(1, seq(repeat1(choice($._eos, ';')), $._statement))),
           repeat(choice($._eos, ';')),
         )),
       ),
