@@ -204,9 +204,24 @@ bool tree_sitter_q_external_scanner_scan(void *payload, TSLexer *l, const bool *
         l->result_symbol = SYSTEM_COMMAND_TOK;
         return true;
       }
-      /* consume rest of the line (command letter(s) + args). */
-      while (l->lookahead != '\n' && l->lookahead != '\r' && l->lookahead != 0) {
-        adv(l);
+      /* consume rest of the line (command letter(s) + args); q's continuation
+       * rule applies here too — an indented following line extends the
+       * command (`\t select ...` wrapping). Peek past each newline with
+       * mark_end so a NON-indented next line stays unconsumed. */
+      for (;;) {
+        while (l->lookahead != '\n' && l->lookahead != '\r' && l->lookahead != 0) {
+          adv(l);
+        }
+        l->mark_end(l);
+        if (l->lookahead == 0) break;
+        if (l->lookahead == '\r') { adv(l); if (l->lookahead == '\n') adv(l); }
+        else adv(l); /* \n */
+        if (l->lookahead != ' ' && l->lookahead != '\t') break;
+        /* indented continuation: absorb it, then extend the token end */
+        while (l->lookahead != '\n' && l->lookahead != '\r' && l->lookahead != 0) {
+          adv(l);
+        }
+        l->mark_end(l);
       }
       l->result_symbol = SYSTEM_COMMAND_TOK;
       return true;
