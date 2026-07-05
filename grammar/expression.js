@@ -215,9 +215,10 @@ module.exports = {
     field('operator', choice(
       $.operator,
       alias($._dollar, $.operator),
+      alias($._infix_kw, $.builtin),
       $.adverb_apply,
     )),
-    optional(field('right', $._expression)),
+    optional(field('right', choice($._expression, $._op_value))),
   )),
 
   _noun_nn: $ => choice(

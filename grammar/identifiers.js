@@ -38,7 +38,10 @@ module.exports = {
   // tree-sitter will automatically use the longest-match rule — the builtin
   // token wins for exact keyword strings via token(prec(1,…)), while any
   // longer string (e.g. "counter") falls through to identifier.
-  identifier: $ => /[A-Za-z][A-Za-z0-9_]*/,
+  // Dotted continuation covers q's qualified names without a leading dot
+  // (`o.d` foreign-key columns, `a.b.c` globals) — in q `l.i` is ONE name;
+  // dot-APPLY requires spaces (`l . i`).
+  identifier: $ => /[A-Za-z][A-Za-z0-9_]*(\.[A-Za-z][A-Za-z0-9_]*)*/,
 
   // dotted_name: namespace-qualified name. Supports the full forms including
   // colon used in qualified/handle names per the BINDING HANDOFF FIX requirement.

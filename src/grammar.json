@@ -718,7 +718,7 @@
     },
     "identifier": {
       "type": "PATTERN",
-      "value": "[A-Za-z][A-Za-z0-9_]*"
+      "value": "[A-Za-z][A-Za-z0-9_]*(\\.[A-Za-z][A-Za-z0-9_]*)*"
     },
     "dotted_name": {
       "type": "TOKEN",
@@ -2652,6 +2652,15 @@
                   "value": "operator"
                 },
                 {
+                  "type": "ALIAS",
+                  "content": {
+                    "type": "SYMBOL",
+                    "name": "_infix_kw"
+                  },
+                  "named": true,
+                  "value": "builtin"
+                },
+                {
                   "type": "SYMBOL",
                   "name": "adverb_apply"
                 }
@@ -2665,8 +2674,17 @@
                 "type": "FIELD",
                 "name": "right",
                 "content": {
-                  "type": "SYMBOL",
-                  "name": "_expression"
+                  "type": "CHOICE",
+                  "members": [
+                    {
+                      "type": "SYMBOL",
+                      "name": "_expression"
+                    },
+                    {
+                      "type": "SYMBOL",
+                      "name": "_op_value"
+                    }
+                  ]
                 }
               },
               {
@@ -3568,8 +3586,17 @@
             "type": "CHOICE",
             "members": [
               {
-                "type": "SYMBOL",
-                "name": "_statement"
+                "type": "CHOICE",
+                "members": [
+                  {
+                    "type": "SYMBOL",
+                    "name": "_statement"
+                  },
+                  {
+                    "type": "SYMBOL",
+                    "name": "_op_value"
+                  }
+                ]
               },
               {
                 "type": "BLANK"
@@ -3589,8 +3616,17 @@
                   "type": "CHOICE",
                   "members": [
                     {
-                      "type": "SYMBOL",
-                      "name": "_statement"
+                      "type": "CHOICE",
+                      "members": [
+                        {
+                          "type": "SYMBOL",
+                          "name": "_statement"
+                        },
+                        {
+                          "type": "SYMBOL",
+                          "name": "_op_value"
+                        }
+                      ]
                     },
                     {
                       "type": "BLANK"

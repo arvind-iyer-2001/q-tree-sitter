@@ -10,8 +10,8 @@ module.exports = {
   cond: $ => prec(2, seq(
     $._dollar,
     '[',
-    optional($._statement),
-    repeat(seq(';', optional($._statement))),
+    optional(choice($._statement, $._op_value)),
+    repeat(seq(';', optional(choice($._statement, $._op_value)))),
     ']',
   )),
 

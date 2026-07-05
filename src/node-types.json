@@ -1526,6 +1526,10 @@
           "named": true
         },
         {
+          "type": "operator",
+          "named": true
+        },
+        {
           "type": "parenthesized",
           "named": true
         },
