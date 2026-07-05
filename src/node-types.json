@@ -1,5 +1,10 @@
 [
   {
+    "type": "adverb",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "adverb_apply",
     "named": true,
     "fields": {
@@ -318,6 +323,10 @@
           },
           {
             "type": "index",
+            "named": true
+          },
+          {
+            "type": "parenthesized",
             "named": true
           }
         ]
@@ -726,6 +735,10 @@
           },
           {
             "type": "number",
+            "named": true
+          },
+          {
+            "type": "operator",
             "named": true
           },
           {
@@ -3878,7 +3891,47 @@
       "required": true,
       "types": [
         {
+          "type": "date",
+          "named": true
+        },
+        {
+          "type": "datetime",
+          "named": true
+        },
+        {
+          "type": "infinity",
+          "named": true
+        },
+        {
+          "type": "minute",
+          "named": true
+        },
+        {
+          "type": "month",
+          "named": true
+        },
+        {
+          "type": "null",
+          "named": true
+        },
+        {
           "type": "number",
+          "named": true
+        },
+        {
+          "type": "second",
+          "named": true
+        },
+        {
+          "type": "time",
+          "named": true
+        },
+        {
+          "type": "timespan",
+          "named": true
+        },
+        {
+          "type": "timestamp",
           "named": true
         }
       ]
@@ -4064,6 +4117,10 @@
     "named": false
   },
   {
+    "type": "':",
+    "named": false
+  },
+  {
     "type": "(",
     "named": false
   },
@@ -4089,6 +4146,26 @@
   },
   {
     "type": ".",
+    "named": false
+  },
+  {
+    "type": "/",
+    "named": false
+  },
+  {
+    "type": "/:",
+    "named": false
+  },
+  {
+    "type": "0:",
+    "named": false
+  },
+  {
+    "type": "1:",
+    "named": false
+  },
+  {
+    "type": "2:",
     "named": false
   },
   {
@@ -4140,6 +4217,14 @@
     "named": false
   },
   {
+    "type": "\\",
+    "named": false
+  },
+  {
+    "type": "\\:",
+    "named": false
+  },
+  {
     "type": "]",
     "named": false
   },
@@ -4150,10 +4235,6 @@
   {
     "type": "_",
     "named": false
-  },
-  {
-    "type": "adverb",
-    "named": true
   },
   {
     "type": "boolean",

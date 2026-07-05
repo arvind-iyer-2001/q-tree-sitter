@@ -79,6 +79,9 @@ module.exports = grammar({
     [$.number, $.operator],
     [$.number, $._primary_nn],
     [$.vector, $.vector_nn],
+    // `x$'y` vs `x$(';...)`-ish: quote after an operator — iterator on the
+    // verb vs bare verb value in a slot; one token of lookahead decides
+    [$.adverb, $._op_value],
   ],
 
   word: $ => $.identifier,

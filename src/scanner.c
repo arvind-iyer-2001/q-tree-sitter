@@ -161,8 +161,14 @@ bool tree_sitter_q_external_scanner_scan(void *payload, TSLexer *l, const bool *
     uint32_t col = l->get_column(l);
     if (col == 0 && l->lookahead == '\\') {
       adv(l); /* consume '\' */
-      /* consume rest of the line (command letter(s) + args), if any.
-       * A solitary `\` or `\\` ends here with nothing further. */
+      /* Solitary `\` on its own line = end-of-script marker: q ignores
+       * EVERYTHING after it (free-form trailing prose). Consume to EOF. */
+      if (l->lookahead == '\n' || l->lookahead == '\r' || l->lookahead == 0) {
+        while (l->lookahead != 0) adv(l);
+        l->result_symbol = SYSTEM_COMMAND_TOK;
+        return true;
+      }
+      /* consume rest of the line (command letter(s) + args). */
       while (l->lookahead != '\n' && l->lookahead != '\r' && l->lookahead != 0) {
         adv(l);
       }
@@ -205,6 +211,12 @@ bool tree_sitter_q_external_scanner_scan(void *payload, TSLexer *l, const bool *
       bool was_cr = (l->lookahead == '\r');
       adv(l);
       if (was_cr && l->lookahead == '\n') adv(l); /* \r\n */
+      /* q continuation rule: a line that BEGINS with whitespace continues
+       * the previous statement — the newline is NOT a terminator. Return
+       * false so the newline is re-lexed as an ignorable extra. */
+      if (l->lookahead == ' ' || l->lookahead == '\t') {
+        return false;
+      }
       s->prev_was_value = false;
       l->result_symbol = EOS;
       return true;

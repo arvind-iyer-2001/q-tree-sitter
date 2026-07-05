@@ -45,15 +45,17 @@ function sep(rule, s) {
 // becomes a syntactic GLR fork the parser resolves by state.
 const OPERATOR_GLYPHS = [
   '<=', '>=', '<>',
+  '0:', '1:', '2:',   // file/IPC verbs: `("PSFI";",")0:data`, `h 2:...`
   '+', '-', '*', '%', '&', '|', '^', '=', '<', '>', '~', '!',
   '#', '_', '?', '@', '.', ',',
 ];
 
-// Iterator glyphs. token.immediate = no preceding whitespace, matching q's
-// lexical rule and disambiguating `f/` (over) from `f /comment`. Two-char
-// glyphs listed first for longest match. `'`/`':` are here too: in iterator
-// position immediacy separates them from statement-initial signal `'expr`.
-const ITER = token.immediate(choice("':", '/:', '\\:', "'", '/', '\\'));
+// Iterator glyphs. ONLY the `/` family is token.immediate: `f/` (over) vs
+// `f /comment` is q's whitespace rule, and the scanner claims the spaced
+// form as a comment. The quote/backslash iterators may be space-separated
+// (`f[..] ' [..]` appears in production Bloomberg code); `'` reuses the
+// shared $._quote token so it cannot lexically collide with signal `'expr`
+// — parse state decides. This lives in _iter (a rule), not a fused token.
 
 // binary > juxt: at `x • +/y` both infix (binary via derived verb) and
 // juxtaposition (x applied to the verb-value expression `(+/)y`) are viable;
@@ -96,6 +98,8 @@ module.exports = {
   // else (right recursion => folds right-to-left). `optional(right)` models
   // operator left-projection (`3+`; `"/",`). The operator slot admits derived
   // verbs — `x f'y`, `a,'b`, `0 t\x`, `x vs/:y` — which is the audit's #1 fix.
+  // `right` may be a bare verb value (`"e"$%` — cast applied to the divide
+  // verb) as well as any expression.
   binary: $ => prec.right(PREC.binary, seq(
     field('left', $._noun),
     field('operator', choice(
@@ -103,7 +107,7 @@ module.exports = {
       alias($._dollar, $.operator),
       $.adverb_apply,
     )),
-    optional(field('right', $._expression)),
+    optional(field('right', choice($._expression, $._op_value))),
   )),
 
   // Application, bracket form: `f[a;b]`, `.[f;args]`, `@[x;i;f]`, `g[a][b]`,
@@ -152,8 +156,17 @@ module.exports = {
       $.operator,
       alias($._dollar, $.operator),
     )),
-    repeat1(field('adverb', alias(ITER, $.adverb))),
+    repeat1(field('adverb', $.adverb)),
   )),
+
+  adverb: $ => choice(
+    token.immediate(prec(1, '/:')),
+    token.immediate(prec(1, '/')),
+    "':",
+    $._quote,
+    '\\:',
+    '\\',
+  ),
 
   _primary: $ => choice(
     $.lambda, $.parenthesized, $.list, $.table_literal, $.cond,
@@ -227,7 +240,7 @@ module.exports = {
   // `f 1 -2 3`). Aliased to $.vector.
   vector_nn: $ => prec.dynamic(2, prec.left(2, seq(
     alias($._number_token, $.number),
-    repeat1(seq($._list_ws, $.number)),
+    repeat1(seq($._list_ws, $._vector_elem)),
   ))),
 
   // A bare verb used as a value: operators, the shared `$`/`'` tokens, and the

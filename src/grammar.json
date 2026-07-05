@@ -574,6 +574,55 @@
         }
       }
     },
+    "_vector_elem": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "number"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "null"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "infinity"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "date"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "month"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "timestamp"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "datetime"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "timespan"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "time"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "second"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "minute"
+        }
+      ]
+    },
     "vector": {
       "type": "PREC_DYNAMIC",
       "value": 2,
@@ -585,7 +634,7 @@
           "members": [
             {
               "type": "SYMBOL",
-              "name": "number"
+              "name": "_vector_elem"
             },
             {
               "type": "REPEAT1",
@@ -598,7 +647,7 @@
                   },
                   {
                     "type": "SYMBOL",
-                    "name": "number"
+                    "name": "_vector_elem"
                   }
                 ]
               }
@@ -1382,6 +1431,10 @@
                   "name": "builtin"
                 },
                 {
+                  "type": "SYMBOL",
+                  "name": "parenthesized"
+                },
+                {
                   "type": "ALIAS",
                   "content": {
                     "type": "SYMBOL",
@@ -1414,6 +1467,82 @@
                     "content": {
                       "type": "CHOICE",
                       "members": [
+                        {
+                          "type": "STRING",
+                          "value": "+::"
+                        },
+                        {
+                          "type": "STRING",
+                          "value": "-::"
+                        },
+                        {
+                          "type": "STRING",
+                          "value": "*::"
+                        },
+                        {
+                          "type": "STRING",
+                          "value": "%::"
+                        },
+                        {
+                          "type": "STRING",
+                          "value": "&::"
+                        },
+                        {
+                          "type": "STRING",
+                          "value": "|::"
+                        },
+                        {
+                          "type": "STRING",
+                          "value": "^::"
+                        },
+                        {
+                          "type": "STRING",
+                          "value": "=::"
+                        },
+                        {
+                          "type": "STRING",
+                          "value": "<::"
+                        },
+                        {
+                          "type": "STRING",
+                          "value": ">::"
+                        },
+                        {
+                          "type": "STRING",
+                          "value": "~::"
+                        },
+                        {
+                          "type": "STRING",
+                          "value": "!::"
+                        },
+                        {
+                          "type": "STRING",
+                          "value": "#::"
+                        },
+                        {
+                          "type": "STRING",
+                          "value": "_::"
+                        },
+                        {
+                          "type": "STRING",
+                          "value": "$::"
+                        },
+                        {
+                          "type": "STRING",
+                          "value": "?::"
+                        },
+                        {
+                          "type": "STRING",
+                          "value": "@::"
+                        },
+                        {
+                          "type": "STRING",
+                          "value": ".::"
+                        },
+                        {
+                          "type": "STRING",
+                          "value": ",::"
+                        },
                         {
                           "type": "STRING",
                           "value": "+:"
@@ -1680,6 +1809,18 @@
         },
         {
           "type": "STRING",
+          "value": "0:"
+        },
+        {
+          "type": "STRING",
+          "value": "1:"
+        },
+        {
+          "type": "STRING",
+          "value": "2:"
+        },
+        {
+          "type": "STRING",
           "value": "+"
         },
         {
@@ -1857,8 +1998,17 @@
                 "type": "FIELD",
                 "name": "right",
                 "content": {
-                  "type": "SYMBOL",
-                  "name": "_expression"
+                  "type": "CHOICE",
+                  "members": [
+                    {
+                      "type": "SYMBOL",
+                      "name": "_expression"
+                    },
+                    {
+                      "type": "SYMBOL",
+                      "name": "_op_value"
+                    }
+                  ]
                 }
               },
               {
@@ -2076,46 +2226,56 @@
               "type": "FIELD",
               "name": "adverb",
               "content": {
-                "type": "ALIAS",
-                "content": {
-                  "type": "IMMEDIATE_TOKEN",
-                  "content": {
-                    "type": "CHOICE",
-                    "members": [
-                      {
-                        "type": "STRING",
-                        "value": "':"
-                      },
-                      {
-                        "type": "STRING",
-                        "value": "/:"
-                      },
-                      {
-                        "type": "STRING",
-                        "value": "\\:"
-                      },
-                      {
-                        "type": "STRING",
-                        "value": "'"
-                      },
-                      {
-                        "type": "STRING",
-                        "value": "/"
-                      },
-                      {
-                        "type": "STRING",
-                        "value": "\\"
-                      }
-                    ]
-                  }
-                },
-                "named": true,
-                "value": "adverb"
+                "type": "SYMBOL",
+                "name": "adverb"
               }
             }
           }
         ]
       }
+    },
+    "adverb": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "IMMEDIATE_TOKEN",
+          "content": {
+            "type": "PREC",
+            "value": 1,
+            "content": {
+              "type": "STRING",
+              "value": "/:"
+            }
+          }
+        },
+        {
+          "type": "IMMEDIATE_TOKEN",
+          "content": {
+            "type": "PREC",
+            "value": 1,
+            "content": {
+              "type": "STRING",
+              "value": "/"
+            }
+          }
+        },
+        {
+          "type": "STRING",
+          "value": "':"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_quote"
+        },
+        {
+          "type": "STRING",
+          "value": "\\:"
+        },
+        {
+          "type": "STRING",
+          "value": "\\"
+        }
+      ]
     },
     "_primary": {
       "type": "CHOICE",
@@ -2557,7 +2717,7 @@
                   },
                   {
                     "type": "SYMBOL",
-                    "name": "number"
+                    "name": "_vector_elem"
                   }
                 ]
               }
@@ -3534,6 +3694,10 @@
     [
       "vector",
       "vector_nn"
+    ],
+    [
+      "adverb",
+      "_op_value"
     ]
   ],
   "precedences": [],

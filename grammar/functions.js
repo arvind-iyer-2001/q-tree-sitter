@@ -6,6 +6,9 @@ function sep1(rule, s) { return seq(rule, repeat(seq(s, rule))); }
 // $._dollar and `$[` still starts cond. q resolves which amend op it is at eval
 // time — the grammar only needs the uniform shape `lhs <op>: rhs`.
 const AMEND = token(choice(
+  // global amend `x+::v` first (longest match), then local `x+:v`
+  '+::', '-::', '*::', '%::', '&::', '|::', '^::', '=::', '<::', '>::',
+  '~::', '!::', '#::', '_::', '$::', '?::', '@::', '.::', ',::',
   '+:', '-:', '*:', '%:', '&:', '|:', '^:', '=:', '<:', '>:',
   '~:', '!:', '#:', '_:', '$:', '?:', '@:', '.:', ',:',
 ));
@@ -15,9 +18,11 @@ module.exports = {
   // left can be: identifier, dotted_name, or index (x[i] for amend-assign)
   // left can be: identifier, dotted_name, builtin (q lets keyword-named
   // globals be assigned — `view::select ...` defines a view named `view`),
-  // or index (x[i] for amend-assign)
+  // index (x[i] for amend-assign), or a parenthesized apply-target
+  // (`(qp n):v` assigns through the application `qp n`)
   assignment: $ => prec.right(1, seq(
-    field('left', choice($.identifier, $.dotted_name, $.builtin, alias($.call, $.index))),
+    field('left', choice($.identifier, $.dotted_name, $.builtin,
+                         $.parenthesized, alias($.call, $.index))),
     field('operator', choice('::', ':', alias(AMEND, $.operator))),
     field('right', choice($.assignment, $._expression)),
   )),

@@ -169,7 +169,15 @@ module.exports = {
   // $._list_ws token (w1-scanner) — significant whitespace separating numbers
   // in vector context — so `1 2 3` is one vector, not juxtaposed atoms.
   // -------------------------------------------------------------------------
+  // Space-separated element vectors. Elements are any scalar numeric-family
+  // literal — `0N 0N 1 2` (nulls), `2000.10.02 2000.10.03` (dates), `-5 -4`.
   // prec.dynamic: with numbers in _applicable (for the `-1"msg"` print idiom)
   // a GLR fork could read `1 2 3` as juxtaposition chains; the vector must win.
-  vector: $ => prec.dynamic(2, prec.left(2, seq($.number, repeat1(seq($._list_ws, $.number))))),
+  _vector_elem: $ => choice(
+    $.number, $.null, $.infinity,
+    $.date, $.month, $.timestamp, $.datetime,
+    $.timespan, $.time, $.second, $.minute,
+  ),
+  vector: $ => prec.dynamic(2, prec.left(2,
+    seq($._vector_elem, repeat1(seq($._list_ws, $._vector_elem))))),
 };
