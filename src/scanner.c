@@ -299,5 +299,36 @@ bool tree_sitter_q_external_scanner_scan(void *payload, TSLexer *l, const bool *
     }
   }
 
+  /* ---------------------------------------------------------------
+   * NEG_NUMBER (whitespace-gated): `x -5` is APPLICATION of x to the
+   * literal -5 in q (space before `-`, digit right after), while `x-5`
+   * and `x - 5` are subtraction. Whitespace IS observable by the scanner,
+   * so unlike the retired prev_was_value gate this rule is sound. Runs AFTER
+   * LIST_WS: in vector context (`2 -3`) the separator wins and the grammar
+   * composes the negative element itself.
+   * --------------------------------------------------------------- */
+  if (valid[NEG_NUMBER] && saw_ws && l->lookahead == '-') {
+    adv(l); /* consume `-` */
+    bool lead_digit = (l->lookahead >= '0' && l->lookahead <= '9');
+    if (lead_digit || l->lookahead == '.') {
+      while ((l->lookahead >= '0' && l->lookahead <= '9') || l->lookahead == '.') {
+        adv(l);
+      }
+      if (l->lookahead == 'e' || l->lookahead == 'E') {
+        adv(l);
+        if (l->lookahead == '+' || l->lookahead == '-') adv(l);
+        while (l->lookahead >= '0' && l->lookahead <= '9') adv(l);
+      }
+      /* type suffix (-42j, -0.5f, ...) */
+      if (l->lookahead == 'j' || l->lookahead == 'i' || l->lookahead == 'h' ||
+          l->lookahead == 'f') {
+        adv(l);
+      }
+      l->result_symbol = NEG_NUMBER;
+      return true;
+    }
+    return false;
+  }
+
   return false;
 }

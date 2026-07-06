@@ -14,7 +14,12 @@ module.exports = {
   // the parser knows. The external NEG_NUMBER token is retired (audit: its
   // prev_was_value gate was unknowable). The juxt-argument _nn family blocks
   // the one bad reading (`call(x, -5)`).
+  // $._neg_number (external) is the WHITESPACE-GATED fused form: `x -5` is
+  // application-of-negative-literal in q, and only the scanner can see the
+  // space. The grammar composition handles the no-space contexts (`n?-5`,
+  // `f[-5]`, `x:-5`) where parse state decides literal-vs-minus.
   number: $ => choice(
+    $._neg_number,
     seq('-', $._number_token),
     $._number_token,
   ),

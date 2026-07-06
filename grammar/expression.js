@@ -100,7 +100,10 @@ module.exports = {
   // verbs — `x f'y`, `a,'b`, `0 t\x`, `x vs/:y` — which is the audit's #1 fix.
   // `right` may be a bare verb value (`"e"$%` — cast applied to the divide
   // verb) as well as any expression.
-  binary: $ => prec.right(PREC.binary, seq(
+  // prec.dynamic: at `a,'b` / `x f'y` GLR also derives the juxtaposition
+  // reading (a applied to the derived-verb expression); q's rule is infix —
+  // the binary tree must win the ambiguity merge.
+  binary: $ => prec.dynamic(1, prec.right(PREC.binary, seq(
     field('left', $._noun),
     field('operator', choice(
       $.operator,
@@ -109,7 +112,7 @@ module.exports = {
       $.adverb_apply,
     )),
     optional(field('right', choice($._expression, $._op_value))),
-  )),
+  ))),
 
   // Application, bracket form: `f[a;b]`, `.[f;args]`, `@[x;i;f]`, `g[a][b]`,
   // `f'[x;y]` (derived-verb function), `(expr)[i]`. Operators may be the
@@ -210,7 +213,7 @@ module.exports = {
     $.control,
   ),
 
-  binary_nn: $ => prec.right(PREC.binary, seq(
+  binary_nn: $ => prec.dynamic(1, prec.right(PREC.binary, seq(
     field('left', $._noun_nn),
     field('operator', choice(
       $.operator,
@@ -219,7 +222,7 @@ module.exports = {
       $.adverb_apply,
     )),
     optional(field('right', choice($._expression, $._op_value))),
-  )),
+  ))),
 
   _noun_nn: $ => choice(
     $._primary_nn,
@@ -234,6 +237,9 @@ module.exports = {
     $.boolean, $.byte, $.string, $.char, $.symbol, $.symbol_vector,
     $.null, $.infinity,
     alias($._number_token, $.number),
+    // ws-gated negative literal: `x -5` IS application in q (the scanner
+    // saw the space); only the no-space grammar composition stays blocked
+    alias($._neg_number, $.number),
     alias($.vector_nn, $.vector),
     $.timestamp, $.datetime, $.date, $.month, $.timespan, $.time, $.second, $.minute,
     $.builtin, alias($._infix_kw, $.builtin), $.dotted_name, $.identifier,
