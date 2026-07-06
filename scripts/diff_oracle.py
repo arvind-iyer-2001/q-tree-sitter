@@ -148,3 +148,67 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+# ---------------------------------------------------------------------------
+# Shape oracle (2026-07-06): accept/reject is necessary, not sufficient. For
+# q's ambiguous constructs, assert tree-sitter's TOP NODE matches q's parse
+# interpretation (derived by hand from `-3!parse`, shown in comments).
+# Run: python3 scripts/diff_oracle.py --shapes
+# ---------------------------------------------------------------------------
+SHAPE_CASES = [
+    # (snippet, expected top node)          # q -3!parse
+    ("x-5",          "binary"),             # (-;`x;5)
+    ("x - 5",        "binary"),             # (-;`x;5)
+    ("x -5",         "call"),               # (`x;-5)  apply!
+    ("f -5",         "call"),               # (`f;-5)
+    ("2 -3",         "vector"),             # 2 -3
+    ("1 -1",         "vector"),             # 1 -1
+    ("1 2 3",        "vector"),             # 1 2 3
+    ("count[x]-5",   "binary"),             # (-;(#:;`x);5)
+    ("count[x] -5",  "call"),               # ((#:;`x);-5)
+    ("n?-5 -4",      "binary"),             # (?;`n;-5 -4)
+    ("2*3 -4",       "binary"),             # (*;2;3 -4)
+    ("2*3-4",        "binary"),             # (*;2;(-;3;4))
+    ("a,'b",         "binary"),             # ((';,);`a;`b)
+    ("x f'y",        "binary"),             # ((';`f);`x;`y)
+    ("f g'x",        "binary"),             # ((';`g);`f;`x)
+    ("f each x",     "binary"),             # (each;`f;`x)
+    ("x vs y",       "binary"),             # (vs;`x;`y)
+    ("til 10",       "call"),               # (til;10)
+    ('-1"msg"',      "call"),               # (-1;"msg")
+    ("f x+1",        "call"),               # (`f;(+;`x;1))
+    ('"abc" 1',      "call"),               # ("abc";1)
+    ("t*-.35",       "binary"),             # (*;`t;-0.35)
+    ("t* -.35",      "binary"),             # (*;`t;-0.35)
+]
+
+
+def ts_top_node(code):
+    with tempfile.NamedTemporaryFile("w", suffix=".q", delete=False) as fh:
+        fh.write(code + "\n")
+        p = fh.name
+    try:
+        out = subprocess.run(["tree-sitter", "parse", p],
+                             capture_output=True, text=True, timeout=15).stdout
+    finally:
+        os.unlink(p)
+    lines = out.splitlines()
+    top = lines[1].strip().split(" ")[0].strip("(") if len(lines) > 1 else "?"
+    if re.search(r"ERROR|MISSING", out):
+        top += "+ERR"
+    return top
+
+
+def shapes():
+    bad = 0
+    for code, want in SHAPE_CASES:
+        got = ts_top_node(code)
+        ok = got == want
+        bad += not ok
+        print(f"{'ok ' if ok else 'FAIL'}  {code:14s} want={want:7s} got={got}")
+    print(f"\n{len(SHAPE_CASES)-bad}/{len(SHAPE_CASES)} shapes match")
+    return bad
+
+
+if __name__ == "__main__" and "--shapes" in os.sys.argv:
+    raise SystemExit(shapes())
