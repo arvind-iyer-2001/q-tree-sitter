@@ -1,5 +1,0 @@
-/Users/arvindiyer/development/q-tree-sitter/test/corpus/qsql.txt
-/Users/arvindiyer/development/q-tree-sitter/test/corpus/scanner.txt
-/Users/arvindiyer/development/q-tree-sitter/test/corpus/skeleton.txt
-/Users/arvindiyer/development/q-tree-sitter/tests/python/test_load.py
-/Users/arvindiyer/development/q-tree-sitter/tree-sitter.json
