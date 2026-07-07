@@ -1,5 +1,28 @@
 # Handoff — 2026-07-07
 
+## Cold-start on a new system
+
+```bash
+git clone git@github.com:arvind-iyer-2001/q-tree-sitter.git && cd q-tree-sitter
+uv tool install graphifyy && python3 tools/patch_graphify.py   # graphify + q wiring
+python3 -m pip wheel . --no-deps -w dist/                      # wheel for THIS platform
+```
+
+NOT in the clone (by design) — restore if needed:
+- `test/real/` corpus (gitignored). Re-fetch:
+  `git clone --depth 1 https://github.com/KxSystems/cookbook test/real/cookbook`
+  `git clone --depth 1 https://github.com/KxSystems/kdb test/real/kdb`
+  `git clone --depth 1 https://github.com/jonathonmcmurray/reQ test/real/reQ`
+  then `printf '!**\n' > test/real/.graphifyignore`
+- q binary for the oracle: install kdb+ to `~/.kx/bin/q` (or set `Q=` env);
+  without it the shape/accept oracles are SKIPPED, not failed
+- `graphify-out/` graphs: regenerate via `python3 tools/qgraph.py <path>`
+- Claude memory/skills: `.claude/` (skills, agents, hooks) IS in the repo;
+  the personal memory dir is not — this handoff supersedes it
+
+CI (GitHub Actions) runs generate/corpus/wheel gates on every push — green
+as of 2026-07-07. `parse_rate` + oracle gates are local-only (need corpus + q).
+
 ## State
 Tree-sitter grammar for KDB+/q, oracle-validated, packaged for use on arbitrary
 (incl. proprietary) repos. Parse rate 98.9% on the 90-file real corpus (1 known
