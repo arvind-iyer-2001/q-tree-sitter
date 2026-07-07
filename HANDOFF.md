@@ -25,16 +25,14 @@ Pushed to **github.com/arvind-iyer-2001/q-tree-sitter (private)** — clonable,
 ## Open tasks
 | # | Task | Priority | Area |
 |---|------|----------|------|
-| 1 | CI gates workflow (.github/workflows: generate→test→parse_rate→shapes) | high | infra |
-| 2 | `/grammar-fix` skill (repro→fix→gates→grow shape oracle→re-bless) | high | skills |
-| 3 | `grammar-guard` reviewer agent (checks 8 invariants + runs gates) | med | agents |
-| 4 | Release workflow: cibuildwheel matrix on tag | med | infra |
-| 5 | `/corpus-add <repo>` skill (clone→test/real→rate→categorize) | med | skills |
-| 6 | PostToolUse hook: auto-run patch_graphify.py after graphify upgrade | low | hooks |
-| 7 | tick/ssl.q last parse failure (`cond x 40 131 o` in _nn context) | low | grammar |
-| 8 | deliverables/*.patch stale vs upstream graphify — only if upstreaming PR | low | deliverables |
+| 1 | Verify first CI run green; fix runner surprises if any | high | infra |
+| 2 | Tag v0.1.0 to exercise release.yml wheel matrix | med | infra |
+| 3 | tick/ssl.q last parse failure (`cond x 40 131 o` in _nn context) — use /grammar-fix | low | grammar |
+| 4 | deliverables/*.patch stale vs upstream graphify — only if upstreaming PR | low | deliverables |
 
-Tasks 1–6 = production-readiness plan Arvind approved exploring (order: 1→2→3→4→5→6).
+DONE 2026-07-07 (commit 50e32df): CI gates.yml (CLI pinned 0.24.7),
+release.yml (cibuildwheel cp310–cp314), /grammar-fix + /corpus-add skills,
+grammar-guard agent, PostToolUse repatch hook (smoke-tested).
 
 ## Constraints & assumptions
 - Address user as Arvind; no commit trailers; restate constraints before multi-step refactors (AGENTS.md)
