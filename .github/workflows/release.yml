@@ -1,0 +1,56 @@
+# Wheel matrix on version tags. Tag with `git tag v0.1.0 && git push --tags`;
+# wheels land on the GitHub release for download onto proprietary-repo machines
+# (no compiler needed there).
+name: release
+
+on:
+  push:
+    tags: ["v*"]
+
+jobs:
+  wheels:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]   # macos-latest = arm64 runners
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Build wheels
+        uses: pypa/cibuildwheel@v2
+        env:
+          CIBW_BUILD: "cp310-* cp311-* cp312-* cp313-* cp314-*"
+          CIBW_SKIP: "*-musllinux_* *_i686"
+          CIBW_TEST_REQUIRES: tree-sitter
+          CIBW_TEST_COMMAND: >
+            python -c "import tree_sitter, tree_sitter_q;
+            l = tree_sitter.Language(tree_sitter_q.language());
+            p = tree_sitter.Parser(l);
+            s = str(p.parse(bytes('f:{x+y}', 'utf8')).root_node);
+            assert 'ERROR' not in s, s"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: wheels-${{ matrix.os }}
+          path: wheelhouse/*.whl
+
+  publish:
+    needs: wheels
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: wheelhouse
+          merge-multiple: true
+
+      - name: Attach wheels to release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: wheelhouse/*.whl
+          generate_release_notes: true

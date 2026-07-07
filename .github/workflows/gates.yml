@@ -1,0 +1,68 @@
+# Regression gates that can run WITHOUT local-only assets.
+#
+# Two gates are deliberately NOT here and remain local (see HANDOFF.md):
+#   - scripts/parse_rate.py   needs test/real/ (gitignored vendored corpus)
+#   - scripts/diff_oracle.py  needs a licensed q binary (~/.kx/bin/q)
+# Do not fake them in CI with subsets — a green check must mean the real gate.
+name: gates
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  grammar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install tree-sitter CLI
+        # PINNED to the version that generated the committed src/ — a different
+        # CLI emits a different parser.c and the stale-check below false-alarms.
+        # Bump BOTH together: this pin and a regenerated src/.
+        run: npm install -g tree-sitter-cli@0.24.7
+
+      - name: Generate parser (must be clean and match committed src/)
+        run: |
+          tree-sitter generate
+          # committed parser.c must equal freshly generated one — a drifted
+          # src/ means someone edited grammar without regenerating
+          git diff --exit-code --stat src/parser.c src/grammar.json \
+            || { echo '::error::src/ is stale — run tree-sitter generate and commit'; exit 1; }
+
+      - name: Corpus tests
+        run: tree-sitter test
+
+  wheel:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Build wheel from source
+        run: python -m pip wheel . --no-deps -w dist/
+
+      - name: Import smoke test
+        run: |
+          python -m pip install dist/*.whl tree-sitter
+          python - <<'EOF'
+          import tree_sitter, tree_sitter_q
+          lang = tree_sitter.Language(tree_sitter_q.language())
+          p = tree_sitter.Parser(lang)
+          t = p.parse(b"f:{x,'y}\nr:x-5\nx:1 2 3\n-1\"msg\";\n")
+          s = str(t.root_node)
+          assert "ERROR" not in s and "MISSING" not in s, s
+          assert "binary" in s and "vector" in s, s
+          print("wheel smoke OK")
+          EOF
