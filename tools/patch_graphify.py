@@ -124,7 +124,8 @@ def ensure_wheel(python: str) -> str:
     ok = subprocess.run([python, "-c", "import tree_sitter_q"], capture_output=True)
     if ok.returncode == 0:
         return "tree_sitter_q: already importable"
-    wheels = sorted((REPO / "dist").glob("tree_sitter_q-*.whl"))
+    wheels = sorted((REPO / "dist").glob("tree_sitter_q-*.whl")) or \
+             sorted((REPO / "bindings" / "python" / "tree_sitter_q").glob("tree_sitter_q-*.whl"))
     target = str(wheels[-1]) if wheels else str(REPO)  # fall back: build from source
     for cmd in (
         ["uv", "pip", "install", "--python", python, target],
