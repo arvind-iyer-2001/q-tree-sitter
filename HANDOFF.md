@@ -1,96 +1,82 @@
-# Handoff — 2026-07-07
+# Handoff — 2026-07-09
 
-## Cold-start on a new system
+## Environment (THIS machine: WSL2 Ubuntu, linux/amd64 — differs from the Mac handoff)
+- tree-sitter CLI 0.24.7 via npm global (`npm i -g tree-sitter-cli@0.24.7`)
+- q at `~/.kx/bin/q` — oracle works
+- wheel: `dist/tree_sitter_q-0.1.0-cp310-cp310-linux_x86_64.whl` (system python 3.10)
+- graphify: **pip install in python3.10 user site** (`/home/aiyer/.local/lib/python3.10/site-packages/graphify`),
+  NOT the uv tool — `uv tool install graphifyy` collides with the existing
+  `graphify` executable. `tools/patch_graphify.py` targets `/usr/bin/python3`
+  and works; tree_sitter_q installed with `pip install --user` (uv pip hits
+  /usr/local permission error)
+- this graphify version has NO `export` command → qgraph falls back to
+  `tools/qgraph_html.py` (community overview → graph.html + graph-hubs.html)
+- pypdf 6.x present (needed by the new doc extractor)
+- `test/real/` re-fetched (cookbook/kdb/reQ), gates green:
+  97/97 corpus tests, 89/90 parse rate (known: tick/ssl.q), 23/23 shapes
 
-```bash
-git clone git@github.com:arvind-iyer-2001/q-tree-sitter.git && cd q-tree-sitter
-uv tool install graphifyy && python3 tools/patch_graphify.py   # graphify + q wiring
-python3 -m pip wheel . --no-deps -w dist/                      # wheel for THIS platform
-```
+## What this session was
+Ran the parser + graphify against the real KX Sensors codebase
+(`~/kxs-graphify/kxs-v3`, 18 repos, ~230k lines q) and iteratively fixed the
+extraction pipeline until the graph answers architecture questions.
 
-NOT in the clone (by design) — restore if needed:
-- `test/real/` corpus (gitignored). Re-fetch:
-  `git clone --depth 1 https://github.com/KxSystems/cookbook test/real/cookbook`
-  `git clone --depth 1 https://github.com/KxSystems/kdb test/real/kdb`
-  `git clone --depth 1 https://github.com/jonathonmcmurray/reQ test/real/reQ`
-  then `printf '!**\n' > test/real/.graphifyignore`
-- q binary for the oracle: install kdb+ to `~/.kx/bin/q` (or set `Q=` env);
-  without it the shape/accept oracles are SKIPPED, not failed
-- `graphify-out/` graphs: regenerate via `python3 tools/qgraph.py <path>`
-- Claude memory/skills: `.claude/` (skills, agents, hooks) IS in the repo;
-  the personal memory dir is not — this handoff supersedes it
+Working corpus: `~/kxs-graphify/corpus-core-amat/` = kxs-core + kxs-amat +
+runbook PDFs (copies, no .git). Output in its `graphify-out/`
+(16,808 nodes / 45,435 edges / 274 communities). Rebuild:
+`python3 tools/qgraph.py ~/kxs-graphify/corpus-core-amat --inline-js`
 
-CI (GitHub Actions) runs generate/corpus/wheel gates on every push — green
-as of 2026-07-07. `parse_rate` + oracle gates are local-only (need corpus + q).
-
-## State
-Tree-sitter grammar for KDB+/q, oracle-validated, packaged for use on arbitrary
-(incl. proprietary) repos. Parse rate 98.9% on the 90-file real corpus (1 known
-failure), 23/23 shape-oracle match vs q's `-3!parse`, corpus tests green.
-Pushed to **github.com/arvind-iyer-2001/q-tree-sitter (private)** — clonable,
-4-command setup on a fresh machine (see PACKAGING.md).
-
-## Done this session
-- Expression-core rewrite on k/q noun-verb model + 5 corpus-driven fix rounds:
-  60/90 → 1/90 ERROR files (13c4621..a49a172)
-- Shape oracle added and passing 23/23; whitespace-gated NEG token (a0fb101)
-- Wheel rebuilt cp314, verified in clean venv (1d847f7)
-- Graphify full-corpus rebuild: 3,375 nodes / 5,472 edges / 214 communities,
-  hosted at https://arvind-iyer-2001.github.io/q-corpus-graph/
-- Packaging: `tools/qgraph.py` (local AST-only pipeline for any repo),
-  `tools/patch_graphify.py` (idempotent q-wiring installer), PACKAGING.md
-  (762597d, 3356932)
-- Repo pushed private; fresh-clone verified; graphify-out untracked
-
-## In progress
-- none (session ended at a clean point)
+## Done this session (commit 11e5f0d + this one)
+- Extractor v2: junk callee nodes 9,225→0, typed defs (function/variable/
+  table/file/external), compound-assign → `modifies`, per-node ERROR gate
+- qgraph: stub→def merge (src>test), namespace hubs, HTML fallback
+- NEW local doc pipeline (`tools/graphify_q/docs.py`): PDFs/markdown →
+  doc-section nodes with text + `mentions` edges to code. Picked up both the
+  runbook PDFs AND kxs-core's own `docs/content/*.md`
+- Acceptance: "What is the RT?" answered from graph (rt.md text + .rt.pub/
+  .rt.sub externals wrapped in src/msg/ems.q). Data-flow mermaid derived
+  from graph verified vs runbook `01_Architectural_Overview.pdf` (~80%
+  right; wrong: GW→RP shape, ems↔sp bidirectionality, SM/RDB/HDB missing —
+  process-level info, not in static call graph)
+- parse_rate.py takes corpus root argv; kxs-v3 sweep: 154/689 files bad
+  (22.35%), buckets in `~/kxs-graphify/ERROR_BUCKETS_kxs-v3.txt` and
+  `~/kxs-graphify/PARSE_FAILURES_kxs-v3.md` (do NOT commit those — client paths)
 
 ## Open tasks
 | # | Task | Priority | Area |
 |---|------|----------|------|
-| 1 | Verify first CI run green; fix runner surprises if any | high | infra |
-| 2 | Tag v0.1.0 to exercise release.yml wheel matrix | med | infra |
-| 3 | tick/ssl.q last parse failure (`cond x 40 131 o` in _nn context) — use /grammar-fix | low | grammar |
-| 4 | deliverables/*.patch stale vs upstream graphify — only if upstreaming PR | low | deliverables |
-
-DONE 2026-07-07 (commit 50e32df): CI gates.yml (CLI pinned 0.24.7),
-release.yml (cibuildwheel cp310–cp314), /grammar-fix + /corpus-add skills,
-grammar-guard agent, PostToolUse repatch hook (smoke-tested).
+| 1 | Grammar fixes for kxs failure buckets: each-tick compose `('[f;g])` 48 files, `//` line-start comment 18, brace-close 30 — use /grammar-fix, re-run kxs sweep after each | high | grammar |
+| 2 | Graph explorer UI over graph.json (file → defs → calls → file:line, doc text on click) — Arvind's main pain: data good, graph.html doesn't show drill-down. Discussed morale-level 2026-07-09; build this BEFORE more pipeline work | high | tooling |
+| 3 | Process-topology layer: GW→RP→services shape, RDB/HDB roles — needs config/bootstrap extraction, static calls can't see it | med | extraction |
+| 4 | tick/ssl.q last public-corpus failure | low | grammar |
+| 5 | Tag v0.1.0 (release.yml untested) | med | infra |
+| 6 | Upstream candidate: dedup-prefer-definitions patch for graphify build.py | low | deliverables |
 
 ## Constraints & assumptions
-- Address user as Arvind; no commit trailers; restate constraints before multi-step refactors (AGENTS.md)
-- 8 DO-NOT-BREAK grammar/scanner invariants: `docs/handoffs/2026-07-06-archived.md`
-  §Invariants (shared `-` token, `_nn` allows positives, scanner branch order,
-  no prev_was_value gating, `/`-family-only token.immediate, LIST_WS before NEG,
-  dynamic precs on binary/vector, three regression gates)
-- qgraph.py stays AST-only — LLM/semantic extraction on proprietary code only
-  via approved channels (PACKAGING.md data-boundary section)
-- `test/real/` corpus is gitignored (vendored KX/reQ code) — needs
-  `test/real/.graphifyignore` with `!**` for graphify detect; not in the repo,
-  re-fetch corpus upstream on new machines
-- graphify installed via uv tool; after ANY graphify upgrade rerun
-  `python3 tools/patch_graphify.py`
-- Python 3.14 only on this machine; wheel is cp314/macOS-arm64
-- Inline/sequential execution preferred over agent fan-out (memory), EXCEPT
-  graphify skill's extraction subagents (explicitly sanctioned, Sonnet)
+- All prior invariants hold (docs/handoffs/2026-07-06-archived.md §Invariants)
+- kxs corpora are PROPRIETARY: live outside repo, never committed; extraction
+  local/AST-only; runbook PDFs were read in-session (sanctioned) but graphify
+  semantic/LLM extraction still needs explicit approval (PACKAGING.md)
+- scripts/PARSE_FAILURES.md is overwritten by every parse_rate run — restore
+  via `git checkout` before committing if a proprietary sweep ran last
+- after ANY graphify change rerun `python3 tools/patch_graphify.py`
+  (installs extractors/{base,q,docs}.py)
 
-## Gotchas
-- `uv tool run graphifyy python` no longer resolves interpreter — use
-  `uv tool dir` + `graphifyy/bin/python` (fixed in tools/, don't regress)
-- graphify honors .gitignore: gitignored corpora detect as 0 files → need
-  `.graphifyignore` negation (`!**`) or qgraph `--include-gitignored`
-- htmlpreview.github.io can't render HTML with CDN scripts / large files —
-  inline vis-network (qgraph `--inline-js`) or use real hosting (Pages)
-- githack 403s secret gists; public publishing needs explicit user approval
-  (auto-mode classifier blocks `gh repo create --public` / `gh gist --public`)
-- tree-sitter parse runaway: ALWAYS `pkill -9 -f 'tree-sitter parse'`, never kill
-- Scratchpad is EPHEMERAL — wiped between some turns; put durable work in repo
-- `tree-sitter test --update` blesses whatever parses — eyeball diffs before
-  committing (a wrong `3-4` shape nearly got blessed this session)
+## Gotchas (new, beyond archived list)
+- graph.json edges: undirected serialization flips source/target — ALWAYS
+  read `_src`/`_tgt` for direction
+- wheel grammar emits `operator` field for plain `:` assignments (CLI parse
+  of `b:1` doesn't) — never gate on field presence, check operator text
+- q builtin whitelist lives in q.py `_Q_BUILTINS`; kxs aliases (enl, nnull)
+  are NOT builtins — they're defined in gen.q and must stay resolvable
+- doc mention regex catches URL fragments (`.docker.com`) — resolution layer
+  drops unmatched dotted tokens, keep it that way
+- graphify viz cap 5,000 nodes (`MAX_NODES_FOR_VIZ`), watch.py silently
+  deletes stale graph.html above it
 
 ## Commands
 - gates: `tree-sitter generate && tree-sitter test && python3 scripts/parse_rate.py test/real/ && python3 scripts/diff_oracle.py --shapes`
-- graph any repo: `python3 tools/qgraph.py <path> --inline-js`
-- wire graphify: `python3 tools/patch_graphify.py`
-- wheel: `python3 -m pip wheel . --no-deps -w dist/`
-- oracle needs q at `~/.kx/bin/q` (override: `Q=` env)
+- kxs sweep: `python3 scripts/parse_rate.py /home/aiyer/kxs-graphify/kxs-v3`
+  then `python3 scripts/categorize_errors.py /home/aiyer/kxs-graphify/kxs-v3`
+- rebuild kxs graph: `python3 tools/qgraph.py ~/kxs-graphify/corpus-core-amat --inline-js`
+- query graph: `graphify query "..." --graph ~/kxs-graphify/corpus-core-amat/graphify-out/graph.json`
+  or `python3 ~/.claude/skills/graph-query/scripts/query.py <term> --dir ~/kxs-graphify/corpus-core-amat/graphify-out`
