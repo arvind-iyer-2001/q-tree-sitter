@@ -19,7 +19,7 @@ FLOOR = 0.03          # regression gate — 1/90 (1.1%) after the 2026-07-05 rew
 THRESHOLD = FLOOR     # CI uses FLOOR; flip to TARGET once coverage reaches it
 TIMEOUT = 15          # seconds per file; a hang here means a parser bug
 
-root = pathlib.Path("test/real")
+root = pathlib.Path(sys.argv[1] if len(sys.argv) > 1 else "test/real")
 qfiles = sorted(root.rglob("*.q"))
 
 errors = []    # files whose parse tree contains ERROR / MISSING nodes

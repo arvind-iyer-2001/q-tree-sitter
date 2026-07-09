@@ -83,7 +83,8 @@ def install_extractor(site: Path) -> str:
         init.write_text('"""Bespoke per-language extractors."""\n')
     shutil.copy2(Q_SRC / "base.py", ext / "base.py")
     shutil.copy2(Q_SRC / "q.py", ext / "q.py")
-    return "extractors/: base.py + q.py installed"
+    shutil.copy2(Q_SRC / "docs.py", ext / "docs.py")
+    return "extractors/: base.py + q.py + docs.py installed"
 
 
 def patch_extract(site: Path) -> list[str]:

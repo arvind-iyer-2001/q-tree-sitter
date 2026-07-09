@@ -126,6 +126,18 @@ for f in det['files']['code']:
     p = Path(f)
     files.extend(collect_files(p) if p.is_dir() else [p])
 res = extract(files, cache_root=Path({str(workdir)!r}))
+
+# Local document extraction (PDF/md/txt) — sections + mention tokens, no LLM.
+from graphify.extractors.docs import extract_docs
+doc_files = [Path(f) for f in det['files'].get('document', [])]
+dres = extract_docs(doc_files)
+res['nodes'].extend(dres['nodes'])
+res['edges'].extend(dres['edges'])
+res['mentions'] = dres['mentions']
+n_docs = sum(1 for n in dres['nodes'] if n.get('kind') == 'document')
+n_secs = sum(1 for n in dres['nodes'] if n.get('kind') == 'doc-section')
+print('docs:', n_docs, 'files,', n_secs, 'sections,', len(dres['mentions']), 'mention tokens')
+
 Path({str(out / '.extract.json')!r}).write_text(json.dumps(res, ensure_ascii=False))
 print('AST:', len(res['nodes']), 'nodes,', len(res['edges']), 'edges')
 """, workdir).strip())
@@ -143,6 +155,102 @@ from pathlib import Path
 
 extraction = json.loads(Path({str(out / '.extract.json')!r}).read_text())
 detection  = json.loads(Path({str(out / '.detect.json')!r}).read_text())
+
+# Merge q-extractor stub nodes (kind=external) into same-label definitions.
+# Stubs carry the CALLING file's attribution; without this remap, every
+# cross-file call edge points at a stub and flow analysis misattributes it.
+defs = {{}}
+def_files = {{}}
+def is_test(sf):
+    return '/test' in sf or sf.startswith('test')
+for n in extraction['nodes']:
+    if n.get('kind') in ('function', 'variable', 'table', 'file'):
+        lbl = n.get('label')
+        if not lbl:
+            continue
+        sf = n.get('source_file', '')
+        # Prefer non-test definitions when the same global is defined in both
+        # src and test trees (q has one runtime namespace, but src is canonical).
+        if lbl not in defs or (is_test(def_files[lbl]) and not is_test(sf)):
+            defs[lbl] = n['id']
+            def_files[lbl] = sf
+remap = {{}}
+kept = []
+for n in extraction['nodes']:
+    if n.get('kind') == 'external' and n.get('label') in defs and n['id'] != defs[n['label']]:
+        remap[n['id']] = defs[n['label']]
+    else:
+        kept.append(n)
+if remap:
+    extraction['nodes'] = kept
+    for e in extraction['edges']:
+        e['source'] = remap.get(e['source'], e['source'])
+        e['target'] = remap.get(e['target'], e['target'])
+    extraction['edges'] = [e for e in extraction['edges'] if e['source'] != e['target']]
+    print('merged', len(remap), 'stub nodes into definitions')
+
+# Namespace hub nodes (top-level q namespaces with >=3 function defs) so doc
+# sections have a resolvable target and queries get a per-namespace entry point.
+import collections
+ns_members = collections.defaultdict(list)
+for n in extraction['nodes']:
+    if n.get('kind') in ('function', 'variable', 'table'):
+        l = n.get('label', '')
+        if l.startswith('.') and l.count('.') >= 2:
+            ns_members['.' + l.split('.')[1]].append(n['id'])
+ns_ids = {{}}
+for ns, members in ns_members.items():
+    if len(members) < 3:
+        continue
+    nid = 'ns:' + ns
+    ns_ids[ns] = nid
+    extraction['nodes'].append({{'id': nid, 'label': ns, 'file_type': 'code',
+                                 'source_file': '', 'source_location': 'L1',
+                                 'kind': 'namespace'}})
+    for m in members:
+        extraction['edges'].append({{'source': nid, 'target': m,
+                                     'relation': 'contains',
+                                     'confidence': 'EXTRACTED',
+                                     'source_file': '', 'source_location': 'L1'}})
+
+# Resolve doc mention tokens: exact definition label > namespace hub >
+# top-namespace hub. Concept nodes are minted ONLY for the known process
+# acronyms (PROC_NS values) — a dotted token that matches nothing in the
+# code is likely a URL fragment or config literal from the PDF and is dropped.
+from graphify.extractors.docs import PROC_NS
+acronym_ns = set(PROC_NS.values())
+concepts = {{}}
+resolved_edges = dropped = 0
+for sec_id, tok in extraction.pop('mentions', []):
+    if tok in defs:
+        tgt = defs[tok]
+    elif tok in ns_ids:
+        tgt = ns_ids[tok]
+    else:
+        top = '.' + tok.split('.')[1] if tok.count('.') >= 2 else tok
+        if top in ns_ids:
+            tgt = ns_ids[top]
+        elif tok in acronym_ns:
+            tgt = concepts.get(tok)
+            if tgt is None:
+                tgt = 'concept:' + tok
+                concepts[tok] = tgt
+                extraction['nodes'].append({{'id': tgt, 'label': tok,
+                                             'file_type': 'code',
+                                             'source_file': '',
+                                             'source_location': 'L1',
+                                             'kind': 'process'}})
+        else:
+            dropped += 1
+            continue
+    extraction['edges'].append({{'source': sec_id, 'target': tgt,
+                                 'relation': 'mentions',
+                                 'confidence': 'EXTRACTED',
+                                 'source_file': '', 'source_location': 'L1'}})
+    resolved_edges += 1
+print('namespace hubs:', len(ns_ids), '| doc mentions resolved:', resolved_edges,
+      '| process concepts:', len(concepts))
+
 G = build_from_json(extraction)
 communities = cluster(G)
 cohesion = score_all(G, communities)
@@ -159,7 +267,10 @@ labpath.write_text(json.dumps({{str(k): v for k, v in labels.items()}}))
 print('graph:', G.number_of_nodes(), 'nodes,', G.number_of_edges(), 'edges,', len(communities), 'communities')
 """, workdir).strip())
 
-    # 4. HTML export (graphify CLI writes <cwd>/graphify-out/graph.html)
+    # 4. HTML export. `graphify export html` exists only in some CLI versions
+    # and refuses graphs over its 5,000-node viz cap — fall back to the
+    # two-level aggregated views (community overview as graph.html + top-hub
+    # subgraph) built by tools/qgraph_html.py.
     print("\n[4/4] HTML export")
     r = subprocess.run([python, "-m", "graphify", "export", "html"],
                        capture_output=True, text=True, cwd=workdir)
@@ -168,6 +279,13 @@ print('graph:', G.number_of_nodes(), 'nodes,', G.number_of_edges(), 'edges,', le
     html_target = out / "graph.html"
     if default_html.exists() and default_html.resolve() != html_target.resolve():
         html_target.write_bytes(default_html.read_bytes())
+    if not html_target.exists():
+        r = subprocess.run([python, str(HERE / "qgraph_html.py"), str(out)],
+                           capture_output=True, text=True)
+        print((r.stdout + r.stderr).strip()[-300:])
+        comm_html = out / "graph-communities.html"
+        if comm_html.exists():
+            html_target.write_bytes(comm_html.read_bytes())
 
     if args.inline_js and html_target.exists():
         html = html_target.read_text()
